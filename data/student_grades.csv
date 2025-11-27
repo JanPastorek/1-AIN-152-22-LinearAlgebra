@@ -1,0 +1,12 @@
+# Sample student grades data for linear algebra applications
+# Each row represents a student, columns are: Math, Physics, Chemistry, CS
+85,78,92,88
+76,82,75,85
+92,89,94,91
+68,71,65,72
+79,85,81,83
+88,86,89,87
+74,77,73,79
+95,92,96,94
+82,80,84,86
+77,75,78,81
