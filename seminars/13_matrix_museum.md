@@ -6,6 +6,8 @@
 
 **Goal:** Connect algebraic, geometric and dynamical descriptions and defend conclusions.
 
+**Read and work through:** [Linear transformations](../6_linear_transformations.ipynb) — Revisit the grid examples and their geometric properties; connect them to the matrix-museum cards. Use the relevant worked example during the existing seminar time; this sheet is its companion investigation, not a replacement for the explanation. [Reading map](../docs/notebook_route.md).
+
 **90-minute route:** 0–30 test/rehearsal; 30–50 T2; 50–70 T3; 70–82 T4; 82–90 exit.
 
 **Working rules:** Commit to an individual prediction first. Work in pairs or groups of three, rotating explainer, skeptic and recorder. AI is allowed only in the investigation portions when the instructor permits it; record one claim you independently checked. Quizzes, tests and individual exits are tool-free unless an accommodation is agreed. No paid account is required. Optional tasks replace, rather than extend, the main activity.

@@ -6,6 +6,8 @@
 
 **Goal:** Locate kernel and image in the correct ambient spaces and explain rank–nullity.
 
+**Read and work through:** [Independence, spanning, basis and dimension](../5_Independence_Spanning_Basis_Dimension.ipynb) — Dimension; the final column-space/kernel example. Continue with the guided rank–nullity proof in the seminar. Use the relevant worked example during the existing seminar time; this sheet is its companion investigation, not a replacement for the explanation. [Reading map](../docs/notebook_route.md).
+
 **90-minute route:** 0–30 test/rehearsal; 30–45 T2; 45–70 T3; 70–82 T4; 82–90 exit.
 
 **Working rules:** Commit to an individual prediction first. Work in pairs or groups of three, rotating explainer, skeptic and recorder. AI is allowed only in the investigation portions when the instructor permits it; record one claim you independently checked. Quizzes, tests and individual exits are tool-free unless an accommodation is agreed. No paid account is required. Optional tasks replace, rather than extend, the main activity.

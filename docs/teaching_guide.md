@@ -6,7 +6,9 @@
 
 Students should leave able to explain why a method works, identify its hypotheses, construct a counterexample, interpret a model and check an output. Routine fluency still matters: every week retains a small calculation that students can perform independently. An application provides a reason to care about the algebra, not an excuse to omit it.
 
-The weekly sheet is the main classroom object. Historical notebooks are optional references. Worked solutions are public practice resources, so use initial predictions and unfamiliar individual transfer to observe learning. The repository cannot make take-home work immune to AI assistance.
+The original notebooks are the main explanatory route. Their connected examples and different representations of the same calculation are worth keeping. Use the [reading map](notebook_route.md) to select a relevant passage, pause before a step, then move to a companion investigation. The sheet organizes activity and the solution sheet supports feedback; neither should displace the notebook’s explanation. Later topics continue this pattern in the expanded application notebooks.
+
+Worked solutions remain public practice resources, so use initial predictions and unfamiliar individual transfer to observe learning. There is no need to remove exposition because AI is available. The repository cannot make take-home work immune to AI assistance.
 
 ## A practical group routine
 
@@ -39,7 +41,7 @@ English matches the existing repository; review the Slovak glossary locally befo
 2. Approve or revise the assessment proposal; publish task-level tool rules and absence/accommodation procedures.
 3. Run the dependency setup on the machines students will use. Restart and run each needed notebook; move sliders at least once after all cells execute.
 4. Prepare private live assessment variants, independently check the keys, and keep them outside this public repository.
-5. Print the first sheet and establish the “prediction, check, explain” routine. Do not make account creation the first learning obstacle.
+5. Open the relevant original notebook and print its companion sheet. Establish the “read, predict, work through, explore, explain” routine. Do not make account creation the first learning obstacle.
 
 ## Pilot and evaluate
 

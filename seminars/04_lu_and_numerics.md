@@ -6,6 +6,8 @@
 
 **Goal:** Use LU with an explicit permutation convention and separate singularity from factorization failure.
 
+**Read and work through:** [LU decomposition](../4_LU_decomposition_of_A-checkpoint.ipynb) — Turning a matrix into upper-triangular form; Calculating the lower-triangular form; Row exchanges. Use the relevant worked example during the existing seminar time; this sheet is its companion investigation, not a replacement for the explanation. [Reading map](../docs/notebook_route.md).
+
 **90-minute route:** 0–8 prediction or scheduled quiz; 8–18 pair discussion; 18–30 T2 worked start; 30–55 investigation (finish T2, begin T3); 55–70 T4; 70–82 T3/T4 proof debrief; 82–90 individual exit.
 
 **Working rules:** Commit to an individual prediction first. Work in pairs or groups of three, rotating explainer, skeptic and recorder. AI is allowed only in the investigation portions when the instructor permits it; record one claim you independently checked. Quizzes, tests and individual exits are tool-free unless an accommodation is agreed. No paid account is required. Optional tasks replace, rather than extend, the main activity.

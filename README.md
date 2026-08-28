@@ -1,19 +1,35 @@
 # Linear Algebra — 1-AIN-152 seminars
 
-Thirteen seminars connecting calculation, geometry, proof and applications. Each week starts with a prediction, develops an investigation, and ends with an individual explanation. AI can assist practice; students still need to model, check, justify and transfer what they learn.
+Learn through the original notebooks’ explanations, worked examples and geometric pictures, then use the new seminar investigations to explore and test those ideas. The redesign keeps that explanatory progression and adds applications, short discussion pauses and independent checks of understanding. AI can assist practice; students still need to model, check and explain what they obtain.
 
 **2026 redesign — review edition.** This branch proposes teaching materials and an assessment pattern; it does not change the official syllabus or grading. The lecturer should confirm the calendar, prerequisite order and assessment policy before adoption. English follows the existing notebooks; a [Slovak–English glossary](docs/glossary_sk_en.md) supports terminology review.
 
 ## Start here
 
-- **Students:** open this week's sheet below. Attempt it before consulting its worked solution. Code is optional for the mathematical tasks.
-- **Seminar leaders:** use the [semester plan](docs/semester_plan.md), [teaching guide](docs/teaching_guide.md), and facilitation notes in each solution sheet.
+- **Students:** start with the [notebook reading route](docs/notebook_route.md). Read the relevant explanation and worked example, then try the associated seminar investigation before consulting its solutions. Code is optional for the mathematical tasks.
+- **Seminar leaders:** teach from the notebook progression, using the sheets as companion activities. The [semester plan](docs/semester_plan.md) and [teaching guide](docs/teaching_guide.md) show how to combine them within the same session.
 - **Assessment:** [proposal and practice bank](assessment/README.md), [AI rules](assessment/ai_policy.md). All repository answers are public practice, never secure live keys.
 - **Maintainers:** [correction log](docs/corrections.md), [sources and attribution](docs/sources.md), [validation status](docs/validation.md).
 
-## The 13-week route
+## Start with the original teaching notebooks
 
-| Week | Student sheet | Worked practice | Interactive companion |
+The explanations, sequence of examples and multiple views of the same calculation are the backbone of the course. Mathematical corrections are kept in place; the notebooks are not replaced by task lists.
+
+| Notebook | Explanatory progression |
+|---|---|
+| [Introduction to matrices](1_Introduction_to_matrices_checkpoint.ipynb) | Build a matrix, read its shape, select entries, then change it. |
+| [Geometric view](2_Geometric_view_of_linear_algebra_checkpoint.ipynb) | Follow one system through equations, rows, columns and three dimensions. |
+| [Elimination](3_Elimination.ipynb) | Keep the same example while moving from equations to matrix operations. |
+| [Multiplication and inverses](3_Matrix_multiplication_Inverses.ipynb) | Connect the four multiplication views, then ask when information can be recovered. |
+| [LU decomposition](4_LU_decomposition_of_A-checkpoint.ipynb) | Build U, reconstruct L, compare with SymPy, then handle row exchanges. |
+| [Independence, spanning, basis and dimension](5_Independence_Spanning_Basis_Dimension.ipynb) | Use successive examples to distinguish new directions, redundancy and dimension. |
+| [Linear transformations](6_linear_transformations.ipynb) | Read the columns as basis-vector images and compare the grid pictures. |
+
+Read the relevant sections, not all seven notebooks before a seminar. The [week-by-week reading map](docs/notebook_route.md) connects them to the new material. New labs continue the same pattern with worked derivations between prediction and computation. Short “Pause and predict” notes can be used during the original explanation; they are not another assignment.
+
+## Companion investigations for the 13 weeks
+
+| Week | Companion student sheet | Worked practice | Interactive companion |
 |---:|---|---|---|
 | 1 | [Matrices as models and black boxes](seminars/01_matrices_and_models.md) | [Solutions](solutions/practice/01_matrices_and_models.md) | Paper investigation |
 | 2 | [Systems, elimination, and a traffic mystery](seminars/02_systems_and_traffic.md) | [Solutions](solutions/practice/02_systems_and_traffic.md) | Paper investigation |
@@ -42,25 +58,15 @@ python -m pip install -r requirements.txt
 python -m notebook
 ```
 
-On Windows, activate with `.venv\Scripts\activate` instead. Open a notebook in `notebooks/` and choose **Restart Kernel and Run All**. Start Jupyter from this repository root. Keep `la_labs.py` beside the `notebooks/` directory: the new notebooks use this local helper module.
+On Windows, activate with `.venv\Scripts\activate` instead. Open an original notebook in the repository root, or a companion in `notebooks/`, and choose **Restart Kernel and Run All**. Start Jupyter from this repository root. Keep `la_labs.py` beside the `notebooks/` directory: the new notebooks use this local helper module.
 
 GitHub displays notebook source but does not run sliders. In Jupyter, change a slider and read the printed numerical result as well as the plot. If widgets are unavailable, change the arguments of `explore(...)` (or `draw_image(t=...)` in tomography). All new investigations have a static default rendering and a paper route. The historical geometry widget requires the included `ipywidgets` dependency.
 
 No teaching notebook installs software, downloads data, calls an AI service, or requires a paid account. An internet connection is needed for the initial package installation; the core activities then run locally. External attribution badges in historical notebooks may require a connection to display, but they are not needed for any computation.
 
-## Original companion notebooks
+## Optional authoring tools
 
-The original filenames remain available, with corrections and cleared outputs:
-
-- [Introduction to matrices](1_Introduction_to_matrices_checkpoint.ipynb)
-- [Geometric view](2_Geometric_view_of_linear_algebra_checkpoint.ipynb)
-- [Elimination](3_Elimination.ipynb)
-- [Multiplication and inverses](3_Matrix_multiplication_Inverses.ipynb)
-- [LU decomposition](4_LU_decomposition_of_A-checkpoint.ipynb)
-- [Independence, spanning, basis and dimension](5_Independence_Spanning_Basis_Dimension.ipynb)
-- [Linear transformations](6_linear_transformations.ipynb)
-
-They are reference material, not an additional required workload. [Optional Manim](extras/manim/README.md) is separated from the core setup. The existing [OCR notebook](OCRusingTesseract.ipynb) is an authoring utility, not a student prerequisite; it is intentionally excluded from course execution checks.
+[Optional Manim](extras/manim/README.md) is separated from the core setup. The existing [OCR notebook](OCRusingTesseract.ipynb) is an authoring utility, not a student prerequisite; it is intentionally excluded from course execution checks.
 
 ## Validate changes
 

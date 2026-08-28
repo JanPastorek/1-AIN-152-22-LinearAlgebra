@@ -34,6 +34,22 @@ for folder in ['seminars','solutions','assessment','docs','extras']:
 documents = [(path, path.read_text()) for path in markdown_paths]
 notebooks = sorted(p for p in ROOT.glob('*.ipynb') if p.name!='OCRusingTesseract.ipynb')
 notebooks += sorted((ROOT/'notebooks').glob('*.ipynb'))
+section_routes = json.loads((ROOT/'data/original_notebook_sections.json').read_text())
+for route in section_routes['notebooks']:
+    path = ROOT/route['path']
+    nb = nbformat.read(path, as_version=4)
+    headings = []
+    for cell in nb.cells:
+        if cell.cell_type == 'markdown':
+            headings.extend(re.findall(r'^#{1,6}\s+(.+?)\s*$', cell.source, re.M))
+    # Additions are welcome; the original explanatory sections must remain in order.
+    position = 0
+    for expected in route['headings_in_order']:
+        try:
+            position = headings.index(expected, position) + 1
+        except ValueError:
+            errors.append(f'{route["path"]}: original section missing or out of order: {expected}')
+            break
 for path in notebooks:
     nb = nbformat.read(path,as_version=4)
     nbformat.validate(nb)
@@ -60,4 +76,4 @@ for path in [ROOT/'la_labs.py', *list((ROOT/'scripts').glob('*.py')), *list((ROO
     except SyntaxError as exc: errors.append(f'{path}: {exc}')
 if errors:
     print('\n'.join(errors)); sys.exit(1)
-print(f'PASS: 13 paired seminar sheets, {len(notebooks)} clean core notebooks, {links} local links, Python syntax.')
+print(f'PASS: 13 paired seminar sheets, {len(notebooks)} clean core notebooks, {links} local links, original section order, Python syntax.')

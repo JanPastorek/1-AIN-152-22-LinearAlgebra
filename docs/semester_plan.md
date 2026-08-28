@@ -22,13 +22,17 @@
 
 The official core is covered explicitly, including groups, affine geometry and 3D cross products, which a purely computational “linear algebra for AI” course can easily omit. Least squares appears only as a labeled optional replacement after orthogonality. No SVD/PCA prerequisites are required.
 
+## How the notebooks and sheets fit together
+
+Use the [notebook reading route](notebook_route.md) to choose the original explanation and worked example for each topic. The sheets and application notebooks extend that passage with investigations. The 18–30-minute worked start is a natural place to teach from the notebook; use its later examples during the investigation or debrief as needed. Students are not expected to finish a whole notebook and a whole sheet in one meeting.
+
 ## Standard 90-minute pattern
 
 | Minutes | Student work | Leader's job |
 |---|---|---|
 | 0–8 | Individual prediction or scheduled quiz | Collect first ideas without revealing the answer |
 | 8–18 | Pair comparison and model sketch | Ask for units, domains and assumptions |
-| 18–30 | Short worked start | Model one useful reasoning move, then stop |
+| 18–30 | Read and work through a notebook example | Keep its explanatory steps; pause for a prediction before revealing the next step |
 | 30–55 | Group investigation | Listen for misconceptions; rotate roles |
 | 55–70 | Changed measurement or hypothesis | Require a prediction before another computation |
 | 70–82 | Proof and comparison of arguments | Connect the experiment to a definition/theorem |

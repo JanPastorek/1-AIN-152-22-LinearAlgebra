@@ -1,0 +1,101 @@
+{
+  "baseline_commit": "fe95af1086e1336e1e0d975bb55c5512c7c7c9e6",
+  "purpose": "Preserve the original explanatory section order while allowing additions and documented heading corrections. This guards structure, not pedagogical quality.",
+  "notebooks": [
+    {
+      "path": "1_Introduction_to_matrices_checkpoint.ipynb",
+      "headings_in_order": [
+        "Introduction to matrices",
+        "Preamble",
+        "Representing matrices",
+        "Shape",
+        "Accessing values in rows and columns",
+        "Deleting and inserting rows",
+        "Useful matrix constructors"
+      ]
+    },
+    {
+      "path": "2_Geometric_view_of_linear_algebra_checkpoint.ipynb",
+      "headings_in_order": [
+        "Geometrical view",
+        "Preamble",
+        "System of linear equations",
+        "The row picture",
+        "The column picture",
+        "The 3-space picture",
+        "Interactive exploration of basic concepts",
+        "Vector product",
+        "Conclusion"
+      ]
+    },
+    {
+      "path": "3_Elimination.ipynb",
+      "headings_in_order": [
+        "Library import",
+        "Elimination",
+        "A system of linear equations",
+        "Elimination matrices",
+        "Example problems",
+        "Example problem 1",
+        "Solution"
+      ]
+    },
+    {
+      "path": "3_Matrix_multiplication_Inverses.ipynb",
+      "headings_in_order": [
+        "Library import",
+        "Matrix multiplication, inverse and transpose",
+        "Multiplying matrices",
+        "Method 1",
+        "Method 2",
+        "Method 3",
+        "Method 4",
+        "Block multiplication",
+        "Inverses",
+        "Example problems",
+        "Example problem 1",
+        "Solution"
+      ]
+    },
+    {
+      "path": "4_LU_decomposition_of_A-checkpoint.ipynb",
+      "headings_in_order": [
+        "Library import",
+        "LU decomposition of a matrix A",
+        "Turning a matrix of coefficients into _U_pper triangular form",
+        "Calculating the _L_ower triangular form",
+        "Doing this in one go using sympy",
+        "What's special about L?",
+        "Row exchanges",
+        "Example problems",
+        "Example problem 01",
+        "Solution",
+        "Hints and tips"
+      ]
+    },
+    {
+      "path": "5_Independence_Spanning_Basis_Dimension.ipynb",
+      "headings_in_order": [
+        "Independence",
+        "Spanning",
+        "Basis",
+        "Dimension",
+        "Independence",
+        "How many basis vectors are needed for the nullspace?",
+        "Another way to state independence",
+        "Spanning",
+        "Basis",
+        "The special case of a square matrix",
+        "Dimension",
+        "Example"
+      ]
+    },
+    {
+      "path": "6_linear_transformations.ipynb",
+      "headings_in_order": [
+        "Linear transformations",
+        "Rounding errors"
+      ]
+    }
+  ]
+}

@@ -23,3 +23,11 @@ For $A=\begin{pmatrix}1&0&1\\a&a&a\\b&b&a\end{pmatrix}$, require unit-lower $L$ 
 $$L=\begin{pmatrix}1&0&0\\a&1&0\\b&b/a&1\end{pmatrix},\qquad U=\begin{pmatrix}1&0&1\\0&a&0\\0&0&a-b\end{pmatrix}.$$
 
 These remain valid at $a=b\ne0$, when U is singular. At $a=b=0$, use $L=I,U=A$. At $a=0,b\ne0$, unit-lower LU without permutation is impossible: $u_{12}=0$ and row 2 forces $u_{22}=0$, so $(LU)_{32}=0$, contradicting $A_{32}=b$. A permutation can resolve this obstruction. Stating the convention is essential; an unrestricted product of lower and upper triangular matrices is a different existence question.
+
+## Follow-up: preserve the original teaching voice
+
+Following feedback, the original notebooks again lead the course navigation instead of being described as optional references. Compressed correction paragraphs were expanded into connected explanations, while keeping the corrected mathematics. The four multiplication views, repeated elimination example, hand-built LU derivation and progression from independence to dimension remain in order. The geometry notebook's vector-product heading has been restored, and its right-hand-side vector is now consistently distinguished from the solution.
+
+The [reading map](notebook_route.md) connects each week to a passage in the original notebooks or a worked explanation for a later topic. New labs now include derivations between predictions and code, rather than requiring students to reconstruct the explanation from task lists. Short discussion pauses are additions, not replacements for the original exposition.
+
+The original section sequence is recorded in [the structure manifest](../data/original_notebook_sections.json) and checked by `scripts/check_materials.py`. The two documented heading edits clarify “basis vectors in the nullspace” and correct “triangular from” to “triangular form.” This check protects the route against accidental deletion; mathematical and classroom review remain separate.
