@@ -1,0 +1,197 @@
+[
+  {
+    "week": 1,
+    "title": "Matrices as models and black boxes",
+    "sheet": "seminars/01_matrices_and_models.md",
+    "solutions": "solutions/practice/01_matrices_and_models.md",
+    "minutes": 90,
+    "lab": null,
+    "tasks": [
+      "W01.T1",
+      "W01.T2",
+      "W01.T3",
+      "W01.T4",
+      "W01.T5"
+    ]
+  },
+  {
+    "week": 2,
+    "title": "Systems, elimination, and a traffic mystery",
+    "sheet": "seminars/02_systems_and_traffic.md",
+    "solutions": "solutions/practice/02_systems_and_traffic.md",
+    "minutes": 90,
+    "lab": null,
+    "tasks": [
+      "W02.T1",
+      "W02.T2",
+      "W02.T3",
+      "W02.T4",
+      "W02.T5"
+    ]
+  },
+  {
+    "week": 3,
+    "title": "Composition, inverses, and symmetries",
+    "sheet": "seminars/03_composition_and_groups.md",
+    "solutions": "solutions/practice/03_composition_and_groups.md",
+    "minutes": 90,
+    "lab": "01_transformations_and_groups.ipynb",
+    "tasks": [
+      "W03.T1",
+      "W03.T2",
+      "W03.T3",
+      "W03.T4",
+      "W03.T5"
+    ]
+  },
+  {
+    "week": 4,
+    "title": "Factor once, solve twice",
+    "sheet": "seminars/04_lu_and_numerics.md",
+    "solutions": "solutions/practice/04_lu_and_numerics.md",
+    "minutes": 90,
+    "lab": "03_numerics_and_factorizations.ipynb",
+    "tasks": [
+      "W04.T1",
+      "W04.T2",
+      "W04.T3",
+      "W04.T4",
+      "W04.T5"
+    ]
+  },
+  {
+    "week": 5,
+    "title": "Basis, hidden directions, and tiny tomography",
+    "sheet": "seminars/05_basis_and_tomography.md",
+    "solutions": "solutions/practice/05_basis_and_tomography.md",
+    "minutes": 90,
+    "lab": "02_tiny_tomography.ipynb",
+    "tasks": [
+      "W05.T1",
+      "W05.T2",
+      "W05.T3",
+      "W05.T4",
+      "W05.T5"
+    ]
+  },
+  {
+    "week": 6,
+    "title": "Rank, nullity, and spaces that must not be confused",
+    "sheet": "seminars/06_rank_and_nullity.md",
+    "solutions": "solutions/practice/06_rank_and_nullity.md",
+    "minutes": 90,
+    "lab": null,
+    "tasks": [
+      "W06.T1",
+      "W06.T2",
+      "W06.T3",
+      "W06.T4",
+      "W06.T5"
+    ]
+  },
+  {
+    "week": 7,
+    "title": "Linear maps beyond coordinate vectors",
+    "sheet": "seminars/07_linear_maps_and_bottlenecks.md",
+    "solutions": "solutions/practice/07_linear_maps_and_bottlenecks.md",
+    "minutes": 90,
+    "lab": null,
+    "tasks": [
+      "W07.T1",
+      "W07.T2",
+      "W07.T3",
+      "W07.T4",
+      "W07.T5"
+    ]
+  },
+  {
+    "week": 8,
+    "title": "Determinants: area, orientation, and hypotheses",
+    "sheet": "seminars/08_determinants_and_volume.md",
+    "solutions": "solutions/practice/08_determinants_and_volume.md",
+    "minutes": 90,
+    "lab": "01_transformations_and_groups.ipynb",
+    "tasks": [
+      "W08.T1",
+      "W08.T2",
+      "W08.T3",
+      "W08.T4",
+      "W08.T5"
+    ]
+  },
+  {
+    "week": 9,
+    "title": "Orthogonality, projection, and surface normals",
+    "sheet": "seminars/09_orthogonality_and_normals.md",
+    "solutions": "solutions/practice/09_orthogonality_and_normals.md",
+    "minutes": 90,
+    "lab": "04_orthogonality_and_normals.ipynb",
+    "tasks": [
+      "W09.T1",
+      "W09.T2",
+      "W09.T3",
+      "W09.T4",
+      "W09.T5"
+    ]
+  },
+  {
+    "week": 10,
+    "title": "Same vector, different coordinates",
+    "sheet": "seminars/10_change_of_basis.md",
+    "solutions": "solutions/practice/10_change_of_basis.md",
+    "minutes": 90,
+    "lab": "05_coordinates_and_affine_maps.ipynb",
+    "tasks": [
+      "W10.T1",
+      "W10.T2",
+      "W10.T3",
+      "W10.T4",
+      "W10.T5"
+    ]
+  },
+  {
+    "week": 11,
+    "title": "Affine geometry and a tiny graphics pipeline",
+    "sheet": "seminars/11_affine_geometry.md",
+    "solutions": "solutions/practice/11_affine_geometry.md",
+    "minutes": 90,
+    "lab": "05_coordinates_and_affine_maps.ipynb",
+    "tasks": [
+      "W11.T1",
+      "W11.T2",
+      "W11.T3",
+      "W11.T4",
+      "W11.T5"
+    ]
+  },
+  {
+    "week": 12,
+    "title": "Eigenvectors explain a changing population",
+    "sheet": "seminars/12_eigenvalues_and_dynamics.md",
+    "solutions": "solutions/practice/12_eigenvalues_and_dynamics.md",
+    "minutes": 90,
+    "lab": "06_eigenvalues_and_dynamics.ipynb",
+    "tasks": [
+      "W12.T1",
+      "W12.T2",
+      "W12.T3",
+      "W12.T4",
+      "W12.T5"
+    ]
+  },
+  {
+    "week": 13,
+    "title": "The matrix museum: synthesis and explanation",
+    "sheet": "seminars/13_matrix_museum.md",
+    "solutions": "solutions/practice/13_matrix_museum.md",
+    "minutes": 90,
+    "lab": null,
+    "tasks": [
+      "W13.T1",
+      "W13.T2",
+      "W13.T3",
+      "W13.T4",
+      "W13.T5"
+    ]
+  }
+]

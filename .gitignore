@@ -210,3 +210,7 @@ __marimo__/
 # vscode
 .vscode/
 .history/
+# Local teaching-material verification outputs
+.build/
+core
+core.*
