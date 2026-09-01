@@ -1,0 +1,16 @@
+# Final practice discussion guide
+
+[Cards](../../assessment/final_practice.md)
+
+1. If $Ax=Ax_0=b$, subtraction gives $A(x-x_0)=0$, so $x=x_0+v$ with $v\in\ker A$. Conversely every such vector satisfies the system. If $b\notin\operatorname{im}A$, there is no $x_0$ and the solution set is empty.
+2. Matrix multiplication is associative, $I$ is an identity, and every member has an inverse by definition. Closure follows from $(AB)^{-1}=B^{-1}A^{-1}$. Singular matrices lack inverses. Arbitrarily sized rectangular matrices are not even closed under a single everywhere-defined multiplication operation.
+3. Extend $k_1,\ldots,k_d$ to $k_1,\ldots,k_d,u_1,\ldots,u_{n-d}$. Their images $T(u_i)$ span the image. A zero image combination puts the corresponding $u_i$ combination in the kernel, and basis independence forces all coefficients zero. Thus rank $=n-d$. Rank 2 plus nullity 3 contradicts $n=4$.
+4. Absolute determinant scales volume; its sign indicates orientation for an invertible real map. $\operatorname{diag}(2,1/2)$ has determinant 1 but changes lengths. Zero determinant means a square map loses a nonzero direction and collapses full-dimensional volume.
+5. Set $p=\alpha u$, require $u^T(b-p)=0$, obtaining $\alpha=(u^Tb)/(u^Tu)$. For any $tu$, the squared distance is $\|b-p\|^2+(t-\alpha)^2\|u\|^2$. For $u=0$, the subspace is just $\{0\}$ and its nearest point is zero, but the quotient formula is undefined. The idempotent matrix $\begin{pmatrix}1&1\\0&0\end{pmatrix}$ is not symmetric and is not an orthogonal projector.
+6. Starting in basis coordinates $c$, the physical vector is $Sc$, the mapped vector is $ASc$, and new coordinates are $S^{-1}ASc$. For a different output basis $T$, replace the left factor by $T^{-1}$. The identity $AS=SC$ is an all-input verification.
+7. $\sum\lambda_i(Ax_i+c)=A\sum\lambda_i x_i+c$ iff the extra translation coefficient is correct, in particular when $\sum\lambda_i=1$. If the sum differs from 1, the discrepancy is $(\sum\lambda_i-1)c$. Nonzero translations fail $f(0)=0$.
+8. Diagonalizability over a field means a basis of eigenvectors over that field. $J=\begin{pmatrix}1&1\\0&1\end{pmatrix}$ has only the one-dimensional eigenspace span$(e_1)$. A real quarter-turn has no real eigenvectors but distinct complex eigenvalues $i,-i$, so it is diagonalizable over $\mathbb C$.
+9. A sensor $w$ removes the one-parameter ambiguity iff $w\cdot(1,-1,-1,1)\ne0$. Its recorded value may still be physically impossible under nonnegativity. With noisy inconsistent measurements there may be no exact image; a fitting objective is a modeling choice, and a nontrivial kernel can still leave multiple minimizers.
+10. For $s=a+b>0$, stationary vector is $(b/s,a/s)$; the other eigenvalue is $1-s$. For $0<s<2$ all probability vectors converge to that unique vector. At $s=0$ the matrix is identity and stationarity is not unique. At $s=2$ it swaps the states and nonstationary starts oscillate.
+
+**Feedback rubric, ungraded:** Is the definition accurate? Is every implication justified? Are exceptional cases treated? Can the student adapt to the changed assumption? If not, point to one exact step to revise rather than assigning a vague confidence score.
