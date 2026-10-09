@@ -10,6 +10,7 @@ Learn through the original notebooks’ explanations, worked examples and geomet
 - **Seminar leaders:** teach from the notebook progression, using the sheets as companion activities. The [semester plan](docs/semester_plan.md) and [teaching guide](docs/teaching_guide.md) show how to combine them within the same session.
 - **Assessment:** [proposal and practice bank](assessment/README.md), [AI rules](assessment/ai_policy.md). All repository answers are public practice, never secure live keys.
 - **Maintainers:** [correction log](docs/corrections.md), [sources and attribution](docs/sources.md), [validation status](docs/validation.md).
+- **Interactive Chapter 1 companion:** [open the web page](https://janpastorek.github.io/1-AIN-152-22-LinearAlgebra/interactive/chapter1/) ([source](docs/interactive/chapter1/index.html)). It covers Leon, *Linear Algebra with Applications*, Chapter 1 with animated definitions, interactive labs and self-checking exercises. It runs in the browser with nothing to install.
 
 ## Start with the original teaching notebooks
 
