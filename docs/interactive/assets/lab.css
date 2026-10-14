@@ -300,3 +300,5 @@ table.kv tr.amb td{font-weight:600}
 .pair figcaption{font-family:var(--display); font-size:13px; color:var(--muted); text-align:center}
 @media (max-width:520px){ .pair{grid-template-columns:minmax(0,1fr)} }
 .rep-in{display:flex; flex-wrap:wrap; gap:14px 24px; align-items:flex-start}
+.trow{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-family:var(--mono); font-size:13.5px}
+.trow input.mi{width:56px}
