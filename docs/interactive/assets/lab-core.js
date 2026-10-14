@@ -323,6 +323,31 @@ qm.det = A => {
   }
   return d;
 };
+// reduced row echelon form with a step log: {R, piv, steps:[{type,i,j,c,M}]}
+qm.rref = (A, opts = {}) => {
+  const M = A.map(r => r.map(q)), m = M.length, n = M[0].length, cols = opts.cols || n, steps = [], piv = [];
+  const snap = () => M.map(r => r.slice());
+  let r = 0;
+  for (let c = 0; c < cols && r < m; c++) {
+    let p = -1; for (let i = r; i < m; i++) if (!M[i][c].zero) { p = i; break; }
+    if (p < 0) continue;
+    if (p !== r) { [M[p], M[r]] = [M[r], M[p]]; steps.push({ type: "swap", i: r, j: p, M: snap() }); }
+    if (!M[r][c].one) { const f = new Q(1).div(M[r][c]); M[r] = M[r].map(v => v.mul(f)); steps.push({ type: "scale", i: r, c: f, M: snap() }); }
+    for (let i = 0; i < m; i++) if (i !== r && !M[i][c].zero) { const f = M[i][c].neg(); M[i] = M[i].map((v, k) => v.add(f.mul(M[r][k]))); steps.push({ type: "add", i, j: r, c: f, M: snap() }); }
+    piv.push(c); r++;
+  }
+  return { R: M, piv, steps };
+};
+qm.rank = A => qm.rref(A).piv.length;
+// basis of the null space (special solutions, one per free column)
+qm.nullBasis = A => {
+  const { R, piv } = qm.rref(A), n = A[0].length, free = [];
+  for (let j = 0; j < n; j++) if (!piv.includes(j)) free.push(j);
+  return free.map(f => { const x = Array.from({ length: n }, () => new Q(0)); x[f] = new Q(1); piv.forEach((p, r) => { x[p] = R[r][f].neg(); }); return x; });
+};
+qm.solve = (A, b) => { const M = A.map((r, i) => [...r.map(q), q(b[i])]); const { R, piv } = qm.rref(M, { cols: A[0].length }); const n = A[0].length;
+  if (R.some(r => r.slice(0, n).every(v => v.zero) && !r[n].zero)) return null;
+  const x = Array.from({ length: n }, () => new Q(0)); piv.forEach((p, r) => { x[p] = R[r][n]; }); return x; };
 qm.cof = (A, i, j) => { const m = qm.det(qm.minor(A, i, j)); return (i + j) % 2 ? m.neg() : m; };
 qm.adj = A => A[0].map((_, j) => A.map((__, i) => qm.cof(A, i, j)));
 

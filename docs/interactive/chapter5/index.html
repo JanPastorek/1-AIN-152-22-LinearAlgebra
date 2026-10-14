@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Interactive companion to Chapter 5 of Leon, Linear Algebra with Applications: scalar products and projections, the four fundamental subspaces, least squares, norms and inner products, orthonormal bases, Gram–Schmidt and QR, orthogonal polynomials.">
+<title>Orthogonality Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../assets/lab.css">
+<style>
+body{margin:0}
+.chapnav{display:flex; flex-wrap:wrap; gap:6px}
+.chapnav a{font-family:var(--display); font-size:13px; text-decoration:none; color:var(--ink); padding:4px 10px; border:1px solid var(--rule); border-radius:999px; background:var(--panel)}
+.chapnav a b{font-family:var(--mono); color:var(--c1); margin-right:6px}
+.chapnav a[aria-current="page"]{background:var(--c1); border-color:var(--c1); color:var(--panel)}
+.chapnav a[aria-current="page"] b{color:var(--panel)}
+.eyebrow a{color:inherit}
+.polylist{display:grid; gap:6px; font-family:var(--mono); font-size:15px}
+.polylist .fr{font-size:12px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="eyebrow"><a href="../">Course index</a> · Chapter 5 · Leon, <i>Linear Algebra with Applications</i>, 8th ed.</div>
+  <h1>Orthogonality, <em>hands-on</em></h1>
+  <p class="lede">Right angles make linear algebra easy. Project one vector on another, see the row space and null space meet at 90°, fit data by least squares and watch the residual stay orthogonal to the columns, compare norms, read coordinates in an orthonormal basis, and run Gram–Schmidt one column at a time.</p>
+  <nav class="chapnav" aria-label="Chapters"><a href="../chapter1/"><b>1</b>Matrices &amp; systems</a><a href="../chapter2/"><b>2</b>Determinants</a><a href="../chapter3/"><b>3</b>Vector spaces</a><a href="../chapter4/"><b>4</b>Linear transformations</a><a href="../chapter5/" aria-current="page"><b>5</b>Orthogonality</a></nav>
+</header>
+<nav class="toc" aria-label="Sections"><div class="row">
+  <a href="#defs"><b>≔</b>Definitions</a><a href="#s51"><b>5.1</b>Scalar product</a><a href="#s52"><b>5.2</b>Orthogonal subspaces</a><a href="#s53"><b>5.3</b>Least squares</a><a href="#s54"><b>5.4</b>Inner products</a><a href="#s55"><b>5.5</b>Orthonormal sets</a><a href="#s56"><b>5.6</b>Gram–Schmidt</a><a href="#s57"><b>5.7</b>Orthogonal polynomials</a>
+</div></nav>
+
+<main class="wrap">
+<section class="sec" id="defs" style="padding-top:36px">
+  <div class="sec-head"><span class="sec-num">≔</span><h2>Definitions, animated</h2><span class="sub">The chapter's definitions and key theorems. Animations are paced for following step by step; use the speed buttons under a video to change the pace. Jump to a card here.</span></div>
+  <div class="chips" id="def-index" role="list"></div>
+</section>
+<!-- ============ 5.1 ============ -->
+<section class="sec" id="s51">
+  <div class="sec-head"><span class="sec-num">5.1</span><h2>The scalar product in ℝ<sup>n</sup></h2><span class="sub">Length, angle, projection</span></div>
+  <div class="concept">
+    <p>The <strong>scalar product</strong> of <b>x</b>, <b>y</b> ∈ ℝ<sup><span class="x">n</span></sup> is <b>x</b><sup>T</sup><b>y</b> = <span class="x">x</span><sub>1</sub><span class="x">y</span><sub>1</sub> + ⋯ + <span class="x">x<sub>n</sub>y<sub>n</sub></span>. It gives length ‖<b>x</b>‖ = (<b>x</b><sup>T</sup><b>x</b>)<sup>1/2</sup>, distance ‖<b>x</b> − <b>y</b>‖, and angle: <b>x</b><sup>T</sup><b>y</b> = ‖<b>x</b>‖ ‖<b>y</b>‖ cos θ. Vectors are <strong>orthogonal</strong> when <b>x</b><sup>T</sup><b>y</b> = 0.</p>
+    <p>The <strong>vector projection</strong> of <b>x</b> onto <b>y</b> is <b>p</b> = (<b>x</b><sup>T</sup><b>y</b> / <b>y</b><sup>T</sup><b>y</b>) <b>y</b>. What is left over, <b>x</b> − <b>p</b>, is orthogonal to <b>y</b>. Everything in this chapter grows from that picture.</p>
+  </div>
+  <div class="defs" id="defs-s51"></div>
+
+  <div class="lab" id="lab-proj">
+    <div class="lab-title"><h3>Angle and projection</h3><span class="src">Theorem 5.1.1 · Examples 5.1.2–5.1.4 · Exercises 5.1.1–5.1.3</span></div>
+    <div class="chips" id="pj-presets" role="group" aria-label="Examples"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="scroll"><table class="kv" id="pj-tab"></table></div>
+        <div class="status inf" id="pj-status"></div>
+        <p class="note">Drag the tips of <b style="color:var(--c1)">x</b> and <b style="color:var(--c2)">y</b>. Square roots that do not simplify are shown as decimals.</p>
+      </div>
+      <svg class="fig" id="pj-svg" viewBox="0 0 420 420" role="img" aria-label="x, y and the projection of x onto y"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Make <b>x</b><sup>T</sup><b>y</b> negative. Where does <b>p</b> point now?</li>
+      <li>Load Exercise 1(b). The projection is <b>0</b>: the vectors are orthogonal.</li>
+      <li>Drag <b>x</b> along a line perpendicular to <b>y</b>. Why does <b>p</b> not move?</li>
+    </ul></div>
+  </div>
+  <div class="exset" id="ex-s51"></div>
+</section>
+
+<!-- ============ 5.2 ============ -->
+<section class="sec" id="s52">
+  <div class="sec-head"><span class="sec-num">5.2</span><h2>Orthogonal subspaces</h2><span class="sub">The four fundamental subspaces</span></div>
+  <div class="concept">
+    <p>The <strong>orthogonal complement</strong> of a subspace <span class="x">Y</span> of ℝ<sup><span class="x">n</span></sup> is <span class="x">Y</span><sup>⊥</sup> = {<b>x</b> : <b>x</b><sup>T</sup><b>y</b> = 0 for every <b>y</b> ∈ <span class="x">Y</span>}. For an <span class="x">m</span> × <span class="x">n</span> matrix <span class="x">A</span>, the equation <span class="x">A</span><b>x</b> = <b>0</b> says exactly that <b>x</b> is orthogonal to every row, so <span class="x">N</span>(<span class="x">A</span>) = <span class="x">R</span>(<span class="x">A</span><sup>T</sup>)<sup>⊥</sup>; applied to <span class="x">A</span><sup>T</sup>, <span class="x">N</span>(<span class="x">A</span><sup>T</sup>) = <span class="x">R</span>(<span class="x">A</span>)<sup>⊥</sup> (Theorem 5.2.1).</p>
+    <p>Dimensions add up: dim <span class="x">S</span> + dim <span class="x">S</span><sup>⊥</sup> = <span class="x">n</span>, and every vector splits uniquely as ℝ<sup><span class="x">n</span></sup> = <span class="x">S</span> ⊕ <span class="x">S</span><sup>⊥</sup> (Theorems 5.2.2, 5.2.3).</p>
+  </div>
+  <div class="defs" id="defs-s52"></div>
+
+  <div class="lab" id="lab-four">
+    <div class="lab-title"><h3>The four fundamental subspaces</h3><span class="src">Theorem 5.2.1 · Exercises 5.2.1, 5.2.12</span></div>
+    <div class="chips" id="fs-presets" role="group" aria-label="Matrices"></div>
+    <div class="sz-row"><span>m (rows) <span class="chips" id="fs-m"></span></span><span>n (columns) <span class="chips" id="fs-n"></span></span></div>
+    <div class="bench even">
+      <div class="col">
+        <div class="scroll"><div id="fs-in"></div></div>
+        <div class="status inf" id="fs-status"></div>
+        <div class="scroll"><div class="mexpr basis-list" id="fs-bases"></div></div>
+        <div class="scroll"><div id="fs-dots"></div></div>
+      </div>
+      <div class="col">
+        <div class="pair">
+          <figure><svg class="fig" id="fs-dom" viewBox="0 0 420 420" role="img" aria-label="Domain: row space and null space"></svg><figcaption id="fs-domc">domain ℝⁿ</figcaption></figure>
+          <figure><svg class="fig" id="fs-cod" viewBox="0 0 420 420" role="img" aria-label="Codomain: column space and left null space"></svg><figcaption id="fs-codc">codomain ℝᵐ</figcaption></figure>
+        </div>
+        <p class="note" id="fs-note"></p>
+      </div>
+    </div>
+  </div>
+  <div class="exset" id="ex-s52"></div>
+</section>
+
+<!-- ============ 5.3 ============ -->
+<section class="sec" id="s53">
+  <div class="sec-head"><span class="sec-num">5.3</span><h2>Least squares problems</h2><span class="sub">The best approximate solution of an inconsistent system</span></div>
+  <div class="concept">
+    <p>When <span class="x">A</span><b>x</b> = <b>b</b> has no solution, choose <b>x̂</b> to make the residual <b>r</b> = <b>b</b> − <span class="x">A</span><b>x</b> as short as possible. Then <span class="x">A</span><b>x̂</b> is the projection <b>p</b> of <b>b</b> onto the column space, and <b>r</b> is orthogonal to every column: <span class="x">A</span><sup>T</sup><b>r</b> = <b>0</b>. That is the system of <strong>normal equations</strong> <span class="x">A</span><sup>T</sup><span class="x">A</span><b>x̂</b> = <span class="x">A</span><sup>T</sup><b>b</b>, which has a unique solution when <span class="x">A</span> has rank <span class="x">n</span> (Theorem 5.3.2).</p>
+    <p>Fitting a polynomial of degree <span class="x">k</span> to data points is the special case where column <span class="x">j</span> of <span class="x">A</span> holds the powers <span class="x">x<sub>i</sub><sup>j</sup></span>.</p>
+  </div>
+  <div class="defs" id="defs-s53"></div>
+
+  <div class="lab" id="lab-ls">
+    <div class="lab-title"><h3>Least squares fit</h3><span class="src">Examples 5.3.2, 5.3.3 · Exercises 5.3.5, 5.3.6 · Figure 5.3.3</span></div>
+    <div class="chips" id="ls-presets" role="group" aria-label="Data sets"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="kpick"><span>degree</span><span class="chips" id="ls-deg"></span></div>
+        <div class="btnrow"><button class="btn sm" id="ls-add">Add a point</button><button class="btn sm" id="ls-del">Remove last point</button><button class="btn sm" id="ls-res" aria-pressed="true">Residuals</button></div>
+        <div class="status inf" id="ls-status"></div>
+        <div class="scroll"><div class="mexpr" id="ls-ne"></div></div>
+      </div>
+      <svg class="fig" id="ls-svg" viewBox="0 0 420 420" role="img" aria-label="Data points and the least squares curve"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Drag one point far away (an outlier). How much does the line move?</li>
+      <li>With 3 points, set the degree to 2. The residual is 0: the parabola interpolates.</li>
+      <li>Check the claim A<sup>T</sup>r = 0 in the status line for any data you like.</li>
+    </ul></div>
+  </div>
+  <div class="exset" id="ex-s53"></div>
+</section>
+
+<!-- ============ 5.4 ============ -->
+<section class="sec" id="s54">
+  <div class="sec-head"><span class="sec-num">5.4</span><h2>Inner product spaces</h2><span class="sub">Inner products, norms, distance</span></div>
+  <div class="concept">
+    <p>An <strong>inner product</strong> ⟨<b>x</b>, <b>y</b>⟩ is any rule that is positive (⟨<b>x</b>, <b>x</b>⟩ &gt; 0 for <b>x</b> ≠ <b>0</b>), symmetric, and linear in each argument. Examples: weighted sums Σ<span class="x">w<sub>i</sub>x<sub>i</sub>y<sub>i</sub></span>, ⟨<span class="x">A</span>, <span class="x">B</span>⟩ = Σ<span class="x">a<sub>ij</sub>b<sub>ij</sub></span> for matrices, ∫<span class="x">f g</span> for functions. Every inner product gives a norm, angles, projections, the Pythagorean law and the Cauchy–Schwarz inequality |⟨<b>x</b>, <b>y</b>⟩| ≤ ‖<b>x</b>‖ ‖<b>y</b>‖.</p>
+    <p>A <strong>norm</strong> need not come from an inner product. The 1-norm and the ∞-norm are norms whose unit circles have corners.</p>
+  </div>
+  <div class="defs" id="defs-s54"></div>
+
+  <div class="lab" id="lab-norm">
+    <div class="lab-title"><h3>Norms and unit balls</h3><span class="src">Example 5.4.5 · Exercises 5.4.13–5.4.23</span></div>
+    <div class="bench">
+      <div class="col">
+        <div class="kpick"><span>p</span><span class="chips" id="nm-p"></span></div>
+        <div class="scroll"><table class="kv" id="nm-tab"></table></div>
+        <div class="status inf" id="nm-status"></div>
+        <p class="note">Drag <b>x</b>. Faint curves are the unit balls ‖<b>x</b>‖ = 1 of the 1-, 2- and ∞-norms; the bold curve is the ball of the chosen p-norm passing through <b>x</b>.</p>
+      </div>
+      <svg class="fig" id="nm-svg" viewBox="0 0 420 420" role="img" aria-label="Unit balls of p-norms"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Find a nonzero <b>x</b> with ‖<b>x</b>‖<sub>1</sub> = ‖<b>x</b>‖<sub>2</sub> = ‖<b>x</b>‖<sub>∞</sub> (Exercise 23).</li>
+      <li>Where on the unit circle is ‖<b>x</b>‖<sub>1</sub> largest? What is its value?</li>
+    </ul></div>
+  </div>
+  <div class="exset" id="ex-s54"></div>
+</section>
+
+<!-- ============ 5.5 ============ -->
+<section class="sec" id="s55">
+  <div class="sec-head"><span class="sec-num">5.5</span><h2>Orthonormal sets</h2><span class="sub">Coordinates without solving, orthogonal matrices, projections</span></div>
+  <div class="concept">
+    <p>An <strong>orthonormal</strong> set consists of mutually orthogonal unit vectors. In an orthonormal basis <b>u</b><sub>1</sub>, …, <b>u</b><sub><span class="x">n</span></sub>, the coordinates of <b>x</b> are simply <span class="x">c<sub>i</sub></span> = ⟨<b>x</b>, <b>u</b><sub><span class="x">i</span></sub>⟩, and ‖<b>x</b>‖<sup>2</sup> = Σ<span class="x">c<sub>i</sub></span><sup>2</sup> (Parseval). A square matrix <span class="x">Q</span> with orthonormal columns is an <strong>orthogonal matrix</strong>: <span class="x">Q</span><sup>T</sup><span class="x">Q</span> = <span class="x">I</span>, so <span class="x">Q</span><sup>−1</sup> = <span class="x">Q</span><sup>T</sup>, and <span class="x">Q</span> preserves lengths and angles.</p>
+    <p>The projection of <b>x</b> onto a subspace with orthonormal basis <b>u</b><sub>1</sub>, …, <b>u</b><sub><span class="x">k</span></sub> is <b>p</b> = Σ⟨<b>x</b>, <b>u</b><sub><span class="x">i</span></sub>⟩<b>u</b><sub><span class="x">i</span></sub> = <span class="x">UU</span><sup>T</sup><b>x</b>, the closest point of the subspace (Theorems 5.5.7, 5.5.8).</p>
+  </div>
+  <div class="defs" id="defs-s55"></div>
+
+  <div class="lab" id="lab-on">
+    <div class="lab-title"><h3>Orthonormal coordinates and orthogonal matrices</h3><span class="src">Theorems 5.5.2, 5.5.5, 5.5.7 · Example 5.5.6</span></div>
+    <div class="chips" id="on-presets" role="group" aria-label="Bases"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="sl"><label for="on-th">θ</label><input type="range" id="on-th" min="0" max="360" step="1"><output id="on-tho"></output></div>
+        <div class="btnrow"><button class="btn sm" id="on-refl" aria-pressed="false">Reflection (det Q = −1)</button><button class="btn sm" id="on-qx" aria-pressed="false">Show Qx</button></div>
+        <div class="scroll"><div class="mexpr" id="on-expr"></div></div>
+        <div class="status inf" id="on-status"></div>
+      </div>
+      <svg class="fig" id="on-svg" viewBox="0 0 420 420" role="img" aria-label="Orthonormal basis and coordinates"></svg>
+    </div>
+  </div>
+  <div class="exset" id="ex-s55"></div>
+</section>
+
+<!-- ============ 5.6 ============ -->
+<section class="sec" id="s56">
+  <div class="sec-head"><span class="sec-num">5.6</span><h2>The Gram–Schmidt process</h2><span class="sub">Orthonormalize a basis; QR factorization</span></div>
+  <div class="concept">
+    <p>Given independent <b>a</b><sub>1</sub>, …, <b>a</b><sub><span class="x">n</span></sub>, set <b>q</b><sub>1</sub> = <b>a</b><sub>1</sub>/‖<b>a</b><sub>1</sub>‖ and, for each next vector, subtract its projections onto the <b>q</b>'s already built and normalize what is left: <span class="x">r<sub>ik</sub></span> = <b>q</b><sub><span class="x">i</span></sub><sup>T</sup><b>a</b><sub><span class="x">k</span></sub>, <span class="x">r<sub>kk</sub></span> = ‖<b>a</b><sub><span class="x">k</span></sub> − Σ<span class="x">r<sub>ik</sub></span><b>q</b><sub><span class="x">i</span></sub>‖. The numbers <span class="x">r<sub>ik</sub></span> fill an upper triangular <span class="x">R</span> with <span class="x">A</span> = <span class="x">QR</span> (Theorem 5.6.2). Then least squares is easy: <span class="x">R</span><b>x̂</b> = <span class="x">Q</span><sup>T</sup><b>b</b> (Theorem 5.6.3).</p>
+  </div>
+  <div class="defs" id="defs-s56"></div>
+
+  <div class="lab" id="lab-gs">
+    <div class="lab-title"><h3>Gram–Schmidt and QR, step by step</h3><span class="src">Examples 5.6.2–5.6.4 · Exercises 5.6.1–5.6.8, 5.6.12</span></div>
+    <div class="chips" id="gs-presets" role="group" aria-label="Matrices"></div>
+    <div class="sz-row"><span>m (rows) <span class="chips" id="gs-m"></span></span><span>n (columns) <span class="chips" id="gs-n"></span></span><span><button class="btn sm" id="gs-useb" aria-pressed="false">right-hand side b</button></span></div>
+    <div class="rep-in">
+      <div class="scroll"><div id="gs-in"></div></div>
+      <div class="scroll"><div id="gs-b"></div></div>
+    </div>
+    <div class="stepper" id="gs-step"></div>
+    <div class="scroll"><div class="mexpr" id="gs-work"></div></div>
+    <div class="status inf" id="gs-status"></div>
+    <div class="scroll"><div class="mexpr" id="gs-out"></div></div>
+  </div>
+  <div class="exset" id="ex-s56"></div>
+</section>
+
+<!-- ============ 5.7 ============ -->
+<section class="sec" id="s57">
+  <div class="sec-head"><span class="sec-num">5.7</span><h2>Orthogonal polynomials</h2><span class="sub">Legendre and Chebyshev</span></div>
+  <div class="concept">
+    <p>A sequence <span class="x">p</span><sub>0</sub>, <span class="x">p</span><sub>1</sub>, … with deg <span class="x">p<sub>i</sub></span> = <span class="x">i</span> and ⟨<span class="x">p<sub>i</sub></span>, <span class="x">p<sub>j</sub></span>⟩ = 0 for <span class="x">i</span> ≠ <span class="x">j</span> is a sequence of <strong>orthogonal polynomials</strong>. They always satisfy a three-term recursion (Theorem 5.7.2). Legendre polynomials use ⟨<span class="x">p</span>, <span class="x">q</span>⟩ = ∫<sub>−1</sub><sup>1</sup> <span class="x">p q</span> d<span class="x">x</span>; Chebyshev polynomials <span class="x">T<sub>n</sub></span>(cos θ) = cos <span class="x">n</span>θ use the weight (1 − <span class="x">x</span><sup>2</sup>)<sup>−1/2</sup>.</p>
+  </div>
+  <div class="defs" id="defs-s57"></div>
+
+  <div class="lab" id="lab-poly">
+    <div class="lab-title"><h3>Orthogonal polynomial families</h3><span class="src">Section 5.7 · Theorems 5.7.1, 5.7.2</span></div>
+    <div class="chips" id="op-fam" role="group" aria-label="Family"></div>
+    <div class="kpick"><span>show up to degree</span><span class="chips" id="op-n"></span></div>
+    <div class="bench">
+      <div class="col">
+        <div class="scroll"><div class="polylist" id="op-list"></div></div>
+        <div class="scroll"><div id="op-gram"></div></div>
+        <div class="status inf" id="op-status"></div>
+      </div>
+      <svg class="fig" id="op-svg" viewBox="0 0 420 420" role="img" aria-label="Graphs of orthogonal polynomials on [−1, 1]"></svg>
+    </div>
+  </div>
+  <div class="exset" id="ex-s57"></div>
+</section>
+
+</main>
+
+<footer>Examples, theorem numbers and notation follow Steven J. Leon, <i>Linear Algebra with Applications</i>, 8th edition, Chapter 5.  Exact arithmetic (fractions) is used wherever a lab says so. Solved exercises are remembered in this browser only. Animations: Manim Community v0.22; each card shows its scene's code.</footer>
+
+<script type="application/json" id="manim-src">{"ScalarProjection": "class ScalarProjection(Scene):\n    def construct(self):\n        t = title(r\"Scalar product and projection: $\\mathbf x^T\\mathbf y = \\|\\mathbf x\\|\\,\\|\\mathbf y\\|\\cos\\theta$\")\n        p = plane((-1, 7), (-1, 6)).scale(0.95).shift(LEFT * 3.0 + DOWN * 0.55)\n        self.add(p, t)\n        x, y = np.array([3.0, 5.0]), np.array([1.0, 1.0])\n        ax, ay = arrow(p, (0, 0), x, C1), arrow(p, (0, 0), (5, 5), C2, 4)\n        line = DashedLine(p.c2p(-1, -1), p.c2p(6, 6), color=C2, stroke_width=2, dash_length=0.1)\n        self.play(GrowArrow(ax), FadeIn(lab_at(r\"\\mathbf x = (3,5)^T\", ax.get_end(), UL, C1, 32)))\n        self.play(Create(line), GrowArrow(ay), FadeIn(lab_at(r\"\\mathbf y = (1,1)^T \\text{ direction}\", ay.get_end(), RIGHT, C2, 28)))\n        th = Angle(Line(p.c2p(0, 0), p.c2p(5, 5)), Line(p.c2p(0, 0), p.c2p(*x)), radius=0.8, color=AMB)\n        self.play(Create(th), FadeIn(MathTex(r\"\\theta\", color=AMB, font_size=32).move_to(p.c2p(0.95, 1.4))))\n        eqs = VGroup(\n            MathTex(r\"\\mathbf x^T\\mathbf y = 3 + 5 = 8\", font_size=34),\n            MathTex(r\"\\cos\\theta = \\frac{\\mathbf x^T\\mathbf y}{\\|\\mathbf x\\|\\|\\mathbf y\\|} = \\frac{8}{\\sqrt{34}\\sqrt 2}\", font_size=34),\n            MathTex(r\"\\alpha = \\frac{\\mathbf x^T\\mathbf y}{\\|\\mathbf y\\|} = 4\\sqrt2 \\ \\text{(scalar projection)}\", font_size=32),\n            MathTex(r\"\\mathbf p = \\frac{\\mathbf x^T\\mathbf y}{\\mathbf y^T\\mathbf y}\\,\\mathbf y = 4\\,\\mathbf y = (4, 4)^T\", font_size=34, color=AMB),\n        ).arrange(DOWN, aligned_edge=LEFT, buff=0.32).to_edge(RIGHT, buff=0.4).shift(UP * 0.6)\n        self.play(Write(eqs[0]))\n        self.play(Write(eqs[1]))\n        self.play(Write(eqs[2]))\n        drop = DashedLine(p.c2p(*x), p.c2p(4, 4), color=INK, stroke_width=3)\n        self.play(Create(drop))\n        pv = arrow(p, (0, 0), (4, 4), AMB, 7)\n        self.play(GrowArrow(pv), Write(eqs[3]))\n        ra = right_angle(p, (4, 4), (-1, 1), (-1, -1))\n        z = arrow(p, (4, 4), x, WARN, 5)\n        self.play(Create(ra), GrowArrow(z), FadeIn(lab_at(r\"\\mathbf x - \\mathbf p\", z.get_center(), RIGHT, WARN, 30)))\n        fin = boxed(Tex(r\"$\\mathbf x - \\mathbf p = (-1, 1)^T$ is orthogonal to $\\mathbf y$: \\ $\\mathbf x = \\mathbf p + (\\mathbf x - \\mathbf p)$\", font_size=30, color=C3)).to_edge(DOWN, buff=0.3)\n        self.play(FadeIn(fin))\n        self.wait(2)", "OrthogonalComplement": "class OrthogonalComplement(ThreeDScene):\n    def construct(self):\n        self.set_camera_orientation(phi=68 * DEGREES, theta=-40 * DEGREES, zoom=0.85)\n        axes = ThreeDAxes(x_range=[-3, 3], y_range=[-3, 3], z_range=[-3, 3], x_length=6, y_length=6, z_length=5,\n                          axis_config={\"color\": MUTE, \"stroke_width\": 2})\n        t = title(r\"Orthogonal complement: $N(A) = R(A^T)^{\\perp}$\")\n        self.add_fixed_in_frame_mobjects(t)\n        self.add(axes)\n        r1, r2 = np.array([1.0, 0, -1]), np.array([0, 1.0, 1])\n        n = np.cross(r1, r2)  # (1, -1, 1)\n        Am = boxed(MathTex(r\"A = \\begin{pmatrix}1&0&-1\\\\0&1&1\\end{pmatrix}\", font_size=34)).to_corner(UL).shift(DOWN * 0.8)\n        self.add_fixed_in_frame_mobjects(Am); self.remove(Am)\n        self.play(FadeIn(Am))\n        plane_ = Surface(lambda u, v: axes.c2p(*(u * r1 + v * r2)), u_range=[-2, 2], v_range=[-2, 2], resolution=(8, 8),\n                         fill_color=C1, fill_opacity=0.35, stroke_color=C1, stroke_width=0.6, checkerboard_colors=[C1, C1])\n        a1 = Arrow3D(axes.c2p(0, 0, 0), axes.c2p(*r1), color=C1)\n        a2 = Arrow3D(axes.c2p(0, 0, 0), axes.c2p(*r2), color=C1)\n        self.play(Create(a1), Create(a2))\n        self.play(FadeIn(plane_))\n        c1 = boxed(Tex(r\"blue: the row space $R(A^T) = \\mathrm{Span}$(rows of $A$)\", font_size=30, color=C1)).to_edge(DOWN, buff=0.35)\n        self.add_fixed_in_frame_mobjects(c1); self.remove(c1)\n        self.play(FadeIn(c1))\n        nl = Line3D(axes.c2p(*(-2.2 * n / np.linalg.norm(n))), axes.c2p(*(2.2 * n / np.linalg.norm(n))), color=WARN, thickness=0.03)\n        nv = Arrow3D(axes.c2p(0, 0, 0), axes.c2p(*n), color=WARN)\n        self.play(Create(nl), Create(nv))\n        c2 = boxed(Tex(r\"red: $N(A) = \\mathrm{Span}\\{(1,-1,1)^T\\}$; \\ $A\\mathbf x = \\mathbf 0$ says $\\mathbf x$ is orthogonal to every row\", font_size=30, color=WARN)).to_edge(DOWN, buff=0.35)\n        self.add_fixed_in_frame_mobjects(c2); self.remove(c2)\n        self.play(FadeTransform(c1, c2))\n        self.begin_ambient_camera_rotation(rate=0.35)\n        self.wait(4)\n        self.stop_ambient_camera_rotation()\n        c3 = boxed(Tex(r\"$\\dim R(A^T) + \\dim N(A) = 2 + 1 = 3$, and $\\mathbb R^3 = R(A^T) \\oplus N(A)$\", font_size=32, color=C3)).to_edge(DOWN, buff=0.35)\n        self.add_fixed_in_frame_mobjects(c3); self.remove(c3)\n        self.play(FadeTransform(c2, c3))\n        self.wait(2)", "LeastSquares": "class LeastSquares(Scene):\n    def construct(self):\n        t = title(r\"Least squares: minimize $\\|\\mathbf b - A\\mathbf x\\|$; solve $A^TA\\hat{\\mathbf x} = A^T\\mathbf b$\")\n        p = Axes(x_range=[-1, 7, 1], y_range=[-1, 6, 1], x_length=6.0, y_length=5.0, axis_config={\"color\": MUTE, \"include_ticks\": True}).shift(LEFT * 3.3 + DOWN * 0.6)\n        self.add(p, t)\n        data = [(0, 1), (3, 4), (6, 5)]\n        dots = VGroup(*[Dot(p.c2p(a, b), color=C2, radius=0.09) for a, b in data])\n        self.play(FadeIn(dots))\n        tab = MathTex(r\"\\begin{array}{c|ccc} x & 0 & 3 & 6 \\\\ y & 1 & 4 & 5\\end{array}\", font_size=34).to_edge(RIGHT, buff=0.8).shift(UP * 2.3)\n        self.play(FadeIn(tab))\n        sysm = MathTex(r\"\\begin{pmatrix}1&0\\\\1&3\\\\1&6\\end{pmatrix}\\begin{pmatrix}c_0\\\\c_1\\end{pmatrix} \\approx \\begin{pmatrix}1\\\\4\\\\5\\end{pmatrix}\", font_size=32).next_to(tab, DOWN, buff=0.35)\n        self.play(Write(sysm))\n        c0, c1 = ValueTracker(0.5), ValueTracker(1.0)\n        line = always_redraw(lambda: Line(p.c2p(-0.5, c0.get_value() - 0.5 * c1.get_value()), p.c2p(6.8, c0.get_value() + 6.8 * c1.get_value()), color=C1, stroke_width=4))\n        res = always_redraw(lambda: VGroup(*[Line(p.c2p(a, b), p.c2p(a, c0.get_value() + c1.get_value() * a), color=WARN, stroke_width=4) for a, b in data]))\n        rn = always_redraw(lambda: MathTex(r\"\\|\\mathbf r\\|^2 = %.3f\" % sum((b - c0.get_value() - c1.get_value() * a) ** 2 for a, b in data), font_size=32, color=WARN).next_to(sysm, DOWN, buff=0.35))\n        self.play(Create(line), Create(res), FadeIn(rn))\n        self.play(c1.animate.set_value(0.3), c0.animate.set_value(2.5), run_time=2)\n        self.play(c1.animate.set_value(0.8), c0.animate.set_value(0.6), run_time=2)\n        ne = MathTex(r\"A^TA = \\begin{pmatrix}3&9\\\\9&45\\end{pmatrix},\\ A^T\\mathbf y = \\begin{pmatrix}10\\\\42\\end{pmatrix}\", font_size=30).next_to(rn, DOWN, buff=0.35)\n        self.play(Write(ne))\n        self.play(c0.animate.set_value(4 / 3), c1.animate.set_value(2 / 3), run_time=2.5)\n        best = MathTex(r\"\\hat c = (\\tfrac43, \\tfrac23):\\ y = \\tfrac43 + \\tfrac23 x\", font_size=34, color=C1).next_to(ne, DOWN, buff=0.3)\n        self.play(Write(best))\n        fin = boxed(Tex(r\"The residual $\\mathbf r = \\mathbf y - A\\hat{\\mathbf c}$ is orthogonal to the columns of $A$: $A^T\\mathbf r = \\mathbf 0$ (Leon \\S5.3 Example 2)\", font_size=28, color=C3)).to_edge(DOWN, buff=0.25)\n        self.play(FadeIn(fin))\n        self.wait(2)", "Norms": "class Norms(Scene):\n    def construct(self):\n        t = title(r\"Norms: three ways to measure length in $\\mathbb R^2$\")\n        p = plane((-2, 2), (-2, 2)).scale(1.45).shift(LEFT * 3.2 + DOWN * 0.45)\n        self.add(p, t)\n        o = p.c2p(0, 0)\n        u = p.c2p(1, 0)[0] - o[0]\n        diamond = Polygon(p.c2p(1, 0), p.c2p(0, 1), p.c2p(-1, 0), p.c2p(0, -1), color=C2, stroke_width=4)\n        circ = Circle(radius=u, color=C1, stroke_width=4).move_to(o)\n        sq = Square(side_length=2 * u, color=C3, stroke_width=4).move_to(o)\n        defs = VGroup(\n            MathTex(r\"\\|\\mathbf x\\|_1 = |x_1| + |x_2|\", color=C2, font_size=36),\n            MathTex(r\"\\|\\mathbf x\\|_2 = (x_1^2 + x_2^2)^{1/2}\", color=C1, font_size=36),\n            MathTex(r\"\\|\\mathbf x\\|_\\infty = \\max(|x_1|, |x_2|)\", color=C3, font_size=36),\n        ).arrange(DOWN, aligned_edge=LEFT, buff=0.35).to_edge(RIGHT, buff=0.5).shift(UP * 1.6)\n        cap = Tex(r\"unit balls $\\{\\mathbf x : \\|\\mathbf x\\| = 1\\}$\", font_size=30, color=MUTE).next_to(defs, UP, buff=0.3).align_to(defs, LEFT)\n        self.play(FadeIn(cap))\n        for shape, d in ((diamond, defs[0]), (circ, defs[1]), (sq, defs[2])):\n            self.play(Create(shape), Write(d))\n        pt = np.array([0.8, -0.6])\n        dot = Dot(p.c2p(*pt), color=AMB, radius=0.08)\n        vals = MathTex(r\"\\mathbf x = (0.8, -0.6):\\ \\ \\|\\mathbf x\\|_1 = 1.4,\\ \\|\\mathbf x\\|_2 = 1,\\ \\|\\mathbf x\\|_\\infty = 0.8\", font_size=30, color=AMB).next_to(defs, DOWN, buff=0.5).align_to(defs, LEFT)\n        self.play(FadeIn(dot), Write(vals))\n        self.wait(1)\n        ex = MathTex(r\"\\text{Example 5: } \\mathbf x = (4,-5,3)^T:\\ \\ 12,\\ \\ 5\\sqrt2,\\ \\ 5\", font_size=32).next_to(vals, DOWN, buff=0.4).align_to(defs, LEFT)\n        self.play(Write(ex))\n        fin = boxed(Tex(r\"Every norm: $\\|\\mathbf x\\| \\ge 0$ with equality only for $\\mathbf 0$; $\\|\\alpha\\mathbf x\\| = |\\alpha|\\,\\|\\mathbf x\\|$; $\\|\\mathbf x + \\mathbf y\\| \\le \\|\\mathbf x\\| + \\|\\mathbf y\\|$\", font_size=28, color=C3)).to_edge(DOWN, buff=0.25)\n        self.play(FadeIn(fin))\n        self.wait(2)", "OrthonormalCoordinates": "class OrthonormalCoordinates(Scene):\n    def construct(self):\n        t = title(r\"Orthonormal basis: the coordinates are $c_i = \\langle \\mathbf x, \\mathbf u_i\\rangle$\")\n        p = plane((-3, 4), (-2, 3.5)).scale(1.05).shift(LEFT * 3.1 + DOWN * 0.55)\n        self.add(p, t)\n        u1, u2 = np.array([0.6, 0.8]), np.array([-0.8, 0.6])\n        x = np.array([2.0, 1.0])\n        A1, A2 = arrow(p, (0, 0), u1, C1), arrow(p, (0, 0), u2, C2)\n        l1 = DashedLine(p.c2p(*(-2.5 * u1)), p.c2p(*(4 * u1)), color=C1, stroke_width=2, dash_length=0.1)\n        l2 = DashedLine(p.c2p(*(-2.5 * u2)), p.c2p(*(2.5 * u2)), color=C2, stroke_width=2, dash_length=0.1)\n        self.play(Create(l1), Create(l2), GrowArrow(A1), GrowArrow(A2),\n                  FadeIn(lab_at(r\"\\mathbf u_1 = (\\tfrac35, \\tfrac45)\", A1.get_end(), RIGHT, C1, 28), lab_at(r\"\\mathbf u_2 = (-\\tfrac45, \\tfrac35)\", A2.get_end(), LEFT, C2, 28)))\n        X = arrow(p, (0, 0), x, AMB, 6)\n        self.play(GrowArrow(X), FadeIn(lab_at(r\"\\mathbf x = (2, 1)\", X.get_end(), RIGHT, AMB, 30)))\n        c1, c2 = x @ u1, x @ u2  # 2, -1\n        d1 = DashedLine(p.c2p(*x), p.c2p(*(c1 * u1)), color=INK, stroke_width=2.5)\n        d2 = DashedLine(p.c2p(*x), p.c2p(*(c2 * u2)), color=INK, stroke_width=2.5)\n        eq = VGroup(\n            MathTex(r\"c_1 = \\mathbf x^T\\mathbf u_1 = \\tfrac65 + \\tfrac45 = 2\", font_size=34, color=C1),\n            MathTex(r\"c_2 = \\mathbf x^T\\mathbf u_2 = -\\tfrac85 + \\tfrac35 = -1\", font_size=34, color=C2),\n            MathTex(r\"\\mathbf x = 2\\,\\mathbf u_1 - 1\\,\\mathbf u_2\", font_size=36),\n            MathTex(r\"\\|\\mathbf x\\|^2 = c_1^2 + c_2^2 = 5 \\quad \\text{(Parseval)}\", font_size=32),\n        ).arrange(DOWN, aligned_edge=LEFT, buff=0.32).to_edge(RIGHT, buff=0.4).shift(UP * 0.7)\n        self.play(Create(d1), Write(eq[0]))\n        self.play(Create(d2), Write(eq[1]))\n        s1 = arrow(p, (0, 0), c1 * u1, C1, 8)\n        s2 = arrow(p, c1 * u1, x, C2, 6)\n        self.play(GrowArrow(s1))\n        self.play(GrowArrow(s2), Write(eq[2]))\n        self.play(Write(eq[3]))\n        fin = boxed(Tex(r\"No linear system to solve: $Q = (\\mathbf u_1\\ \\mathbf u_2)$ is orthogonal, $Q^{-1} = Q^T$, so $\\mathbf c = Q^T\\mathbf x$\", font_size=30, color=C3)).to_edge(DOWN, buff=0.3)\n        self.play(FadeIn(fin))\n        self.wait(2)", "GramSchmidt": "class GramSchmidt(Scene):\n    def construct(self):\n        t = title(r\"Gram--Schmidt: subtract projections, then normalize\")\n        p = plane((-2, 4), (-0.8, 4.5)).scale(1.0).shift(LEFT * 3.2 + DOWN * 0.75)\n        self.add(p, t)\n        a1, a2 = np.array([1.5, 2.0]), np.array([1.0, 3.0])\n        A1, A2 = arrow(p, (0, 0), a1, C1, 5), arrow(p, (0, 0), a2, C2, 5)\n        self.play(GrowArrow(A1), GrowArrow(A2), FadeIn(lab_at(r\"\\mathbf a_1\", A1.get_end(), RIGHT, C1), lab_at(r\"\\mathbf a_2\", A2.get_end(), UP, C2)))\n        steps = VGroup(\n            MathTex(r\"r_{11} = \\|\\mathbf a_1\\| = 2.5,\\quad \\mathbf q_1 = \\mathbf a_1 / r_{11} = (0.6, 0.8)\", font_size=30, color=C1),\n            MathTex(r\"r_{12} = \\mathbf q_1^T\\mathbf a_2 = 3,\\quad \\mathbf p_1 = r_{12}\\mathbf q_1\", font_size=30, color=AMB),\n            MathTex(r\"\\mathbf a_2 - \\mathbf p_1 = (-0.8, 0.6),\\quad r_{22} = 1\", font_size=30, color=WARN),\n            MathTex(r\"\\mathbf q_2 = (\\mathbf a_2 - \\mathbf p_1)/r_{22}\", font_size=30, color=C2),\n        ).arrange(DOWN, aligned_edge=LEFT, buff=0.3).to_edge(RIGHT, buff=0.35).shift(UP * 1.2)\n        q1 = np.array([0.6, 0.8])\n        Q1 = arrow(p, (0, 0), q1, C1, 9)\n        self.play(Write(steps[0]), FadeIn(Q1), FadeIn(lab_at(r\"\\mathbf q_1\", Q1.get_end(), LEFT, C1, 30)))\n        line = DashedLine(p.c2p(*(-0.5 * q1)), p.c2p(*(5.2 * q1)), color=C1, stroke_width=2, dash_length=0.1)\n        p1 = 3 * q1\n        drop = DashedLine(p.c2p(*a2), p.c2p(*p1), color=INK, stroke_width=2.5)\n        P1 = arrow(p, (0, 0), p1, AMB, 6)\n        self.play(Create(line), Create(drop))\n        self.play(GrowArrow(P1), Write(steps[1]))\n        resid = a2 - p1\n        Rr = arrow(p, p1, a2, WARN, 6)\n        self.play(GrowArrow(Rr), Write(steps[2]))\n        moved = arrow(p, (0, 0), resid, WARN, 6)\n        self.play(Transform(Rr, moved))\n        Q2 = arrow(p, (0, 0), resid, C2, 9)\n        self.play(FadeIn(Q2), Write(steps[3]), FadeIn(lab_at(r\"\\mathbf q_2\", Q2.get_end(), LEFT, C2, 30)))\n        qr = MathTex(r\"A = \\begin{pmatrix}1.5&1\\\\2&3\\end{pmatrix} = \\underbrace{\\begin{pmatrix}0.6&-0.8\\\\0.8&0.6\\end{pmatrix}}_{Q}\\underbrace{\\begin{pmatrix}2.5&3\\\\0&1\\end{pmatrix}}_{R}\", font_size=32).next_to(steps, DOWN, buff=0.45).align_to(steps, LEFT)\n        self.play(Write(qr))\n        fin = boxed(Tex(r\"$\\mathrm{Span}(\\mathbf q_1, \\dots, \\mathbf q_k) = \\mathrm{Span}(\\mathbf a_1, \\dots, \\mathbf a_k)$ at every step: $A = QR$ (Theorem 5.6.2)\", font_size=30, color=C3)).to_edge(DOWN, buff=0.25)\n        self.play(FadeIn(fin))\n        self.wait(2)", "LegendrePolynomials": "class LegendrePolynomials(Scene):\n    def construct(self):\n        t = title(r\"Orthogonal polynomials: Legendre, $\\langle p, q\\rangle = \\int_{-1}^{1} p(x)q(x)\\,dx$\")\n        ax = Axes(x_range=[-1, 1, 0.5], y_range=[-1.2, 1.2, 0.5], x_length=6.2, y_length=4.6, axis_config={\"color\": MUTE}).shift(LEFT * 3.0 + DOWN * 0.5)\n        self.add(ax, t)\n        P = [lambda x: 1 + 0 * x, lambda x: x, lambda x: (3 * x ** 2 - 1) / 2, lambda x: (5 * x ** 3 - 3 * x) / 2, lambda x: (35 * x ** 4 - 30 * x ** 2 + 3) / 8]\n        cols = [INK, C1, C2, C3, AMB]\n        tex = [r\"P_0 = 1\", r\"P_1 = x\", r\"P_2 = \\tfrac12(3x^2 - 1)\", r\"P_3 = \\tfrac12(5x^3 - 3x)\", r\"P_4 = \\tfrac18(35x^4 - 30x^2 + 3)\"]\n        labs = VGroup(*[MathTex(s, color=c, font_size=32) for s, c in zip(tex, cols)]).arrange(DOWN, aligned_edge=LEFT, buff=0.25).to_edge(RIGHT, buff=0.5).shift(UP * 1.3)\n        for f, c, lb in zip(P, cols, labs):\n            self.play(Create(ax.plot(f, x_range=[-1, 1], color=c, stroke_width=4)), Write(lb), run_time=1.1)\n        rec = MathTex(r\"(n+1)P_{n+1} = (2n+1)\\,x\\,P_n - n\\,P_{n-1}\", font_size=32).next_to(labs, DOWN, buff=0.45).align_to(labs, LEFT)\n        self.play(Write(rec))\n        orth = MathTex(r\"\\langle P_i, P_j\\rangle = 0 \\ (i \\ne j), \\qquad \\|P_n\\|^2 = \\tfrac{2}{2n+1}\", font_size=32, color=C3).next_to(rec, DOWN, buff=0.35).align_to(labs, LEFT)\n        self.play(Write(orth))\n        fin = boxed(Tex(r\"Gram--Schmidt applied to $1, x, x^2, \\dots$ gives these, up to scaling (Theorem 5.7.1: a three-term recursion)\", font_size=28, color=C3)).to_edge(DOWN, buff=0.25)\n        self.play(FadeIn(fin))\n        self.wait(2)"}</script>
+<script src="../assets/lab-core.js"></script>
+<script>
+(() => {
+"use strict";
+const { $, MINUS, HOOK, goto, el, fmt, gcd, Q, matHTML, lbl, linExpr, q, qm, ch, fl, cl, vec, mat, num, buildExercises, sm, renderDefinitions, setStore, plane2D, draggable } = LA;
+setStore("leon-ch5-solved-v1");
+const S_ = n => `<sub>${n}</sub>`;
+const qf = v => Q.parse(String(+(+v).toFixed(6)));
+const near = (a, b, e = 1e-9) => Math.abs(a - b) < e;
+const colM = v => v.map(x => [x]);
+const toF = v => v instanceof Q ? v.n / v.d : +v;
+const dot = (a, b) => a.reduce((s, v, i) => s + v * b[i], 0);
+const nrm = a => Math.sqrt(dot(a, a));
+const sub = (a, b) => a.map((v, i) => v - b[i]);
+const scl = (c, a) => a.map(v => c * v);
+
+// exact-looking display of a float: integer, fraction, k√m/d, else 4 decimals
+function nice(v) {
+  if (!isFinite(v)) return "—";
+  if (Math.abs(v) < 1e-10) return "0";
+  const sg = v < 0 ? MINUS : "", a = Math.abs(v);
+  for (let d = 1; d <= 64; d++) { const n = Math.round(a * d); if (Math.abs(a - n / d) < 1e-9 * Math.max(1, a)) return sg + (d === 1 ? n : `${n}/${d}`); }
+  const s2 = a * a;
+  for (let d = 1; d <= 64; d++) {
+    const n = Math.round(s2 * d);
+    if (n > 0 && n < 20000 && Math.abs(s2 - n / d) < 1e-9 * Math.max(1, s2)) {
+      let m = n * d, k = 1;
+      for (let f = 2; f * f <= m; f++) while (m % (f * f) === 0) { m /= f * f; k *= f; }
+      const g = gcd(k, d), kk = k / g, dd = d / g;
+      return sg + (kk === 1 ? "" : kk) + "√" + m + (dd === 1 ? "" : "/" + dd);
+    }
+  }
+  return sg + (+a.toFixed(4)).toString();
+}
+const nv = v => `(${v.map(nice).join(", ")})`;
+const niceM = M => matHTML(M.map(r => r.map(x => x)), { render: v => nice(v) });
+const toQ = v => { for (let d = 1; d <= 400; d++) { const n = Math.round(v * d); if (Math.abs(v - n / d) < 1e-9) return new Q(n, d); } throw new Error("not rational: " + v); };
+
+// editable grid (vals: array of arrays of Q, mutated in place)
+function gridIn(host, vals, o = {}) {
+  let h = `<div class="mat gridin"><table>`;
+  if (o.head) h += `<tr>${o.head.slice(0, vals[0].length).map(t => `<th>${t}</th>`).join("")}</tr>`;
+  vals.forEach((row, i) => { h += `<tr>${row.map((v, j) => `<td class="inp"><input class="mi" style="width:${o.w || 50}px" data-i="${i}" data-j="${j}" value="${v.txt().replace(MINUS, "-")}" aria-label="${o.name || "entry"} ${i + 1},${j + 1}" autocomplete="off"></td>`).join("")}</tr>`; });
+  host.innerHTML = o.label ? lbl(h + `</table></div>`, o.label) : h + `</table></div>`;
+  host.querySelectorAll("input").forEach(inp => inp.addEventListener("input", () => {
+    const v = Q.parse(inp.value); inp.classList.toggle("wrong", !v);
+    if (v) { vals[+inp.dataset.i][+inp.dataset.j] = v; if (o.onChange) o.onChange(); }
+  }));
+}
+const resize = (vals, m, n) => Array.from({ length: m }, (_, i) => Array.from({ length: n }, (_, j) => (vals[i] && vals[i][j]) || new Q(i === j ? 1 : 0)));
+function chipRow(host, items, cur, onPick, fmtf = x => x) {
+  host.innerHTML = "";
+  items.forEach(v => { const b = document.createElement("button"); b.className = "chip"; b.textContent = fmtf(v); b.setAttribute("aria-pressed", v === cur); b.onclick = () => onPick(v); host.appendChild(b); });
+}
+function presetRow(host, list, onPick) {
+  host.innerHTML = "";
+  list.forEach((p, k) => { const b = document.createElement("button"); b.className = "chip"; b.textContent = p.name || p[0]; b.onclick = () => onPick(k); host.appendChild(b); });
+  return k => host.querySelectorAll(".chip").forEach((b, i) => b.setAttribute("aria-pressed", i === k));
+}
+// float Gaussian elimination with partial pivoting; null if singular
+function gsolve(A, b) {
+  const n = A.length, M = A.map((r, i) => [...r, b[i]]);
+  for (let c = 0; c < n; c++) {
+    let p = c; for (let i = c + 1; i < n; i++) if (Math.abs(M[i][c]) > Math.abs(M[p][c])) p = i;
+    if (Math.abs(M[p][c]) < 1e-11) return null;
+    [M[c], M[p]] = [M[p], M[c]];
+    for (let i = c + 1; i < n; i++) { const f = M[i][c] / M[c][c]; for (let k = c; k <= n; k++) M[i][k] -= f * M[c][k]; }
+  }
+  const x = Array(n).fill(0);
+  for (let i = n - 1; i >= 0; i--) { let s = M[i][n]; for (let k = i + 1; k < n; k++) s -= M[i][k] * x[k]; x[i] = s / M[i][i]; }
+  return x;
+}
+const fT = A => A[0].map((_, j) => A.map(r => r[j]));
+const fmul = (A, B) => A.map(r => B[0].map((_, j) => r.reduce((s, v, k) => s + v * B[k][j], 0)));
+function rightAngle(P, at, d1, d2, s = 0.3) {
+  const u = scl(1 / nrm(d1), d1), w = scl(1 / nrm(d2), d2);
+  const pts = [[at[0] + s * u[0], at[1] + s * u[1]], [at[0] + s * (u[0] + w[0]), at[1] + s * (u[1] + w[1])], [at[0] + s * w[0], at[1] + s * w[1]]];
+  el("polyline", { points: pts.map(p => `${P.X(p[0])},${P.Y(p[1])}`).join(" "), fill: "none", style: "stroke:var(--ink)", "stroke-width": 1.5 }, P.layers.top);
+}
+function arc(P, a, b, r) {
+  const a1 = Math.atan2(a[1], a[0]), a2 = Math.atan2(b[1], b[0]), cr = a[0] * b[1] - a[1] * b[0];
+  const p1 = [r * Math.cos(a1), r * Math.sin(a1)], p2 = [r * Math.cos(a2), r * Math.sin(a2)];
+  el("path", { d: `M${P.X(p1[0])},${P.Y(p1[1])} A${r * P.sc},${r * P.sc} 0 0 ${cr > 0 ? 0 : 1} ${P.X(p2[0])},${P.Y(p2[1])}`, fill: "none", style: "stroke:var(--pivot)", "stroke-width": 2 }, P.layers.top);
+}
+const kv = rows => rows.map(([k, v, c]) => `<tr${c ? ` class="${c}"` : ""}><th>${k}</th><td>${v}</td></tr>`).join("");
+
+/* =========================================================
+   LAB · Angle and projection
+   ========================================================= */
+(function projLab() {
+  const PRE = [["Ex 3(a)", [3, 4], [1, 0]], ["Ex 3(b)", [3, 5], [1, 1]], ["Ex 1(b)", [2, -3], [3, 2]], ["Ex 1(c)", [4, 1], [3, 2]], ["Example 2", [3, 4], [-1, 7]], ["obtuse", [-3, 1], [2, 1]]];
+  const S = { x: [3, 5], y: [1, 1], k: 1 };
+  const P = plane2D($("#pj-svg"), { R: 7.6 });
+  const D = draggable(P, () => [S.x, S.y], (i, p) => { if (i) S.y = p; else S.x = p; S.k = -1; draw(); }, { lim: 7.5, snap: 0.5 });
+  const mark = presetRow($("#pj-presets"), PRE, k => { S.k = k; S.x = PRE[k][1].slice(); S.y = PRE[k][2].slice(); draw(); });
+  function draw() {
+    mark(S.k); P.clear();
+    const x = S.x, y = S.y, st = $("#pj-status");
+    const X = x.map(qf), Y = y.map(qf);
+    const xy = X[0].mul(Y[0]).add(X[1].mul(Y[1])), yy = Y[0].mul(Y[0]).add(Y[1].mul(Y[1])), xx = X[0].mul(X[0]).add(X[1].mul(X[1]));
+    if (yy.zero) { st.className = "status bad"; st.innerHTML = `<span class="k">y = 0</span>There is no direction to project onto.`; $("#pj-tab").innerHTML = ""; D.draw(["x", "y"], ["f1", "f2"]); return; }
+    const c = xy.div(yy), p = Y.map(v => v.mul(c)), r = X.map((v, i) => v.sub(p[i])), pf = p.map(toF), rf = r.map(toF);
+    P.lineThrough(P.layers.under, [0, 0], y, { style: "stroke:var(--c2)", "stroke-opacity": .45, "stroke-dasharray": "6 5", "stroke-width": 1.5 });
+    P.arrow(P.layers.mid, [0, 0], y, "c2", 3.5); P.arrow(P.layers.mid, [0, 0], x, "c1", 3.5);
+    if (!xx.zero) arc(P, y, x, 0.9);
+    if (nrm(pf) > 1e-9) P.arrow(P.layers.mid, [0, 0], pf, "amb", 4.5);
+    if (nrm(rf) > 1e-9) { P.arrow(P.layers.top, pf, x, "ink", 2, { "stroke-dasharray": "5 4", style: "stroke:var(--warn)" }); if (nrm(pf) > 1e-9) rightAngle(P, pf, scl(-1, pf), rf); else rightAngle(P, [0, 0], y, rf); }
+    P.text(P.layers.top, [pf[0] + 0.25, pf[1] - 0.45], "p", { style: "fill:var(--pivot)", "font-weight": 700, "font-size": 15 });
+    D.draw(["x", "y"], ["f1", "f2"]);
+    const nx = Math.sqrt(toF(xx)), ny = Math.sqrt(toF(yy)), cos = toF(xy) / (nx * ny);
+    const th = Math.acos(Math.max(-1, Math.min(1, cos))) * 180 / Math.PI;
+    const d = Math.hypot(x[0] - y[0], x[1] - y[1]);
+    $("#pj-tab").innerHTML = kv([
+      ["xᵀy", xy.txt(), "amb"], ["‖x‖, ‖y‖", `${nice(nx)}, ${nice(ny)}`], ["cos θ", xx.zero ? "—" : nice(cos)], ["θ", xx.zero ? "—" : `${fmt(th, 2)}°`],
+      ["scalar projection α = xᵀy / ‖y‖", nice(toF(xy) / ny)], ["p = (xᵀy / yᵀy) y", `(${p.map(v => v.txt()).join(", ")})`, "amb"],
+      ["x − p", `(${r.map(v => v.txt()).join(", ")})`], ["(x − p)ᵀy", r[0].mul(Y[0]).add(r[1].mul(Y[1])).txt()], ["distance ‖x − y‖", nice(d)],
+    ]);
+    if (xy.zero) { st.className = "status ok"; st.innerHTML = `<span class="k">Orthogonal</span>xᵀy = 0, so θ = 90° and the projection of x onto y is 0.`; }
+    else { st.className = "status inf"; st.innerHTML = `<span class="k">x = p + (x − p)</span>p lies along y and x − p is orthogonal to y: (x − p)ᵀy = 0. θ is ${toF(xy) > 0 ? "acute, so p points along y" : "obtuse, so p points against y"}.`; }
+  }
+  HOOK.proj = (x, y) => { S.k = -1; S.x = x.slice(); S.y = y.slice(); draw(); goto("#lab-proj"); };
+  draw();
+})();
+
+/* =========================================================
+   LAB · Four fundamental subspaces
+   ========================================================= */
+(function fourLab() {
+  const PRE = [["Ex 1(a)", [[3, 4], [6, 8]]], ["Ex 1(b)", [[1, 3, 1], [2, 4, 0]]], ["Ex 1(c)", [[4, -2], [1, 3], [2, 1], [3, 4]]], ["Ex 1(d)", [[1, 0, 0, 0], [0, 1, 1, 1], [0, 0, 1, 1], [1, 1, 2, 2]]], ["animation's A", [[1, 0, -1], [0, 1, 1]]], ["Ex 5 type: 3 × 2", [[1, 0], [0, 1], [1, 1]]], ["invertible", [[2, 1], [1, 1]]]];
+  const S = { A: qm.of(PRE[0][1]), k: 0, x: [3, 1], b: [1, 3] };
+  const Pd = plane2D($("#fs-dom"), { R: 5.2 }), Pc = plane2D($("#fs-cod"), { R: 5.2 });
+  const Dd = draggable(Pd, () => [S.x], (i, p) => { S.x = p; pics(); }, { lim: 5, snap: 0.5 });
+  const Dc = draggable(Pc, () => [S.b], (i, p) => { S.b = p; pics(); }, { lim: 5, snap: 0.5 });
+  const mark = presetRow($("#fs-presets"), PRE, k => { S.k = k; S.A = qm.of(PRE[k][1]); build(); });
+  let info = null;
+  function build() {
+    const m = S.A.length, n = S.A[0].length; mark(S.k);
+    chipRow($("#fs-m"), [1, 2, 3, 4], m, v => { S.A = resize(S.A, v, n); S.k = -1; build(); });
+    chipRow($("#fs-n"), [1, 2, 3, 4], n, v => { S.A = resize(S.A, m, v); S.k = -1; build(); });
+    gridIn($("#fs-in"), S.A, { label: "A", onChange: () => { S.k = -1; mark(-1); analyse(); } });
+    analyse();
+  }
+  function analyse() {
+    const A = S.A, m = A.length, n = A[0].length, { R, piv } = qm.rref(A), r = piv.length;
+    const rowB = R.slice(0, r), nul = qm.nullBasis(A), colB = piv.map(j => A.map(row => row[j])), lnul = qm.nullBasis(qm.T(A));
+    info = { m, n, r, rowB, nul, colB, lnul };
+    const sup = k => "⁰¹²³⁴"[k];
+    $("#fs-status").className = "status ok";
+    $("#fs-status").innerHTML = `<span class="k math">rank r = ${r}: dim R(Aᵀ) = ${r}, dim N(A) = ${n - r}, dim R(A) = ${r}, dim N(Aᵀ) = ${m - r}</span>In ℝ${sup(n)}: ${r} + ${n - r} = ${n}. In ℝ${sup(m)}: ${r} + ${m - r} = ${m}.`;
+    const show = (list, cls, name) => list.length ? list.map((v, j) => lbl(matHTML(colM(v), { cellClass: () => cls }), `${name}${S_(j + 1)}`)).join("") : `<span class="op">{0}</span>`;
+    $("#fs-bases").innerHTML = `<span class="op">R(Aᵀ):</span>${show(rowB.map(r0 => r0), "hl1", "r")}<span class="op">N(A):</span>${show(nul, "hl2", "n")}<span class="op">R(A):</span>${show(colB, "hl3", "c")}<span class="op">N(Aᵀ):</span>${show(lnul, "hl2", "ℓ")}`;
+    const dq = (a, b) => a.reduce((s, v, i) => s.add(v.mul(b[i])), new Q(0));
+    const all0 = (X, Y) => X.every(a => Y.every(b => dq(a, b).zero));
+    const c1 = rowB.length * nul.length, c2 = colB.length * lnul.length;
+    $("#fs-dots").innerHTML = `<table class="kv"><tr><th>R(Aᵀ) ⟂ N(A)</th><td>${c1 ? `${c1} scalar product${c1 > 1 ? "s" : ""}, ${all0(rowB, nul) ? "all 0 ✓" : "not all 0"}` : "trivially (one of them is {0})"}</td></tr><tr><th>R(A) ⟂ N(Aᵀ)</th><td>${c2 ? `${c2} scalar product${c2 > 1 ? "s" : ""}, ${all0(colB, lnul) ? "all 0 ✓" : "not all 0"}` : "trivially (one of them is {0})"}</td></tr></table>`;
+    $("#fs-dom").parentElement.style.display = n === 2 ? "" : "none";
+    $("#fs-cod").parentElement.style.display = m === 2 ? "" : "none";
+    $("#fs-note").textContent = n === 2 || m === 2 ? "Drag x (domain) or b (codomain): each splits uniquely into a part in one subspace and a part in its orthogonal complement (Exercise 5.2.12)." : "The pictures are drawn when m = 2 or n = 2. Try Ex 1(a), whose four subspaces are all lines in the plane.";
+    pics();
+  }
+  function split(P, Dr, v, basis, dim, cA, cB, nameA, nameB, label) {
+    P.clear();
+    let pr;
+    if (dim === 0) pr = [0, 0];
+    else if (dim === 2) pr = v.slice();
+    else { const u = basis[0].map(toF); pr = scl(dot(v, u) / dot(u, u), u); P.lineThrough(P.layers.under, [0, 0], u, { style: `stroke:var(--${cA})`, "stroke-width": 3, "stroke-opacity": .55 }); P.lineThrough(P.layers.under, [0, 0], [-u[1], u[0]], { style: `stroke:var(--${cB})`, "stroke-width": 3, "stroke-opacity": .55 }); }
+    if (dim === 2) P.poly(P.layers.under, [[-6, -6], [6, -6], [6, 6], [-6, 6]], { style: `fill:var(--${cA})`, "fill-opacity": .08 });
+    const rest = sub(v, pr);
+    if (nrm(pr) > 1e-9) P.arrow(P.layers.mid, [0, 0], pr, cA === "c1" ? "c1" : "c3", 3.5);
+    if (nrm(rest) > 1e-9) P.arrow(P.layers.mid, pr, v, "ink", 2.5, { style: `stroke:var(--${cB})` });
+    P.arrow(P.layers.top, [0, 0], v, "ink", 1.6, { "stroke-dasharray": "4 4" });
+    Dr.draw([label], ["ink"]);
+    return `${label} = ${nv(pr)} + ${nv(rest)}`;
+  }
+  function pics() {
+    if (!info) return;
+    const { m, n, r, rowB, colB } = info;
+    if (n === 2) $("#fs-domc").innerHTML = `domain ℝ²: <b style="color:var(--c1)">R(Aᵀ)</b> ⟂ <b style="color:var(--c2)">N(A)</b>; ` + split(Pd, Dd, S.x, rowB, r, "c1", "c2", "R(Aᵀ)", "N(A)", "x");
+    if (m === 2) $("#fs-codc").innerHTML = `codomain ℝ²: <b style="color:var(--c3)">R(A)</b> ⟂ <b style="color:var(--c2)">N(Aᵀ)</b>; ` + split(Pc, Dc, S.b, colB, r, "c3", "c2", "R(A)", "N(Aᵀ)", "b");
+  }
+  HOOK.four = A => { S.k = -1; S.A = qm.of(A); build(); goto("#lab-four"); };
+  build();
+})();
+
+/* =========================================================
+   LAB · Least squares fit
+   ========================================================= */
+(function lsLab() {
+  const PRE = [
+    { name: "Example 5.3.2", pts: [[0, 1], [3, 4], [6, 5]], deg: 1, view: [-1, 7.5, -1.5, 7] },
+    { name: "Example 5.3.3", pts: [[0, 3], [1, 2], [2, 4], [3, 4]], deg: 2, view: [-1, 4.5, -0.5, 6] },
+    { name: "Ex 5.3.5", pts: [[-1, 0], [0, 1], [1, 3], [2, 9]], deg: 1, view: [-2.5, 3.5, -2, 10] },
+    { name: "Ex 5.3.6", pts: [[-1, 0], [0, 1], [1, 3], [2, 9]], deg: 2, view: [-2.5, 3.5, -2, 10] },
+    { name: "Figure 5.3.3", pts: [[-1, -1.02], [0, -0.52], [2.1, 0.55], [2.3, 0.7], [2.4, 0.7], [5.3, 2.13], [6, 2.52], [6.5, 2.82], [8, 3.54]], deg: 1, view: [-2, 9, -3, 6] },
+  ];
+  const S = { k: 0, pts: [], deg: 1, view: null, res: true };
+  const svg = $("#ls-svg");
+  let P, D;
+  function setView(v) {
+    S.view = v;
+    const sc = Math.min(420 / (v[1] - v[0]), 420 / (v[3] - v[2]));
+    P = plane2D(svg, { sc, cx: -v[0] * sc + (420 - (v[1] - v[0]) * sc) / 2, cy: v[3] * sc + (420 - (v[3] - v[2]) * sc) / 2, R: 20 });
+    D = draggable(P, () => S.pts, (i, p) => { S.pts[i] = p; S.k = -1; draw(); }, { lim: 40, snap: 0.1 });
+  }
+  const mark = presetRow($("#ls-presets"), PRE, k => load(k));
+  function load(k) { const p = PRE[k]; S.k = k; S.pts = p.pts.map(a => a.slice()); S.deg = p.deg; setView(p.view); draw(); }
+  $("#ls-add").onclick = () => { const v = S.view; S.pts.push([+((v[0] + v[1]) / 2).toFixed(1), +((v[2] + v[3]) / 2).toFixed(1)]); S.k = -1; draw(); };
+  $("#ls-del").onclick = () => { if (S.pts.length > 1) S.pts.pop(); S.k = -1; draw(); };
+  $("#ls-res").onclick = () => { S.res = !S.res; draw(); };
+  function draw() {
+    mark(S.k); $("#ls-res").setAttribute("aria-pressed", S.res);
+    const N = S.pts.length, deg = Math.min(S.deg, 3);
+    chipRow($("#ls-deg"), [0, 1, 2, 3], deg, d => { S.deg = d; draw(); }, d => ["constant", "line", "parabola", "cubic"][d]);
+    P.clear();
+    const xs = S.pts.map(p => p[0]), ys = S.pts.map(p => p[1]);
+    const A = xs.map(x => Array.from({ length: deg + 1 }, (_, j) => x ** j));
+    const AtA = fmul(fT(A), A), Aty = fT(A).map(r => dot(r, ys));
+    const c = gsolve(AtA, Aty), st = $("#ls-status");
+    if (!c) {
+      D.draw(S.pts.map(() => ""), S.pts.map(() => "f2")); st.className = "status bad";
+      st.innerHTML = `<span class="k">AᵀA is singular</span>A degree-${deg} fit needs at least ${deg + 1} different x-values. A has dependent columns, so the least squares solution is not unique (Exercise 5.3.13).`;
+      $("#ls-ne").innerHTML = ""; return;
+    }
+    const f = x => c.reduce((s, cj, j) => s + cj * x ** j, 0), v = S.view, pts = [];
+    for (let t = 0; t <= 200; t++) { const x = v[0] + (v[1] - v[0]) * t / 200; pts.push(`${P.X(x)},${P.Y(f(x))}`); }
+    el("polyline", { points: pts.join(" "), fill: "none", style: "stroke:var(--c1)", "stroke-width": 3 }, P.layers.mid);
+    const r = ys.map((y, i) => y - f(xs[i]));
+    if (S.res) S.pts.forEach((p, i) => el("line", { x1: P.X(p[0]), y1: P.Y(p[1]), x2: P.X(p[0]), y2: P.Y(f(p[0])), style: "stroke:var(--warn)", "stroke-width": 2.5 }, P.layers.mid));
+    D.draw(S.pts.map(() => ""), S.pts.map(() => "f2"));
+    const rr = dot(r, r), Atr = fT(A).map(row => dot(row, r));
+    const poly = c.map((cj, j) => ({ c: cj, s: j === 0 ? "" : j === 1 ? "x" : `x${"⁰¹²³"[j]}` })).filter(t => Math.abs(t.c) > 1e-12)
+      .map((t, k) => `${k ? (t.c < 0 ? ` ${MINUS} ` : " + ") : (t.c < 0 ? MINUS : "")}${nice(Math.abs(t.c)) === "1" && t.s ? "" : nice(Math.abs(t.c))}${t.s}`).join("") || "0";
+    st.className = rr < 1e-12 ? "status ok" : "status inf";
+    st.innerHTML = `<span class="k math">y = ${poly}</span>‖r‖² = ${nice(rr)} with r = y − Aĉ. ${rr < 1e-12 ? "The curve passes through every point." : ""} Aᵀr = (${Atr.map(t => nice(Math.abs(t) < 1e-9 ? 0 : t)).join(", ")}): the residual is orthogonal to the columns of A.`;
+    const As = A.length > 6 ? A.slice(0, 5).concat([A[0].map(() => "⋮")]) : A;
+    $("#ls-ne").innerHTML = lbl(matHTML(As, { render: v2 => typeof v2 === "string" ? v2 : nice(v2) }), `A (${N} × ${deg + 1})`) + `<span class="op">→</span>` +
+      lbl(niceM(AtA), "AᵀA") + lbl(niceM(colM(c)), "ĉ") + `<span class="op">=</span>` + lbl(niceM(colM(Aty)), "Aᵀy");
+  }
+  HOOK.ls = k => { load(k); goto("#lab-ls"); };
+  load(0);
+})();
+
+/* =========================================================
+   LAB · Norms and unit balls
+   ========================================================= */
+(function normLab() {
+  const PS = [1, 1.5, 2, 3, 4, 10, Infinity];
+  const S = { p: 2, x: [1.2, -0.8] };
+  const P = plane2D($("#nm-svg"), { R: 2.6 });
+  const D = draggable(P, () => [S.x], (i, v) => { S.x = v; draw(); }, { lim: 2.5, snap: 0.1 });
+  const pn = (x, p) => p === Infinity ? Math.max(...x.map(Math.abs)) : Math.pow(x.reduce((s, v) => s + Math.abs(v) ** p, 0), 1 / p);
+  function ball(p, rad, attrs, layer) {
+    const pts = [];
+    for (let t = 0; t <= 360; t += 1) {
+      const a = t * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
+      const pt = p === Infinity ? scl(1 / Math.max(Math.abs(c), Math.abs(s)), [c, s]) : [Math.sign(c) * Math.abs(c) ** (2 / p), Math.sign(s) * Math.abs(s) ** (2 / p)];
+      pts.push(`${P.X(rad * pt[0])},${P.Y(rad * pt[1])}`);
+    }
+    el("polygon", Object.assign({ points: pts.join(" "), fill: "none" }, attrs), layer);
+  }
+  function draw() {
+    chipRow($("#nm-p"), PS, S.p, p => { S.p = p; draw(); }, p => p === Infinity ? "∞" : String(p));
+    P.clear();
+    ball(1, 1, { style: "stroke:var(--c2)", "stroke-opacity": .5, "stroke-width": 1.5 }, P.layers.under);
+    ball(2, 1, { style: "stroke:var(--c1)", "stroke-opacity": .5, "stroke-width": 1.5 }, P.layers.under);
+    ball(Infinity, 1, { style: "stroke:var(--c3)", "stroke-opacity": .5, "stroke-width": 1.5 }, P.layers.under);
+    const r = pn(S.x, S.p);
+    if (r > 1e-9) ball(S.p, r, { style: "stroke:var(--pivot)", "stroke-width": 3 }, P.layers.mid);
+    P.arrow(P.layers.mid, [0, 0], S.x, "ink", 2.5);
+    D.draw(["x"], ["ink"]);
+    const n1 = pn(S.x, 1), n2 = pn(S.x, 2), ni = pn(S.x, Infinity);
+    $("#nm-tab").innerHTML = kv([["x", nv(S.x)], ["‖x‖₁ = |x₁| + |x₂|", nice(n1)], ["‖x‖₂ = (x₁² + x₂²)^½", nice(n2)], ["‖x‖∞ = max |xᵢ|", nice(ni)], [`‖x‖${S.p === Infinity ? "∞" : "_" + S.p}`, fmt(r, 4), "amb"]]);
+    const st = $("#nm-status");
+    st.className = "status ok";
+    st.innerHTML = `<span class="k math">‖x‖∞ ≤ ‖x‖₂ ≤ ‖x‖₁: ${fmt(ni, 3)} ≤ ${fmt(n2, 3)} ≤ ${fmt(n1, 3)}</span>${n1 > 0 && near(n1, ni, 1e-9) ? "All three agree: x lies on a coordinate axis (Exercise 23)." : "As p grows, the p-ball swells from the diamond toward the square, and ‖x‖ₚ decreases toward ‖x‖∞."}`;
+  }
+  draw();
+})();
+
+/* =========================================================
+   LAB · Orthonormal coordinates and orthogonal matrices
+   ========================================================= */
+(function onLab() {
+  const PRE = [["standard basis", 0, false], ["u₁ = (3/5, 4/5)", Math.atan2(4, 3) * 180 / Math.PI, false], ["45°", 45, false], ["30°", 30, false], ["reflection, u₁ = (3/5, 4/5)", Math.atan2(4, 3) * 180 / Math.PI, true]];
+  const S = { th: PRE[1][1], refl: false, x: [2, 1], qx: false, k: 1 };
+  const P = plane2D($("#on-svg"), { R: 3.6 });
+  const D = draggable(P, () => [S.x], (i, v) => { S.x = v; draw(); }, { lim: 3.5, snap: 0.25 });
+  const ths = $("#on-th"); ths.oninput = () => { S.th = +ths.value; S.k = -1; draw(); };
+  $("#on-refl").onclick = () => { S.refl = !S.refl; S.k = -1; draw(); };
+  $("#on-qx").onclick = () => { S.qx = !S.qx; draw(); };
+  const mark = presetRow($("#on-presets"), PRE, k => { S.k = k; S.th = PRE[k][1]; S.refl = PRE[k][2]; draw(); });
+  function draw() {
+    mark(S.k); ths.value = Math.round(S.th); $("#on-tho").textContent = fmt(S.th, 1) + "°";
+    $("#on-refl").setAttribute("aria-pressed", S.refl); $("#on-qx").setAttribute("aria-pressed", S.qx);
+    P.clear();
+    const a = S.th * Math.PI / 180, u1 = [Math.cos(a), Math.sin(a)], u2 = S.refl ? [Math.sin(a), -Math.cos(a)] : [-Math.sin(a), Math.cos(a)];
+    const x = S.x, c = [dot(x, u1), dot(x, u2)];
+    P.lineThrough(P.layers.under, [0, 0], u1, { style: "stroke:var(--c1)", "stroke-opacity": .4, "stroke-dasharray": "6 5" });
+    P.lineThrough(P.layers.under, [0, 0], u2, { style: "stroke:var(--c2)", "stroke-opacity": .4, "stroke-dasharray": "6 5" });
+    const p1 = scl(c[0], u1), p2 = scl(c[1], u2);
+    [[p1, u1], [p2, u2]].forEach(([pp]) => el("line", { x1: P.X(x[0]), y1: P.Y(x[1]), x2: P.X(pp[0]), y2: P.Y(pp[1]), style: "stroke:var(--ink)", "stroke-dasharray": "3 3", "stroke-opacity": .6 }, P.layers.under));
+    if (nrm(p1) > 1e-9) P.arrow(P.layers.mid, [0, 0], p1, "c1", 5, { "stroke-opacity": .55 });
+    if (nrm(p2) > 1e-9) P.arrow(P.layers.mid, p1, x, "c2", 5, { "stroke-opacity": .55 });
+    P.arrow(P.layers.mid, [0, 0], u1, "c1", 3.5); P.arrow(P.layers.mid, [0, 0], u2, "c2", 3.5);
+    P.text(P.layers.top, [u1[0] * 1.15 + 0.05, u1[1] * 1.15], "u₁", { class: "f1", "font-weight": 700 }); P.text(P.layers.top, [u2[0] * 1.2 - 0.1, u2[1] * 1.2], "u₂", { class: "f2", "font-weight": 700 });
+    P.arrow(P.layers.top, [0, 0], x, "ink", 3);
+    if (S.qx) {
+      const Qx = [u1[0] * x[0] + u2[0] * x[1], u1[1] * x[0] + u2[1] * x[1]], rr = nrm(x);
+      el("circle", { cx: P.X(0), cy: P.Y(0), r: rr * P.sc, fill: "none", style: "stroke:var(--pivot)", "stroke-dasharray": "4 4", "stroke-opacity": .6 }, P.layers.under);
+      P.arrow(P.layers.top, [0, 0], Qx, "amb", 3);
+      P.text(P.layers.top, [Qx[0] + 0.12, Qx[1] + 0.15], "Qx", { style: "fill:var(--pivot)", "font-weight": 700 });
+    }
+    D.draw(["x"], ["ink"]);
+    const Qm = [[u1[0], u2[0]], [u1[1], u2[1]]];
+    $("#on-expr").innerHTML = lbl(niceM(Qm), "Q = (u₁ u₂)") + `<span class="op">QᵀQ =</span>` + lbl(niceM(fmul(fT(Qm), Qm)), "I") +
+      `<span class="op">c = Qᵀx =</span>` + lbl(niceM(colM(c)), "coordinates");
+    $("#on-status").className = "status ok";
+    $("#on-status").innerHTML = `<span class="k math">x = ${nice(c[0])} u₁ ${c[1] < 0 ? MINUS : "+"} ${nice(Math.abs(c[1]))} u₂;  ‖x‖² = ${nice(dot(x, x))} = c₁² + c₂²</span>` +
+      `det Q = ${S.refl ? "−1: Q is a reflection" : "+1: Q is a rotation"}. Either way Qᵀ = Q⁻¹ and ‖Qx‖ = ‖x‖. The blue segment c₁u₁ is the projection of x onto Span(u₁), the closest point of that line.`;
+  }
+  draw();
+})();
+
+/* =========================================================
+   LAB · Gram–Schmidt and QR
+   ========================================================= */
+(function gsLab() {
+  const PRE = [
+    { name: "Example 5.6.2", A: [[1, -1, 4], [1, 4, -2], [1, 4, 2], [1, -1, 0]] },
+    { name: "Example 5.6.3", A: [[1, -2, -1], [2, 0, 1], [2, -4, 2], [4, 0, 0]] },
+    { name: "Ex 1(a)", A: [[-1, 3], [1, 5]] }, { name: "Ex 1(b)", A: [[2, 5], [1, 10]] },
+    { name: "Ex 3", A: [[1, 4, 1], [2, 3, 2], [-2, 2, 1]] },
+    { name: "Ex 5 with b", A: [[2, 1], [1, 1], [2, 1]], b: [12, 6, 18] },
+    { name: "Ex 6 with b", A: [[3, -1], [4, 2], [0, 2]], b: [0, 20, 10] },
+    { name: "Ex 8", A: [[4, 2, 1], [2, 0, 1], [2, 0, -1], [1, 2, 1]] },
+    { name: "Ex 12: dependent", A: [[1, 0, 1], [0, 1, 1], [1, 1, 2]] },
+  ];
+  const S = { A: null, b: null, useb: false, step: 0, k: 0 };
+  const mark = presetRow($("#gs-presets"), PRE, k => load(k));
+  $("#gs-useb").onclick = () => { S.useb = !S.useb; S.k = -1; build(); };
+  function load(k) { const p = PRE[k]; S.k = k; S.A = qm.of(p.A); S.useb = !!p.b; S.b = (p.b || p.A.map(() => 1)).map(v => [q(v)]); S.step = S.A[0].length; build(); }
+  function build() {
+    const m = S.A.length, n = S.A[0].length; mark(S.k);
+    $("#gs-useb").setAttribute("aria-pressed", S.useb);
+    chipRow($("#gs-m"), [2, 3, 4], m, v => { S.A = resize(S.A, v, Math.min(n, v)); S.b = resize(S.b, v, 1); S.k = -1; S.step = S.A[0].length; build(); });
+    chipRow($("#gs-n"), [1, 2, 3, 4].filter(v => v <= m), n, v => { S.A = resize(S.A, m, v); S.k = -1; S.step = v; build(); });
+    gridIn($("#gs-in"), S.A, { label: "A (columns a₁ … aₙ)", head: ["a₁", "a₂", "a₃", "a₄"], onChange: () => { S.k = -1; mark(-1); calc(); } });
+    if (S.useb) gridIn($("#gs-b"), S.b, { label: "b", onChange: () => { S.k = -1; mark(-1); calc(); } }); else $("#gs-b").innerHTML = "";
+    calc();
+  }
+  function calc() {
+    const A = S.A.map(r => r.map(toF)), m = A.length, n = A[0].length, cols = fT(A);
+    const Qc = [], R = Array.from({ length: n }, () => Array(n).fill(0)), log = [];
+    let fail = -1;
+    for (let k = 0; k < n; k++) {
+      let v = cols[k].slice(); const rs = [];
+      for (let i = 0; i < k; i++) { R[i][k] = dot(Qc[i], cols[k]); v = sub(v, scl(R[i][k], Qc[i])); rs.push(i); }
+      R[k][k] = nrm(v);
+      log.push({ k, rs: rs.map(i => R[i][k]), v: v.slice(), rkk: R[k][k] });
+      if (R[k][k] < 1e-10 * Math.max(1, nrm(cols[k]))) { fail = k; break; }
+      Qc.push(scl(1 / R[k][k], v));
+    }
+    const done = fail < 0 ? n : fail;
+    S.step = Math.max(0, Math.min(S.step, log.length));
+    const stp = $("#gs-step");
+    stp.innerHTML = `<button class="btn sm" id="gs-prev">◀</button><span>column ${S.step} of ${n}</span><button class="btn sm" id="gs-next">▶</button><button class="btn sm" id="gs-all">All</button>`;
+    $("#gs-prev").disabled = S.step === 0; $("#gs-next").disabled = S.step >= log.length;
+    $("#gs-prev").onclick = () => { S.step--; calc(); }; $("#gs-next").onclick = () => { S.step++; calc(); }; $("#gs-all").onclick = () => { S.step = log.length; calc(); };
+    const st = $("#gs-status");
+    if (S.step === 0) { $("#gs-work").innerHTML = `<span class="op">Press ▶ to orthonormalize the columns one at a time.</span>`; $("#gs-out").innerHTML = ""; st.className = "status inf"; st.innerHTML = `<span class="k">Ready</span>Each step removes from a<sub>k</sub> its components along q₁, …, q<sub>k−1</sub>, then normalizes.`; return; }
+    const L = log[S.step - 1], k = L.k, kk = k + 1;
+    let w = "";
+    if (k === 0) w += `<span class="op">r₁₁ = ‖a₁‖ = ${nice(L.rkk)};</span>`;
+    else {
+      w += L.rs.map((r, i) => `<span class="op">r${S_(i + 1)}${S_(kk)} = q${S_(i + 1)}ᵀa${S_(kk)} = ${nice(r)};</span>`).join("");
+      w += `<span class="op">remainder a${S_(kk)} − ${L.rs.map((_, i) => `r${S_(i + 1)}${S_(kk)}q${S_(i + 1)}`).join(" − ")} =</span>` + lbl(niceM(colM(L.v)), "remainder") + `<span class="op">; r${S_(kk)}${S_(kk)} = ‖remainder‖ = ${nice(L.rkk)};</span>`;
+    }
+    if (fail === k) w += `<span class="op" style="color:var(--warn)">r${S_(kk)}${S_(kk)} = 0: cannot normalize</span>`;
+    else w += `<span class="op">q${S_(kk)} =</span>` + lbl(niceM(colM(Qc[k])), `q${S_(kk)}`);
+    $("#gs-work").innerHTML = w;
+    const s = Math.min(S.step, done), Qm = Array.from({ length: m }, (_, i) => Qc.slice(0, s).map(q0 => q0[i])), Rm = R.slice(0, s).map(r => r.slice(0, s));
+    let out = s ? lbl(niceM(Qm), `Q (${m} × ${s})`) + lbl(niceM(Rm), `R (${s} × ${s})`) : "";
+    if (fail >= 0 && S.step > fail) {
+      st.className = "status bad";
+      st.innerHTML = `<span class="k">The process breaks down at column ${fail + 1}</span>a${S_(fail + 1)} lies in the span of the earlier columns, so nothing is left after subtracting projections (Exercise 5.6.12). The columns of A are linearly dependent.`;
+    } else if (S.step === n) {
+      const QR = fmul(Qm, Rm), err = Math.max(...QR.map((r, i) => Math.max(...r.map((v, j) => Math.abs(v - A[i][j]))))), QtQ = fmul(fT(Qm), Qm);
+      const oerr = Math.max(...QtQ.map((r, i) => Math.max(...r.map((v, j) => Math.abs(v - (i === j ? 1 : 0))))));
+      st.className = "status ok";
+      st.innerHTML = `<span class="k">A = QR</span>Q has orthonormal columns (largest deviation of QᵀQ from I: ${oerr.toExponential(1)}), R is upper triangular with positive diagonal, and QR reproduces A (largest error ${err.toExponential(1)}).`;
+      if (S.useb) {
+        const bf = S.b.map(r => toF(r[0])), Qtb = fT(Qm).map(r => dot(r, bf)), x = Array(n).fill(0);
+        for (let i = n - 1; i >= 0; i--) { let t = Qtb[i]; for (let j = i + 1; j < n; j++) t -= Rm[i][j] * x[j]; x[i] = t / Rm[i][i]; }
+        const r = bf.map((bi, i) => bi - dot(A[i], x));
+        out += `<span class="op">least squares: R x̂ = Qᵀb,</span>` + lbl(niceM(colM(Qtb)), "Qᵀb") + `<span class="op">x̂ =</span>` + lbl(niceM(colM(x)), "x̂") + `<span class="op">‖b − Ax̂‖ = ${nice(nrm(r))}</span>`;
+      }
+    } else { st.className = "status inf"; st.innerHTML = `<span class="k">Column ${S.step} done</span>Span(q₁, …, q${S_(S.step)}) = Span(a₁, …, a${S_(S.step)}).`; }
+    $("#gs-out").innerHTML = out;
+  }
+  HOOK.gs = k => { load(k); goto("#lab-gs"); };
+  load(0);
+})();
+
+/* =========================================================
+   LAB · Orthogonal polynomial families
+   ========================================================= */
+(function polyLab() {
+  const FAM = [
+    { name: "Legendre Pₙ", sym: "P", rec: "(n + 1)Pₙ₊₁ = (2n + 1)x Pₙ − n Pₙ₋₁", gen(N) { const P = [[q(1)], [q(0), q(1)]]; for (let n = 1; n < N; n++) { const a = new Q(2 * n + 1, n + 1), b = new Q(n, n + 1); const nx = Array(n + 2).fill(0).map(() => new Q(0)); P[n].forEach((c, i) => { nx[i + 1] = nx[i + 1].add(c.mul(a)); }); P[n - 1].forEach((c, i) => { nx[i] = nx[i].sub(c.mul(b)); }); P.push(nx); } return P.slice(0, N + 1); },
+      ip: (f, g) => simpson(x => f(x) * g(x), -1, 1), norm: n => `2/${2 * n + 1}`, wt: "∫₋₁¹ p(x)q(x) dx" },
+    { name: "Chebyshev Tₙ", sym: "T", rec: "Tₙ₊₁ = 2x Tₙ − Tₙ₋₁", gen(N) { const T = [[q(1)], [q(0), q(1)]]; for (let n = 1; n < N; n++) { const nx = Array(n + 2).fill(0).map(() => new Q(0)); T[n].forEach((c, i) => { nx[i + 1] = nx[i + 1].add(c.mul(2)); }); T[n - 1].forEach((c, i) => { nx[i] = nx[i].sub(c); }); T.push(nx); } return T.slice(0, N + 1); },
+      ip: (f, g) => simpson(t => f(Math.cos(t)) * g(Math.cos(t)), 0, Math.PI), norm: n => n === 0 ? "π" : "π/2", wt: "∫₋₁¹ p(x)q(x)(1 − x²)^−½ dx" },
+  ];
+  function simpson(f, a, b, n = 2000) { const h = (b - a) / n; let s = f(a) + f(b); for (let i = 1; i < n; i++) s += (i % 2 ? 4 : 2) * f(a + i * h); return s * h / 3; }
+  const S = { f: 0, N: 4 };
+  const P = plane2D($("#op-svg"), { R: 1.25 });
+  const colors = ["ink", "c1", "c2", "c3", "pivot", "warn"];
+  const markF = presetRow($("#op-fam"), FAM, k => { S.f = k; draw(); });
+  const polyStr = (c, sym, n) => {
+    const parts = []; for (let i = c.length - 1; i >= 0; i--) { const v = c[i]; if (v.zero) continue; const a = v.abs(), mon = i === 0 ? "" : i === 1 ? "x" : `x${"⁰¹²³⁴⁵⁶"[i]}`; parts.push({ neg: v.neg_, body: (a.one && mon ? "" : a.html()) + mon }); }
+    return `${sym}${S_(n)}(x) = ` + parts.map((p, k) => (k ? (p.neg ? ` ${MINUS} ` : " + ") : (p.neg ? MINUS : "")) + p.body).join("");
+  };
+  function draw() {
+    markF(S.f);
+    chipRow($("#op-n"), [1, 2, 3, 4, 5], S.N, n => { S.N = n; draw(); });
+    const F = FAM[S.f], polys = F.gen(S.N), fns = polys.map(c => x => c.reduce((s, v, i) => s + toF(v) * x ** i, 0));
+    P.clear();
+    [-1, -0.5, 0.5, 1].forEach(t => { el("line", { x1: P.X(t), y1: P.Y(-1.25), x2: P.X(t), y2: P.Y(1.25), class: "gridl" }, P.layers.under); el("line", { x1: P.X(-1.25), y1: P.Y(t), x2: P.X(1.25), y2: P.Y(t), class: "gridl" }, P.layers.under); });
+    fns.forEach((f, n) => {
+      const pts = []; for (let t = 0; t <= 200; t++) { const x = -1 + 2 * t / 200; pts.push(`${P.X(x)},${P.Y(f(x))}`); }
+      el("polyline", { points: pts.join(" "), fill: "none", style: `stroke:var(--${colors[n % colors.length]})`, "stroke-width": 2.5 }, P.layers.mid);
+    });
+    $("#op-list").innerHTML = polys.map((c, n) => `<div style="color:var(--${colors[n % colors.length]})">${polyStr(c, F.sym, n)}</div>`).join("");
+    const G = fns.map(f => fns.map(g => F.ip(f, g)));
+    $("#op-gram").innerHTML = lbl(matHTML(G, { render: v => Math.abs(v) < 1e-8 ? "0" : fmt(v, 4), cellClass: (i, j) => i === j ? "hl3" : "" }), `Gram matrix ⟨${F.sym}ᵢ, ${F.sym}ⱼ⟩, inner product ${F.wt}`);
+    $("#op-status").className = "status ok";
+    $("#op-status").innerHTML = `<span class="k math">${F.rec}</span>Off-diagonal entries are 0: the polynomials are mutually orthogonal. Diagonal: ‖${F.sym}ₙ‖² = ${polys.map((_, n) => F.norm(n)).join(", ")}.`;
+  }
+  draw();
+})();
+
+/* =========================================================
+   Definitions
+   ========================================================= */
+renderDefinitions([
+  { sec: "s51", id: "def-dot", term: "Scalar product, angle, projection", ref: "§5.1 · Definitions, Theorem 5.1.1", scene: "ScalarProjection", lab: ["#lab-proj", "Open the projection lab"],
+    html: `The <b>scalar product</b> of <b>x</b>, <b>y</b> ∈ ℝ<sup><i>n</i></sup> is <b>x</b><sup>T</sup><b>y</b> = Σ<i>x</i>${S_("i")}<i>y</i>${S_("i")}; the length is ‖<b>x</b>‖ = (<b>x</b><sup>T</sup><b>x</b>)<sup>1/2</sup> and the distance is ‖<b>x</b> − <b>y</b>‖. For nonzero vectors <b>x</b><sup>T</sup><b>y</b> = ‖<b>x</b>‖‖<b>y</b>‖ cos θ. <b>x</b> and <b>y</b> are <b>orthogonal</b> if <b>x</b><sup>T</sup><b>y</b> = 0. The <b>scalar projection</b> of <b>x</b> onto <b>y</b> is α = <b>x</b><sup>T</sup><b>y</b>/‖<b>y</b>‖ and the <b>vector projection</b> is <b>p</b> = (<b>x</b><sup>T</sup><b>y</b>/<b>y</b><sup>T</sup><b>y</b>)<b>y</b>.`,
+    note: "Exercise 5.1.3(b): x = (3, 5)ᵀ, y = (1, 1)ᵀ, p = (4, 4)ᵀ, x − p = (−1, 1)ᵀ." },
+  { sec: "s52", id: "def-perp", term: "Orthogonal complement; fundamental subspaces", ref: "§5.2 · Definitions, Theorems 5.2.1–5.2.4", scene: "OrthogonalComplement", lab: ["#lab-four", "Open the four subspaces"],
+    html: `Subspaces <i>X</i>, <i>Y</i> of ℝ<sup><i>n</i></sup> are <b>orthogonal</b> if <b>x</b><sup>T</sup><b>y</b> = 0 for all <b>x</b> ∈ <i>X</i>, <b>y</b> ∈ <i>Y</i>. The <b>orthogonal complement</b> of <i>Y</i> is <i>Y</i><sup>⊥</sup> = {<b>x</b> ∈ ℝ<sup><i>n</i></sup> : <b>x</b><sup>T</sup><b>y</b> = 0 for every <b>y</b> ∈ <i>Y</i>}. <b>Fundamental Subspaces Theorem:</b> <i>N</i>(<i>A</i>) = <i>R</i>(<i>A</i><sup>T</sup>)<sup>⊥</sup> and <i>N</i>(<i>A</i><sup>T</sup>) = <i>R</i>(<i>A</i>)<sup>⊥</sup>. Also dim <i>S</i> + dim <i>S</i><sup>⊥</sup> = <i>n</i>, ℝ<sup><i>n</i></sup> = <i>S</i> ⊕ <i>S</i><sup>⊥</sup> and (<i>S</i><sup>⊥</sup>)<sup>⊥</sup> = <i>S</i>.` },
+  { sec: "s53", id: "def-ls", term: "Least squares solution; normal equations", ref: "§5.3 · Theorems 5.3.1, 5.3.2", scene: "LeastSquares", lab: ["#lab-ls", "Fit data in the lab"],
+    html: `A <b>least squares solution</b> of <i>A</i><b>x</b> = <b>b</b> is an <b>x̂</b> minimizing ‖<b>b</b> − <i>A</i><b>x</b>‖. Then <b>p</b> = <i>A</i><b>x̂</b> is the vector of <i>R</i>(<i>A</i>) closest to <b>b</b>, and <b>b</b> − <b>p</b> ∈ <i>R</i>(<i>A</i>)<sup>⊥</sup> = <i>N</i>(<i>A</i><sup>T</sup>). So <b>x̂</b> solves the <b>normal equations</b> <i>A</i><sup>T</sup><i>A</i><b>x</b> = <i>A</i><sup>T</sup><b>b</b>; if <i>A</i> has rank <i>n</i>, the solution is unique: <b>x̂</b> = (<i>A</i><sup>T</sup><i>A</i>)<sup>−1</sup><i>A</i><sup>T</sup><b>b</b>.` },
+  { sec: "s54", id: "def-ip", term: "Inner product; norm", ref: "§5.4 · Definitions, Theorems 5.4.1–5.4.3", scene: "Norms", lab: ["#lab-norm", "Compare norms in the lab"],
+    html: `An <b>inner product</b> on <i>V</i> assigns a real number ⟨<b>x</b>, <b>y</b>⟩ to each pair so that (I) ⟨<b>x</b>, <b>x</b>⟩ ≥ 0 with equality iff <b>x</b> = <b>0</b>; (II) ⟨<b>x</b>, <b>y</b>⟩ = ⟨<b>y</b>, <b>x</b>⟩; (III) ⟨α<b>x</b> + β<b>y</b>, <b>z</b>⟩ = α⟨<b>x</b>, <b>z</b>⟩ + β⟨<b>y</b>, <b>z</b>⟩. A <b>norm</b> ‖·‖ satisfies ‖<b>v</b>‖ ≥ 0 (= 0 iff <b>v</b> = <b>0</b>), ‖α<b>v</b>‖ = |α|‖<b>v</b>‖, ‖<b>v</b> + <b>w</b>‖ ≤ ‖<b>v</b>‖ + ‖<b>w</b>‖. Every inner product gives the norm ‖<b>v</b>‖ = ⟨<b>v</b>, <b>v</b>⟩<sup>1/2</sup>, the <b>Pythagorean law</b> and the <b>Cauchy–Schwarz inequality</b> |⟨<b>u</b>, <b>v</b>⟩| ≤ ‖<b>u</b>‖‖<b>v</b>‖.` },
+  { sec: "s55", id: "def-on", term: "Orthonormal set; orthogonal matrix", ref: "§5.5 · Definitions, Theorems 5.5.2, 5.5.5, 5.5.7", scene: "OrthonormalCoordinates", lab: ["#lab-on", "Open the orthonormal lab"],
+    html: `Nonzero <b>v</b>${S_(1)}, …, <b>v</b>${S_("n")} with ⟨<b>v</b>${S_("i")}, <b>v</b>${S_("j")}⟩ = 0 for <i>i</i> ≠ <i>j</i> form an <b>orthogonal set</b>; it is <b>orthonormal</b> if moreover each has length 1. In an orthonormal basis, <b>v</b> = Σ<i>c</i>${S_("i")}<b>u</b>${S_("i")} with <i>c</i>${S_("i")} = ⟨<b>v</b>, <b>u</b>${S_("i")}⟩, and ‖<b>v</b>‖<sup>2</sup> = Σ<i>c</i>${S_("i")}<sup>2</sup>. An <i>n</i> × <i>n</i> matrix <i>Q</i> is <b>orthogonal</b> if its columns form an orthonormal set, i.e. <i>Q</i><sup>T</sup><i>Q</i> = <i>I</i>.` },
+  { sec: "s56", id: "def-gs", term: "Gram–Schmidt process; QR factorization", ref: "§5.6 · Theorems 5.6.1–5.6.3", scene: "GramSchmidt", lab: ["#lab-gs", "Step through it in the lab"],
+    html: `Let {<b>x</b>${S_(1)}, …, <b>x</b>${S_("n")}} be a basis. Set <b>u</b>${S_(1)} = <b>x</b>${S_(1)}/‖<b>x</b>${S_(1)}‖ and, for <i>k</i> = 1, …, <i>n</i> − 1, <b>p</b>${S_("k")} = Σ<sub><i>i</i>≤<i>k</i></sub>⟨<b>x</b>${S_("k+1")}, <b>u</b>${S_("i")}⟩<b>u</b>${S_("i")}, <b>u</b>${S_("k+1")} = (<b>x</b>${S_("k+1")} − <b>p</b>${S_("k")})/‖<b>x</b>${S_("k+1")} − <b>p</b>${S_("k")}‖. Then {<b>u</b>${S_(1)}, …, <b>u</b>${S_("n")}} is an orthonormal basis with the same partial spans. For an <i>m</i> × <i>n</i> <i>A</i> of rank <i>n</i>: <i>A</i> = <i>QR</i>, <i>Q</i> with orthonormal columns and <i>R</i> upper triangular with positive diagonal; the least squares solution solves <i>R</i><b>x̂</b> = <i>Q</i><sup>T</sup><b>b</b>.` },
+  { sec: "s57", id: "def-op", term: "Orthogonal polynomials", ref: "§5.7 · Definition, Theorems 5.7.1, 5.7.2", scene: "LegendrePolynomials", lab: ["#lab-poly", "Plot the families"],
+    html: `A sequence <i>p</i>${S_(0)}, <i>p</i>${S_(1)}, … of polynomials with deg <i>p</i>${S_("i")} = <i>i</i> is a sequence of <b>orthogonal polynomials</b> if ⟨<i>p</i>${S_("i")}, <i>p</i>${S_("j")}⟩ = 0 whenever <i>i</i> ≠ <i>j</i>. It is orthonormal if also ⟨<i>p</i>${S_("i")}, <i>p</i>${S_("i")}⟩ = 1. Any such sequence satisfies a three-term recursion <i>p</i>${S_("n+1")} = (<i>a</i>${S_("n")}<i>x</i> − <i>b</i>${S_("n")})<i>p</i>${S_("n")} − <i>c</i>${S_("n")}<i>p</i>${S_("n−1")}.` },
+], { s51: "5.1", s52: "5.2", s53: "5.3", s54: "5.4", s55: "5.5", s56: "5.6", s57: "5.7" });
+
+/* =========================================================
+   Exercises
+   ========================================================= */
+const TF = ["True", "False"];
+const qv = a => a.map(q);
+const dq = (a, b) => a.reduce((s, v, i) => s.add(q(v).mul(q(b[i]))), new Q(0));
+const projQ = (x, y) => { const c = dq(x, y).div(dq(y, y)); return y.map(v => q(v).mul(c)); };
+const colsToX = cols => qm.of(cols[0].map((_, i) => cols.map(c => c[i])));
+const lsQ = (A, b) => { const At = qm.T(qm.of(A)); return qm.solve(qm.mul(At, qm.of(A)), qm.mul(At, qm.col(b)).map(r => r[0])); };
+const vand = (xs, d) => xs.map(x => Array.from({ length: d + 1 }, (_, j) => x ** j));
+const prop = (v, w) => { // v proportional to w (both nonzero)
+  const k = w.findIndex(t => !q(t).zero); if (v[k].zero) return false; const c = v[k].div(q(w[k])); return v.every((t, i) => t.eq(q(w[i]).mul(c)));
+};
+const orthoBasisCheck = (vecs, against, need) => {
+  const nz = vecs.filter(v => v.some(t => !t.zero));
+  if (nz.length < need) return { ok: false, msg: "Give nonzero vectors." };
+  if (!vecs.every(v => against.every(a => dq(v, a).zero))) return { ok: false, msg: "Each vector must be orthogonal to every given spanning vector." };
+  if (qm.rank(vecs.map(v => v.slice())) < need) return { ok: false, msg: "The vectors you gave are dependent: not a basis." };
+  return { ok: true, msg: "Correct: independent and orthogonal to the subspace, with the right dimension." };
+};
+// exact Gram–Schmidt when all the norms happen to be rational
+function gsExact(A) {
+  const cols = fT(A), Qc = [], n = cols.length, R = Array.from({ length: n }, () => Array(n).fill(0));
+  for (let k = 0; k < n; k++) { let v = cols[k].slice(); for (let i = 0; i < k; i++) { R[i][k] = dot(Qc[i], cols[k]); v = sub(v, scl(R[i][k], Qc[i])); } R[k][k] = nrm(v); Qc.push(scl(1 / R[k][k], v)); }
+  return { Q: fT(Qc).map(r => r.map(toQ)), R: R.map(r => r.map(toQ)) };
+}
+
+buildExercises("s51", "Exercises · §5.1", "From the Section 5.1 exercises (p. 212–214).", [
+  cl("5.1 · Ex 1", "Classify the angle between v and w.", ["θ = 0", "θ = 90°", "acute (0 < θ < 90°)", "obtuse"], [
+    { tag: "(a)", html: "v = (2, 1, 3)ᵀ, w = (6, 3, 9)ᵀ", ans: 0, why: "w = 3v: same direction." },
+    { tag: "(b)", html: "v = (2, −3)ᵀ, w = (3, 2)ᵀ", ans: 1, why: "vᵀw = 6 − 6 = 0.", action: { label: "Show in the lab", run: () => HOOK.proj([2, -3], [3, 2]) } },
+    { tag: "(c)", html: "v = (4, 1)ᵀ, w = (3, 2)ᵀ", ans: 2, why: "vᵀw = 14 > 0 and they are not parallel." },
+    { tag: "(d)", html: "v = (−2, 3, 1)ᵀ, w = (1, 2, 4)ᵀ", ans: 2, why: "vᵀw = −2 + 6 + 4 = 8 > 0." },
+  ], { wide: true }),
+  fl("5.1 · Ex 3", "Find the vector projection p of x onto y: (a) x = (3, 4)ᵀ, y = (1, 0)ᵀ; (b) x = (3, 5)ᵀ, y = (1, 1)ᵀ; (c) x = (2, 4, 3)ᵀ, y = (1, 1, 1)ᵀ; (d) x = (2, −5, 4)ᵀ, y = (1, 2, −1)ᵀ.",
+    [[[3, 4], [1, 0]], [[3, 5], [1, 1]], [[2, 4, 3], [1, 1, 1]], [[2, -5, 4], [1, 2, -1]]].map(([x, y], k) => vec(`(${"abcd"[k]}) p`, projQ(x, y))),
+    "p = (xᵀy / yᵀy) y. (d): xᵀy = 2 − 10 − 4 = −12 and yᵀy = 6, so p = −2y. In each case x − p is orthogonal to y.",
+    { wide: true, actions: [{ label: "Check (b) in the lab", run: () => HOOK.proj([3, 5], [1, 1]) }] }),
+  fl("5.1 · Ex 5, 6", "(5) The point on the line y = 2x closest to (5, 2). (6) The point on the line y = 2x + 1 closest to (5, 2).",
+    [vec("(5)", projQ([5, 2], [1, 2])), vec("(6)", projQ([5, 1], [1, 2]).map((v, i) => v.add(q([0, 1][i]))))],
+    "(5) Project (5, 2) onto the direction (1, 2): (9/5)(1, 2). (6) Shift down by 1 so the line passes through 0, project (5, 1), and shift back: (7/5, 14/5) + (0, 1).", { wide: true }),
+  fl("5.1 · Ex 7, 10, 11", "Distances: (7) from (1, 2) to the line 4x − 3y = 0; (10) from (1, 1, 1) to the plane 2x + 2y + z = 0; (11) from (2, 1, −2) to the plane 6(x − 1) + 2(y − 3) + 3(z + 4) = 0.",
+    [num("(7)", "2/5"), num("(10)", "5/3"), num("(11)", "8/7")],
+    "Distance = |Nᵀ(P − P₀)| / ‖N‖, the scalar projection onto the normal N. (7) |4 − 6|/5. (10) |2 + 2 + 1|/3. (11) |6·1 + 2·(−2) + 3·2|/7 = 8/7.", { wide: true }),
+  fl("5.1 · Ex 8(b)", "Equation ax + by + cz + d = 0 of the plane through P₀ = (4, 2, −5) normal to N = (−3, 6, 2)ᵀ. Enter (a, b, c, d); any nonzero multiple is accepted.",
+    [vec("(a, b, c, d)", [-3, 6, 2, 10])], "−3(x − 4) + 6(y − 2) + 2(z + 5) = 0, i.e. −3x + 6y + 2z + 10 = 0.",
+    { check: ([v]) => prop(v[0], [-3, 6, 2, 10]) ? { ok: true, msg: "Correct." } : { ok: false, msg: "The normal must be a multiple of (−3, 6, 2), and P₀ must satisfy the equation." } }),
+  fl("5.1 · Ex 9", "Equation ax + by + cz + d = 0 of the plane through P₁ = (2, 3, 1), P₂ = (5, 4, 3), P₃ = (3, 4, 4). Any nonzero multiple is accepted.",
+    [vec("(a, b, c, d)", [1, -7, 2, 17])], "N = (P₂ − P₁) × (P₃ − P₁) = (3, 1, 2) × (1, 1, 3) = (1, −7, 2). Then d = −Nᵀ P₁ = 17.",
+    { check: ([v]) => prop(v[0], [1, -7, 2, 17]) ? { ok: true, msg: "Correct: all three points satisfy it." } : { ok: false, msg: "Check that P₁, P₂ and P₃ all satisfy your equation." } }),
+  fl("5.1 · Ex 17", "x = (4, 4, −4, 4)ᵀ and y = (4, 2, 2, 1)ᵀ. Find xᵀy, ‖x‖, ‖y‖, the angle θ in degrees, and the distance ‖x − y‖.",
+    [num("xᵀy", 20), num("‖x‖", 8), num("‖y‖", 5), num("θ (°)", 60), num("‖x − y‖", 7)], "cos θ = 20/(8·5) = 1/2, so θ = 60°. x − y = (0, 2, −6, 3) has length 7.", { wide: true }),
+  ch("5.1 · Ex 4", "x and y are linearly independent in ℝ² with ‖x‖ = 2 and ‖y‖ = 3. What can |xᵀy| be?", ["any value with 0 ≤ |xᵀy| < 6", "exactly 6", "any value with 0 ≤ |xᵀy| ≤ 6", "only 0"], 0,
+    "|xᵀy| = 6|cos θ| ≤ 6, with equality only when x and y are parallel, which independence rules out."),
+  ch("5.1 · Ex 14", "If x₁ ⊥ x₂ and x₂ ⊥ x₃ in ℝ³, must x₁ ⊥ x₃?", ["No", "Yes"], 0, "x₁ = x₃ = e₁ and x₂ = e₂ is a counterexample."),
+]);
+
+buildExercises("s52", "Exercises · §5.2", "From the Section 5.2 exercises (p. 221–222).", [
+  fl("5.2 · Ex 1(a), (b)", `Dimensions of the four fundamental subspaces of (a) A = ${sm([[3, 4], [6, 8]])}, (b) A = ${sm([[1, 3, 1], [2, 4, 0]])}.`,
+    [[[3, 4], [6, 8]], [[1, 3, 1], [2, 4, 0]]].flatMap((A, k) => { const r = qm.rank(qm.of(A)), m = A.length, n = A[0].length; return [num(`(${"ab"[k]}) R(Aᵀ)`, r), num(`(${"ab"[k]}) N(A)`, n - r), num(`(${"ab"[k]}) R(A)`, r), num(`(${"ab"[k]}) N(Aᵀ)`, m - r)]; }),
+    "(a) rank 1: lines R(Aᵀ) = Span(3, 4), N(A) = Span(−4, 3), R(A) = Span(1, 2), N(Aᵀ) = Span(−2, 1). (b) rank 2: R(Aᵀ) is a plane in ℝ³, N(A) = Span((−2, 1, −1)ᵀ), R(A) = ℝ², N(Aᵀ) = {0}.",
+    { wide: true, actions: [{ label: "Open (a) in the lab", run: () => HOOK.four([[3, 4], [6, 8]]) }, { label: "Open (b) in the lab", run: () => HOOK.four([[1, 3, 1], [2, 4, 0]]) }] }),
+  fl("5.2 · Ex 2(a)", "S is spanned by x = (1, −1, 1)ᵀ. Give a basis for S⊥ (two vectors).",
+    [vec("v₁", [1, 1, 0]), vec("v₂", [0, 1, 1])], "S⊥ = N((1 −1 1)): x₁ − x₂ + x₃ = 0. For example (1, 1, 0)ᵀ and (0, 1, 1)ᵀ, a plane through the origin with normal x.",
+    { check: ([a, b]) => orthoBasisCheck([a[0], b[0]], [[1, -1, 1]], 2) }),
+  fl("5.2 · Ex 3(b)", "Find a nonzero vector spanning the orthogonal complement of Span((1, 2, 1)ᵀ, (1, −1, 2)ᵀ) in ℝ³.",
+    [vec("n", [5, -1, -3])], "S⊥ = N(A) with the two vectors as rows of A. One choice is the cross product (1, 2, 1) × (1, −1, 2) = (5, −1, −3).",
+    { check: ([v]) => orthoBasisCheck([v[0]], [[1, 2, 1], [1, -1, 2]], 1) }),
+  fl("5.2 · Ex 4", "S ⊂ ℝ⁴ is spanned by x₁ = (1, 0, −2, 1)ᵀ and x₂ = (0, 1, 3, −2)ᵀ. Give a basis for S⊥.",
+    [vec("v₁", [2, -3, 1, 0]), vec("v₂", [-1, 2, 0, 1])], "S⊥ = N(A) with rows x₁ᵀ, x₂ᵀ. A is already in reduced form; the free variables x₃, x₄ give (2, −3, 1, 0)ᵀ and (−1, 2, 0, 1)ᵀ.",
+    { wide: true, check: ([a, b]) => orthoBasisCheck([a[0], b[0]], [[1, 0, -2, 1], [0, 1, 3, -2]], 2) }),
+  ch("5.2 · Ex 6", "Can a matrix have (3, 1, 2) in its row space and (2, 1, 1)ᵀ in its null space?", ["No", "Yes"], 0,
+    "The null space is the orthogonal complement of the row space, but (3, 1, 2)·(2, 1, 1) = 9 ≠ 0."),
+  fl("5.2 · Ex 9", "A is 5 × 7 with rank 3. Find dim N(A) and dim N(Aᵀ).", [num("dim N(A)", 4), num("dim N(Aᵀ)", 2)], "dim N(A) = n − r = 7 − 3; dim N(Aᵀ) = m − r = 5 − 3."),
+  cl("5.2 · Theorems, Ex 13", "True or false? (A is m × n.)", TF, [
+    { tag: "5.2.4", html: "(S⊥)⊥ = S for every subspace S of ℝⁿ.", ans: 0, why: "Theorem 5.2.4." },
+    { tag: "5.2.1", html: "If Ax = 0 and y = Aᵀz, then xᵀy = 0.", ans: 0, why: "xᵀAᵀz = (Ax)ᵀz = 0." },
+    { tag: "Ex 13", html: "N(AᵀA) = N(A).", ans: 0, why: "If AᵀAx = 0 then ‖Ax‖² = xᵀAᵀAx = 0." },
+    { tag: "+", html: "For a square A, R(A) ⟂ N(A).", ans: 1, why: "A = (0 1; 0 0): R(A) = N(A) = Span(e₁). The orthogonal pairs are R(Aᵀ), N(A) and R(A), N(Aᵀ)." },
+  ], { wide: true }),
+]);
+
+const ex531 = [[[[1, 1], [2, -3], [0, 0]], [3, 1, 2]], [[[-1, 1], [2, 1], [1, -2]], [10, 5, 20]], [[[1, 1, 1], [-1, 1, 1], [0, -1, 1], [1, 0, 1]], [4, 0, 1, 2]]];
+buildExercises("s53", "Exercises · §5.3", "From the Section 5.3 exercises (p. 231–232) and the examples.", [
+  fl("5.3 · Example 1", "Least squares solution of x₁ + x₂ = 3, −2x₁ + 3x₂ = 1, 2x₁ − x₂ = 2.", [vec("x̂", lsQ([[1, 1], [-2, 3], [2, -1]], [3, 1, 2]))],
+    "Normal equations: (9 −7; −7 11) x = (5, 4)ᵀ, so x̂ = (83/50, 71/50)ᵀ."),
+  fl("5.3 · Ex 1", "Least squares solutions of (a) x₁ + x₂ = 3, 2x₁ − 3x₂ = 1, 0x₁ + 0x₂ = 2; (b) −x₁ + x₂ = 10, 2x₁ + x₂ = 5, x₁ − 2x₂ = 20; (c) x₁ + x₂ + x₃ = 4, −x₁ + x₂ + x₃ = 0, −x₂ + x₃ = 1, x₁ + x₃ = 2.",
+    ex531.map(([A, b], k) => vec(`(${"abc"[k]}) x̂`, lsQ(A, b))), "Form AᵀA and Aᵀb, then solve. In (a) the third equation cannot be helped: the first two are solved exactly.", { wide: true }),
+  fl("5.3 · Ex 3(a), 4", `A = ${sm([[1, 2], [2, 4], [-1, -2]])}, b = (3, 2, 1)ᵀ. A has rank 1, so there are infinitely many least squares solutions, but the projection p = Ax̂ of b onto R(A) is unique. Find p.`,
+    [vec("p", projQ([3, 2, 1], [1, 2, -1]))], "R(A) = Span((1, 2, −1)ᵀ). p = (bᵀa/aᵀa) a = (6/6) a = (1, 2, −1)ᵀ, and b − p = (2, 0, 2)ᵀ is orthogonal to both columns."),
+  fl("5.3 · Example 2", "Best least squares line y = c₀ + c₁x for the data (0, 1), (3, 4), (6, 5).", [num("c₀", "4/3"), num("c₁", "2/3")],
+    "Normal equations (3 9; 9 45)(c₀, c₁)ᵀ = (10, 42)ᵀ.", { actions: [{ label: "See it in the lab", run: () => HOOK.ls(0) }] }),
+  fl("5.3 · Ex 5", "Best least squares line for (−1, 0), (0, 1), (1, 3), (2, 9).", (() => { const c = lsQ(vand([-1, 0, 1, 2], 1), [0, 1, 3, 9]); return [num("c₀", c[0]), num("c₁", c[1])]; })(),
+    "AᵀA = (4 2; 2 6), Aᵀy = (13, 21)ᵀ, so ĉ = (9/5, 29/10)ᵀ.", { actions: [{ label: "See it in the lab", run: () => HOOK.ls(2) }] }),
+  fl("5.3 · Ex 6, Example 3", "Best least squares parabola y = c₀ + c₁x + c₂x² for (Ex 6) the data of Ex 5 and (Example 3) the data (0, 3), (1, 2), (2, 4), (3, 4).",
+    (() => { const a = lsQ(vand([-1, 0, 1, 2], 2), [0, 1, 3, 9]), b = lsQ(vand([0, 1, 2, 3], 2), [3, 2, 4, 4]); return [vec("Ex 6: (c₀, c₁, c₂)", a), vec("Example 3: (c₀, c₁, c₂)", b)]; })(),
+    "Columns of A are 1, xᵢ, xᵢ². Solve the 3 × 3 normal equations.", { wide: true, actions: [{ label: "Ex 6 in the lab", run: () => HOOK.ls(3) }, { label: "Example 3 in the lab", run: () => HOOK.ls(1) }] }),
+  ch("5.3 · Ex 10", "A is 8 × 5 with rank 3 and b ≠ 0 lies in N(Aᵀ). How many least squares solutions does Ax = b have?", ["infinitely many", "exactly one", "none"], 0,
+    "b ⟂ R(A), so p = 0 and every x ∈ N(A) is a least squares solution; N(A) has dimension 2. (Ax = b itself is inconsistent.)"),
+]);
+
+buildExercises("s54", "Exercises · §5.4", "From the Section 5.4 exercises (p. 239–241) and Example 5.", [
+  fl("5.4 · Ex 1", "x = (−1, −1, 1, 1)ᵀ and y = (1, 1, 5, −3)ᵀ are orthogonal. Find ‖x‖², ‖y‖², ‖x + y‖².", [num("‖x‖²", 4), num("‖y‖²", 36), num("‖x + y‖²", 40)], "Pythagorean law: 4 + 36 = 40."),
+  fl("5.4 · Ex 2", "x = (1, 1, 1, 1)ᵀ, y = (8, 2, 2, 0)ᵀ. Find xᵀy, the angle θ in degrees, and the projection p of x onto y.", [num("xᵀy", 12), num("θ (°)", 45), vec("p", projQ([1, 1, 1, 1], [8, 2, 2, 0]))],
+    "cos θ = 12/(2·6√2) = 1/√2. p = (12/72)y = (4/3, 1/3, 1/3, 0)ᵀ.", { wide: true }),
+  fl("5.4 · Ex 3", "Weighted inner product ⟨x, y⟩ = Σ wᵢxᵢyᵢ with w = (1/4, 1/2, 1/4), x = (1, 1, 1)ᵀ, y = (−5, 1, 3)ᵀ. Find ⟨x, y⟩, ‖x‖, ‖y‖.", [num("⟨x, y⟩", 0), num("‖x‖", 1), num("‖y‖", 3)],
+    "⟨x, y⟩ = −5/4 + 1/2 + 3/4 = 0. ‖y‖² = 25/4 + 1/2 + 9/4 = 9."),
+  fl("5.4 · Ex 4", `With ⟨A, B⟩ = Σ aᵢⱼbᵢⱼ, A = ${sm([[1, 2, 2], [1, 0, 2], [3, 1, 1]])}, B = ${sm([[-4, 1, 1], [-3, 3, 2], [1, -2, -2]])}: find ⟨A, B⟩, ‖A‖_F, ‖B‖_F, ‖A + B‖_F².`,
+    [num("⟨A, B⟩", 0), num("‖A‖_F", 5), num("‖B‖_F", 7), num("‖A + B‖_F²", 74)], "A and B are orthogonal, so ‖A + B‖² = 25 + 49.", { wide: true }),
+  fl("5.4 · Example 5", "x = (4, −5, 3)ᵀ. Find ‖x‖₁, ‖x‖₂², ‖x‖∞.", [num("‖x‖₁", 12), num("‖x‖₂²", 50), num("‖x‖∞", 5)], "‖x‖₂ = √50 = 5√2."),
+  fl("5.4 · Ex 7, 8", "In C[0, 1] with ⟨f, g⟩ = ∫₀¹ f g dx: (7a) ⟨eˣ, e⁻ˣ⟩; (7c) ⟨x², x³⟩; (8) the angle between 1 and x in degrees, and the projection of 1 onto x, written p = c·x.",
+    [num("(7a)", 1), num("(7c)", "1/6"), num("(8) θ (°)", 30), num("(8) c", "3/2")], "⟨1, x⟩ = 1/2, ‖1‖ = 1, ‖x‖ = 1/√3, so cos θ = √3/2. p = (⟨1, x⟩/⟨x, x⟩) x = (3/2) x.", { wide: true }),
+  ch("5.4 · Ex 23", "A nonzero x ∈ ℝ² with ‖x‖₁ = ‖x‖₂ = ‖x‖∞:", ["(0, 3)ᵀ", "(1, 1)ᵀ", "(3, 4)ᵀ", "none exists"], 0, "Any vector on a coordinate axis: only one nonzero entry."),
+  ch("5.4 · Ex 27", "The parallelogram law ‖u + v‖² + ‖u − v‖² = 2‖u‖² + 2‖v‖² for the 1-norm, with u = e₁, v = e₂:", ["fails: 8 ≠ 4", "holds", "fails: 2 ≠ 4"], 0,
+    "‖e₁ + e₂‖₁ = ‖e₁ − e₂‖₁ = 2, so the left side is 8, the right side 4. The 1-norm does not come from an inner product."),
+]);
+
+buildExercises("s55", "Exercises · §5.5", "From the Section 5.5 exercises (p. 261–263) and Example 1.", [
+  cl("5.5 · Ex 1", "Which pairs form an orthonormal basis for ℝ²?", ["Orthonormal basis", "Not orthonormal"], [
+    { tag: "(a)", html: "(1, 0)ᵀ, (0, 1)ᵀ", ans: 0, why: "The standard basis." },
+    { tag: "(b)", html: "(3/5, 4/5)ᵀ, (5/13, 12/13)ᵀ", ans: 1, why: "Unit vectors, but the scalar product is 63/65 ≠ 0." },
+    { tag: "(c)", html: "(1, −1)ᵀ, (1, 1)ᵀ", ans: 1, why: "Orthogonal but each has length √2." },
+    { tag: "(d)", html: "(√3/2, 1/2)ᵀ, (−1/2, √3/2)ᵀ", ans: 0, why: "The standard basis rotated by 30°." },
+  ], { wide: true }),
+  fl("5.5 · Example 1", "v₁ = (1, 1, 1)ᵀ, v₂ = (2, 1, −3)ᵀ, v₃ = (4, −5, 1)ᵀ are orthogonal. Write x = (1, 2, 3)ᵀ = c₁v₁ + c₂v₂ + c₃v₃.",
+    (() => { const V = [[1, 1, 1], [2, 1, -3], [4, -5, 1]]; return V.map((v, i) => num(`c${"₁₂₃"[i]}`, dq([1, 2, 3], v).div(dq(v, v)))); })(),
+    "For an orthogonal (not normalized) basis, cᵢ = xᵀvᵢ / vᵢᵀvᵢ: 6/3, −5/14, −3/42."),
+  fl("5.5 · Ex 6", "{u₁, u₂, u₃} is orthonormal, u = u₁ + 2u₂ + 2u₃, v = u₁ + 7u₃. Find ⟨u, v⟩, ‖u‖, ‖v‖², and the angle θ in degrees.", [num("⟨u, v⟩", 15), num("‖u‖", 3), num("‖v‖²", 50), num("θ (°)", 45)],
+    "Use coordinates: ⟨u, v⟩ = 1·1 + 2·0 + 2·7. cos θ = 15/(3·5√2) = 1/√2.", { wide: true }),
+  fl("5.5 · Ex 7", "{u₁, u₂, u₃} is orthonormal, x = c₁u₁ + c₂u₂ + c₃u₃ with ‖x‖ = 5, ⟨u₁, x⟩ = 4 and x ⊥ u₂. Find c₁, c₂ and |c₃|.", [num("c₁", 4), num("c₂", 0), num("|c₃|", 3)], "cᵢ = ⟨x, uᵢ⟩ and 25 = c₁² + c₂² + c₃² (Parseval)."),
+  fl("5.5 · Theorem 5.5.7", "u₁ = (2/3, 2/3, 1/3)ᵀ and u₂ = (−2/3, 1/3, 2/3)ᵀ are orthonormal. Find the projection p of x = (1, 1, 1)ᵀ onto S = Span(u₁, u₂).",
+    [vec("p", (() => { const u = [["2/3", "2/3", "1/3"], ["-2/3", "1/3", "2/3"]]; return [0, 1, 2].map(i => u.reduce((s, ui) => s.add(dq([1, 1, 1], ui).mul(q(ui[i]))), new Q(0))); })())],
+    "p = ⟨x, u₁⟩u₁ + ⟨x, u₂⟩u₂ = (5/3)u₁ + (1/3)u₂ = (8/9, 11/9, 7/9)ᵀ. Equivalently p = UUᵀx."),
+  cl("5.5 · Orthogonal matrices", "Is the matrix orthogonal (QᵀQ = I)?", ["Orthogonal", "Not orthogonal"], [
+    { tag: "(a)", html: `⅓${sm([[1, 2, 2], [2, 1, -2], [2, -2, 1]])}`, ans: 0, why: "Columns have length 3/3 = 1 and are mutually orthogonal." },
+    { tag: "(b)", html: sm([[0, 1], [1, 0]]), ans: 0, why: "A permutation matrix: a reflection." },
+    { tag: "(c)", html: sm([[1, 1], [-1, 1]]), ans: 1, why: "Orthogonal columns of length √2: QᵀQ = 2I." },
+    { tag: "(d)", html: sm([["3/5", "4/5"], ["-4/5", "3/5"]]), ans: 0, why: "A rotation." },
+    { tag: "(e)", html: sm([[1, 2], [0, 1]]), ans: 1, why: "A shear does not preserve length." },
+  ], { wide: true }),
+]);
+
+const G2 = gsExact([[1, -1, 4], [1, 4, -2], [1, 4, 2], [1, -1, 0]]), G3 = gsExact([[1, -2, -1], [2, 0, 1], [2, -4, 2], [4, 0, 0]]), GE3 = gsExact([[1, 4, 1], [2, 3, 2], [-2, 2, 1]]);
+buildExercises("s56", "Exercises · §5.6", "From the Section 5.6 examples and exercises (p. 262–270).", [
+  fl("5.6 · Example 2", `Gram–Schmidt QR factorization of A = ${sm([[1, -1, 4], [1, 4, -2], [1, 4, 2], [1, -1, 0]])}. Find R and Q.`,
+    [mat("R", G2.R), mat("Q", G2.Q)], "r₁₁ = ‖a₁‖ = 2, q₁ = ½(1, 1, 1, 1)ᵀ; r₁₂ = 3, r₂₂ = 5, q₂ = ½(−1, 1, 1, −1)ᵀ; r₁₃ = 2, r₂₃ = −2, r₃₃ = 4, q₃ = ½(1, −1, 1, −1)ᵀ.",
+    { wide: true, actions: [{ label: "Step through it", run: () => HOOK.gs(0) }] }),
+  fl("5.6 · Example 3", `QR factorization of A = ${sm([[1, -2, -1], [2, 0, 1], [2, -4, 2], [4, 0, 0]])}.`, [mat("R", G3.R), mat("Q", G3.Q)],
+    "r₁₁ = 5; r₁₂ = −2, r₂₂ = 4; r₁₃ = 1, r₂₃ = −1, r₃₃ = 2.", { wide: true, actions: [{ label: "Step through it", run: () => HOOK.gs(1) }] }),
+  fl("5.6 · Ex 3", "Orthonormalize the basis (1, 2, −2)ᵀ, (4, 3, 2)ᵀ, (1, 2, 1)ᵀ of ℝ³. Enter q₁, q₂, q₃ as the columns of Q.", [mat("Q", GE3.Q)],
+    "q₁ = ⅓(1, 2, −2); a₂ − 2q₁ has length 5, q₂ = ⅓(2, 1, 2); a₃ − q₁ − 2q₂ = ⅓(−2, 2, 1) already has length 1.", { actions: [{ label: "Step through it", run: () => HOOK.gs(4) }] }),
+  fl("5.6 · Ex 5(c), 6(c)", `Least squares solutions: (5) A = ${sm([[2, 1], [1, 1], [2, 1]])}, b = (12, 6, 18)ᵀ; (6) A = ${sm([[3, -1], [4, 2], [0, 2]])}, b = (0, 20, 10)ᵀ.`,
+    [vec("(5) x̂", lsQ([[2, 1], [1, 1], [2, 1]], [12, 6, 18])), vec("(6) x̂", lsQ([[3, -1], [4, 2], [0, 2]], [0, 20, 10]))],
+    "Either R x̂ = Qᵀb (Theorem 5.6.3) or the normal equations; both give (9, −3)ᵀ and (21/10, 11/2)ᵀ.",
+    { wide: true, actions: [{ label: "(5) with QR", run: () => HOOK.gs(5) }, { label: "(6) with QR", run: () => HOOK.gs(6) }] }),
+  fl("5.6 · Ex 8", "Gram–Schmidt on x₁ = (4, 2, 2, 1)ᵀ, x₂ = (2, 0, 0, 2)ᵀ, x₃ = (1, 1, −1, 1)ᵀ. Find q₁, q₂, and r₁₃, r₂₃.",
+    [vec("q₁", qv(["4/5", "2/5", "2/5", "1/5"])), vec("q₂", qv(["1/5", "-2/5", "-2/5", "4/5"])), num("r₁₃", 1), num("r₂₃", 1)],
+    "‖x₁‖ = 5; r₁₂ = 2 and x₂ − 2q₁ has length 2; then x₃ − q₁ − q₂ = (0, 1, −1, 0)ᵀ and q₃ = (0, 1, −1, 0)ᵀ/√2.", { wide: true, actions: [{ label: "Step through it", run: () => HOOK.gs(7) }] }),
+  ch("5.6 · Ex 12", "Gram–Schmidt is applied to v₁, v₂, v₃ with v₁, v₂ independent but v₃ ∈ Span(v₁, v₂). What happens?", ["It breaks down at step 3: v₃ − p₂ = 0 cannot be normalized", "It produces a third orthonormal vector anyway", "It breaks down at step 2"], 0,
+    "p₂ is the projection of v₃ onto Span(v₁, v₂) = Span(q₁, q₂), which is v₃ itself.", { actions: [{ label: "Watch it fail", run: () => HOOK.gs(8) }] }),
+]);
+
+buildExercises("s57", "Exercises · §5.7", "Checks on Section 5.7.", [
+  fl("5.7 · Legendre", "Using the recursion (n + 1)Pₙ₊₁ = (2n + 1)xPₙ − nPₙ₋₁ with P₀ = 1, P₁ = x, find the coefficients of P₃ = a₃x³ + a₂x² + a₁x + a₀, and ‖P₂‖² = ∫₋₁¹ P₂² dx.",
+    [vec("(a₃, a₂, a₁, a₀)", qv(["5/2", 0, "-3/2", 0])), num("‖P₂‖²", "2/5")], "P₂ = (3x² − 1)/2, P₃ = (5x³ − 3x)/2, and ‖Pₙ‖² = 2/(2n + 1).", { wide: true }),
+  fl("5.7 · Chebyshev", "Tₙ₊₁ = 2xTₙ − Tₙ₋₁ with T₀ = 1, T₁ = x. Find T₄ = b₄x⁴ + b₃x³ + b₂x² + b₁x + b₀.", [vec("(b₄, …, b₀)", [8, 0, -8, 0, 1])], "T₂ = 2x² − 1, T₃ = 4x³ − 3x, T₄ = 8x⁴ − 8x² + 1. Check: T₄(cos θ) = cos 4θ."),
+  ch("5.7 · Orthogonality", "Why is ⟨P₁, P₂⟩ = ∫₋₁¹ x·(3x² − 1)/2 dx equal to 0 without computing?", ["the integrand is odd", "P₂ has no roots in [−1, 1]", "both have degree ≤ 2"], 0, "x(3x² − 1) is an odd function, and the interval is symmetric."),
+  ch("5.7 · Application 1", "Two-point Gauss–Legendre quadrature ∫₋₁¹ f ≈ f(x₁) + f(x₂) is exact for cubics when the nodes are", ["the roots ±1/√3 of P₂", "±1", "0 and 1", "±1/2"], 0, "Theorem 5.7.3: use the roots of the orthogonal polynomial of degree n as nodes."),
+]);
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Interactive companion to Chapter 4 of Leon, Linear Algebra with Applications: linear maps, kernel and range, standard matrices, composition, computer graphics in homogeneous coordinates, matrices relative to bases, similarity.">
+<title>Linear Transformations Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../assets/lab.css">
+<style>
+body{margin:0}
+.chapnav{display:flex; flex-wrap:wrap; gap:6px}
+.chapnav a{font-family:var(--display); font-size:13px; text-decoration:none; color:var(--ink); padding:4px 10px; border:1px solid var(--rule); border-radius:999px; background:var(--panel)}
+.chapnav a b{font-family:var(--mono); color:var(--c1); margin-right:6px}
+.chapnav a[aria-current="page"]{background:var(--c1); border-color:var(--c1); color:var(--panel)}
+.chapnav a[aria-current="page"] b{color:var(--panel)}
+.eyebrow a{color:inherit}
+.pair{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-bottom:14px}
+.pair figure{margin:0; display:grid; gap:4px}
+.pair figcaption{font-family:var(--display); font-size:13px; color:var(--muted); text-align:center}
+@media (max-width:520px){ .pair{grid-template-columns:minmax(0,1fr)} }
+.lin-t{border-collapse:collapse; font-family:var(--mono); font-size:13.5px}
+.lin-t td{padding:3px 10px 3px 0; white-space:nowrap}
+.lin-t td:first-child{color:var(--muted)}
+.lin-t tr.amb td{font-weight:600}
+.note{font-size:14px; color:var(--muted); margin:0}
+.comp{display:grid; gap:10px; border-top:1px dashed var(--rule); padding-top:12px}
+.comp .kpick{flex-wrap:wrap}
+.comp .kpick > span:first-child{min-width:4.5em}
+.trow{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-family:var(--mono); font-size:13.5px}
+.trow input.mi{width:56px}
+.oplist{margin:0; padding-left:1.4em; font-family:var(--mono); font-size:13.5px; display:grid; gap:2px}
+.oplist .none{list-style:none; margin-left:-1.4em; color:var(--muted)}
+.rep-in{display:flex; flex-wrap:wrap; gap:14px 24px; align-items:flex-start}
+.sl label{white-space:nowrap}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="eyebrow"><a href="../">Course index</a> · Chapter 4 · Leon, <i>Linear Algebra with Applications</i>, 8th ed.</div>
+  <h1>Linear transformations, <em>hands-on</em></h1>
+  <p class="lede">A matrix is a machine that moves the whole plane. Test whether a map is linear by watching what it does to a grid, see the kernel collapse to the origin, build a standard matrix by dragging the images of e₁ and e₂, animate a figure with homogeneous coordinates, and watch one operator take different matrices in different bases.</p>
+  <nav class="chapnav" aria-label="Chapters"><a href="../chapter1/"><b>1</b>Matrices &amp; systems</a><a href="../chapter2/"><b>2</b>Determinants</a><a href="../chapter3/"><b>3</b>Vector spaces</a><a href="../chapter4/" aria-current="page"><b>4</b>Linear transformations</a><a href="../chapter5/"><b>5</b>Orthogonality</a></nav>
+</header>
+<nav class="toc" aria-label="Sections"><div class="row">
+  <a href="#defs"><b>≔</b>Definitions</a><a href="#s41"><b>4.1</b>Linear maps, kernel</a><a href="#s42"><b>4.2</b>Matrix representations</a><a href="#s43"><b>4.3</b>Similarity</a>
+</div></nav>
+
+<main class="wrap">
+<section class="sec" id="defs" style="padding-top:36px">
+  <div class="sec-head"><span class="sec-num">≔</span><h2>Definitions, animated</h2><span class="sub">The chapter's definitions and key theorems. Animations are paced for following step by step; use the speed buttons under a video to change the pace. Jump to a card here.</span></div>
+  <div class="chips" id="def-index" role="list"></div>
+</section>
+<!-- ============ 4.1 ============ -->
+<section class="sec" id="s41">
+  <div class="sec-head"><span class="sec-num">4.1</span><h2>Definition and examples</h2><span class="sub">Linear maps, kernel and range</span></div>
+  <div class="concept">
+    <p>A mapping <span class="x">L</span> from a vector space <span class="x">V</span> into a vector space <span class="x">W</span> is a <strong>linear transformation</strong> if <span class="x">L</span>(α<b>v</b><sub>1</sub> + β<b>v</b><sub>2</sub>) = α<span class="x">L</span>(<b>v</b><sub>1</sub>) + β<span class="x">L</span>(<b>v</b><sub>2</sub>) for all vectors and scalars. Equivalently, <span class="x">L</span> respects sums and scalar multiples separately. Every matrix gives one, <span class="x">L<sub>A</sub></span>(<b>x</b>) = <span class="x">A</span><b>x</b>; so do differentiation and integration of functions.</p>
+    <p>Two quick tests for “not linear”: <span class="x">L</span>(<b>0</b>) ≠ <b>0</b> (a translation), or a single pair where scaling or adding fails (a norm, a product of coordinates).</p>
+  </div>
+  <div class="defs" id="defs-s41"></div>
+
+  <div class="lab" id="lab-lin">
+    <div class="lab-title"><h3>Linearity tester</h3><span class="src">Examples 4.1.1–4.1.6 · Exercises 4.1.1, 4.1.3 · Test B 1</span></div>
+    <div class="chips" id="lin-maps" role="group" aria-label="Mappings"></div>
+    <div class="pair">
+      <figure><svg class="fig" id="lin-dom" viewBox="0 0 420 420" role="img" aria-label="Domain: x, y and αx + βy"></svg><figcaption>domain: drag <b style="color:var(--c1)">x</b> and <b style="color:var(--c2)">y</b></figcaption></figure>
+      <figure><svg class="fig" id="lin-cod" viewBox="0 0 420 420" role="img" aria-label="Image of the grid under L"></svg><figcaption>image of the grid under <i>L</i>: thick arrow L(αx + βy), dashed αL(x) + βL(y)</figcaption></figure>
+    </div>
+    <div class="bench even">
+      <div class="col">
+        <div class="mexpr" id="lin-def"></div>
+        <div class="sl"><label for="lin-a">α</label><input type="range" id="lin-a" min="-2" max="2" step="0.5"><output id="lin-ao"></output></div>
+        <div class="sl"><label for="lin-b">β</label><input type="range" id="lin-b" min="-2" max="2" step="0.5"><output id="lin-bo"></output></div>
+        <div class="scroll"><div class="lin-tab" id="lin-tab"></div></div>
+      </div>
+      <div class="col">
+        <div class="btnrow"><button class="btn" id="lin-cex">Find a counterexample</button><button class="btn primary" id="lin-verdict">Is it linear?</button></div>
+        <div class="status inf" id="lin-status"></div>
+      </div>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>For each linear map, the image grid has straight, parallel, evenly spaced lines and keeps the origin. Check it.</li>
+      <li>For the translation, set α = β = 0: then αx + βy = 0, and the two sides differ by <b>a</b>.</li>
+      <li>For ‖<b>x</b>‖<b>e</b>₁, additivity can hold by luck. Set α = −1 and β = 0 to break homogeneity (Example 4.1.6).</li>
+    </ul></div>
+  </div>
+
+  <div class="lab" id="lab-ker">
+    <div class="lab-title"><h3>Kernel and range</h3><span class="src">Examples 4.1.11, 4.1.12 · Exercises 4.1.17, 4.1.21–4.1.22 · Test B 3, 4</span></div>
+    <div class="chips" id="ker-presets" role="group" aria-label="Transformations"></div>
+    <div class="sz-row"><span>m (rows) <span class="chips" id="ker-m"></span></span><span>n (columns) <span class="chips" id="ker-n"></span></span></div>
+    <div class="bench even">
+      <div class="col">
+        <div class="scroll"><div id="ker-in"></div></div>
+        <div class="mexpr" id="ker-formula"></div>
+        <div class="status inf" id="ker-status"></div>
+        <div class="scroll"><div class="mexpr basis-list" id="ker-bases"></div></div>
+      </div>
+      <div class="col">
+        <svg class="fig" id="ker-svg" viewBox="0 0 420 420" role="img" aria-label="Kernel and range in the plane"></svg>
+        <div class="sl"><label for="ker-t">apply</label><input type="range" id="ker-t" min="0" max="1" step="0.02" value="0"><output id="ker-to"></output></div>
+        <p class="note" id="ker-note"></p>
+      </div>
+    </div>
+  </div>
+  <div class="exset" id="ex-s41"></div>
+</section>
+
+<!-- ============ 4.2 ============ -->
+<section class="sec" id="s42">
+  <div class="sec-head"><span class="sec-num">4.2</span><h2>Matrix representations</h2><span class="sub">Columns are images of basis vectors</span></div>
+  <div class="concept">
+    <p>Every linear <span class="x">L</span> : ℝ<sup><span class="x">n</span></sup> → ℝ<sup><span class="x">m</span></sup> is multiplication by the <span class="x">m</span> × <span class="x">n</span> matrix whose <span class="x">j</span>th column is <span class="x">L</span>(<b>e</b><sub><span class="x">j</span></sub>) (Theorem 4.2.1). With other ordered bases <span class="x">E</span> and <span class="x">F</span>, the representing matrix has columns [<span class="x">L</span>(<b>v</b><sub><span class="x">j</span></sub>)]<sub><span class="x">F</span></sub>, and then [<span class="x">L</span>(<b>v</b>)]<sub><span class="x">F</span></sub> = <span class="x">A</span>[<b>v</b>]<sub><span class="x">E</span></sub> (Theorem 4.2.2).</p>
+    <p>Doing <span class="x">L</span><sub>1</sub> first and <span class="x">L</span><sub>2</sub> second is represented by <span class="x">A</span><sub>2</sub><span class="x">A</span><sub>1</sub>: the matrix of the first step stands on the right.</p>
+  </div>
+  <div class="defs" id="defs-s42"></div>
+
+  <div class="lab" id="lab-std">
+    <div class="lab-title"><h3>Build the standard matrix</h3><span class="src">Theorem 4.2.1 · Example 4.2.2 · Exercises 4.2.1, 4.2.5 · Test A 4</span></div>
+    <div class="chips" id="std-presets" role="group" aria-label="Operators"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="scroll"><div class="mexpr" id="std-expr"></div></div>
+        <div class="status inf" id="std-status"></div>
+        <div class="comp">
+          <div class="kpick"><span>first L₁</span><span class="chips" id="std-c1"></span></div>
+          <div class="kpick"><span>then L₂</span><span class="chips" id="std-c2"></span></div>
+          <div class="btnrow"><button class="btn" id="std-comp">Show L₂ ∘ L₁</button><button class="btn" id="std-rev">Reverse the order</button></div>
+          <div class="scroll"><div class="mexpr" id="std-cexpr"></div></div>
+        </div>
+      </div>
+      <svg class="fig" id="std-svg" viewBox="0 0 420 420" role="img" aria-label="Images of e1, e2 and of a figure"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Drag the tips of <b>L(e₁)</b> and <b>L(e₂)</b>. The matrix columns follow, and the letter F is carried along.</li>
+      <li>Make the two columns parallel. The F collapses onto a line: the matrix is singular.</li>
+      <li>When does the F come out mirror-reversed? Compare with the sign of det <i>A</i>.</li>
+    </ul></div>
+  </div>
+
+  <div class="lab" id="lab-hom">
+    <div class="lab-title"><h3>Computer graphics in homogeneous coordinates</h3><span class="src">Application 4.2.1 · Exercises 4.2.9, 4.2.10 · Test B 7</span></div>
+    <div class="chips" id="hom-figs" role="group" aria-label="Figures"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="chips" id="hom-ops" role="group" aria-label="Operations"></div>
+        <div class="trow"><span>translate by</span><input class="mi" id="hom-a1" value="2" aria-label="a1"><input class="mi" id="hom-a2" value="1" aria-label="a2"><button class="btn sm" id="hom-tr">Add translation</button></div>
+        <div class="btnrow"><button class="btn sm" id="hom-undo">Undo</button><button class="btn sm" id="hom-reset">Reset</button></div>
+        <ol class="oplist" id="hom-list"></ol>
+        <div class="scroll"><div class="mexpr" id="hom-expr"></div></div>
+      </div>
+      <svg class="fig" id="hom-svg" viewBox="0 0 420 420" role="img" aria-label="Figure after the transformations"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Rotate by 60° and then translate, then do it in the opposite order. Same matrices, different product, different picture.</li>
+      <li>The last row of every product stays (0 0 1). Why does that keep points of the form (x₁, x₂, 1)?</li>
+    </ul></div>
+  </div>
+
+  <div class="lab" id="lab-rep">
+    <div class="lab-title"><h3>Matrix in other bases by row reduction</h3><span class="src">Theorem 4.2.3 · Corollary 4.2.4 · Example 4.2.6 · Exercise 4.2.18</span></div>
+    <div class="chips" id="rep-presets" role="group" aria-label="Examples"></div>
+    <div class="sz-row"><span>dim of domain n <span class="chips" id="rep-n"></span></span><span>dim of codomain m <span class="chips" id="rep-m"></span></span></div>
+    <div class="rep-in">
+      <div class="scroll"><div id="rep-L"></div></div>
+      <div class="scroll"><div id="rep-U"></div></div>
+      <div class="scroll"><div id="rep-B"></div></div>
+    </div>
+    <div class="scroll"><div class="mexpr" id="rep-out"></div></div>
+    <div class="status inf" id="rep-status"></div>
+  </div>
+  <div class="exset" id="ex-s42"></div>
+</section>
+
+<!-- ============ 4.3 ============ -->
+<section class="sec" id="s43">
+  <div class="sec-head"><span class="sec-num">4.3</span><h2>Similarity</h2><span class="sub">One operator, many matrices</span></div>
+  <div class="concept">
+    <p>If <span class="x">A</span> represents a linear operator in one basis and <span class="x">B</span> represents it in another, with <span class="x">S</span> the transition matrix from the second basis to the first, then <span class="x">B</span> = <span class="x">S</span><sup>−1</sup><span class="x">A</span><span class="x">S</span> (Theorem 4.3.1). Matrices related this way are <strong>similar</strong>. Similar matrices have the same determinant, trace and rank, because they describe the same map.</p>
+    <p>Choosing the basis well can make <span class="x">B</span> diagonal (Example 4.3.2). That is the subject of Chapter 6.</p>
+  </div>
+  <div class="defs" id="defs-s43"></div>
+
+  <div class="lab" id="lab-sim">
+    <div class="lab-title"><h3>Similarity explorer</h3><span class="src">Section 4.3 opening example · Example 4.3.2 · Exercises 4.3.1, 4.3.2</span></div>
+    <div class="chips" id="sim-presets" role="group" aria-label="Examples"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="scroll"><div id="sim-A"></div></div>
+        <div class="scroll"><div class="mexpr" id="sim-expr"></div></div>
+        <div class="scroll"><div id="sim-inv"></div></div>
+        <div class="status inf" id="sim-status"></div>
+      </div>
+      <svg class="fig" id="sim-svg" viewBox="0 0 420 420" role="img" aria-label="Basis u1, u2 and their images"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Read column <i>j</i> of <i>B</i> off the picture: count steps along <b>u₁</b> and <b>u₂</b> to reach <b>L(u<sub>j</sub>)</b>.</li>
+      <li>Find a basis in which <i>B</i> is diagonal: each <b>u<sub>j</sub></b> must be sent to a multiple of itself.</li>
+    </ul></div>
+  </div>
+  <div class="exset" id="ex-s43"></div>
+</section>
+
+</main>
+
+<footer>Examples, theorem numbers and notation follow Steven J. Leon, <i>Linear Algebra with Applications</i>, 8th edition, Chapter 4.  Exact arithmetic (fractions) is used wherever a lab says so. Solved exercises are remembered in this browser only. Animations: Manim Community v0.22; each card shows its scene's code.</footer>
+
+<script type="application/json" id="manim-src">{"LinearMap": "class LinearMap(Scene):\n    def construct(self):\n        t = title(r\"Linear: $L(\\alpha\\mathbf x + \\beta\\mathbf y) = \\alpha L(\\mathbf x) + \\beta L(\\mathbf y)$\")\n        tb = BackgroundRectangle(t, fill_color=BG, fill_opacity=0.95, buff=0.12)\n        p = plane((-7, 7), (-4, 4)).scale(0.8).shift(DOWN * 0.35)\n        self.add(p, tb, t)\n        o = p.c2p(0, 0)\n        x, y = np.array([2.0, 0.5]), np.array([0.5, 1.5])\n        ax, ay = arrow(p, (0, 0), x, C1), arrow(p, (0, 0), y, C2)\n        axy = arrow(p, (0, 0), x + y, AMB)\n        guide = VGroup(DashedLine(p.c2p(*x), p.c2p(*(x + y)), color=C2, stroke_width=2),\n                       DashedLine(p.c2p(*y), p.c2p(*(x + y)), color=C1, stroke_width=2))\n        lx, ly = lab_at(r\"\\mathbf x\", ax.get_end(), DR, C1), lab_at(r\"\\mathbf y\", ay.get_end(), LEFT, C2)\n        lxy = lab_at(r\"\\mathbf x+\\mathbf y\", axy.get_end(), UR, AMB, 30)\n        self.play(GrowArrow(ax), GrowArrow(ay), FadeIn(lx, ly))\n        self.play(Create(guide), GrowArrow(axy), FadeIn(lxy))\n        A = np.array([[1.0, 0.8], [0.3, 1.1]])\n        cap = boxed(Tex(r\"Apply $L(\\mathbf x) = A\\mathbf x$, \\ $A = \\begin{pmatrix}1 & 0.8\\\\ 0.3 & 1.1\\end{pmatrix}$\", font_size=32)).to_corner(UL).shift(DOWN * 0.95)\n        self.play(FadeIn(cap))\n        grp = VGroup(p, ax, ay, axy, guide)\n        self.play(FadeOut(lx, ly, lxy))\n        self.play(ApplyMatrix(A, grp, about_point=o), run_time=2.5)\n        Lx, Ly = A @ x, A @ y\n        new_l = VGroup(lab_at(r\"L(\\mathbf x)\", p.c2p(*Lx), DR, C1, 30), lab_at(r\"L(\\mathbf y)\", p.c2p(*Ly), LEFT, C2, 30),\n                       lab_at(r\"L(\\mathbf x+\\mathbf y) = L(\\mathbf x)+L(\\mathbf y)\", p.c2p(*(Lx + Ly)), RIGHT, AMB, 28))\n        self.play(FadeIn(new_l))\n        ok = boxed(Tex(r\"Grid lines stay straight, parallel and evenly spaced; $\\mathbf 0$ stays at $\\mathbf 0$.\", font_size=30, color=C3)).to_edge(DOWN, buff=0.3)\n        top_layer(self, tb, t, cap)\n        self.play(FadeIn(ok))\n        self.wait(1.2)\n        # ---- a translation is not linear\n        self.play(FadeOut(VGroup(grp, new_l, ok, cap)))\n        p2 = plane((-7, 7), (-4, 4)).scale(0.8).shift(DOWN * 0.35)\n        o2 = Dot(p2.c2p(0, 0), color=WARN, radius=0.09)\n        self.play(FadeIn(p2), FadeIn(o2))\n        top_layer(self, tb, t)\n        cap2 = boxed(Tex(r\"Translation $L(\\mathbf x) = \\mathbf x + \\mathbf a$, \\ $\\mathbf a = (2, 1)^T$\", font_size=32, color=WARN)).to_corner(UL).shift(DOWN * 0.95)\n        self.play(FadeIn(cap2))\n        self.play(VGroup(p2, o2).animate.shift(p2.c2p(2, 1) - p2.c2p(0, 0)), run_time=2)\n        bad = boxed(Tex(r\"$L(\\mathbf 0) = \\mathbf a \\ne \\mathbf 0$: a translation is not linear (Exercise 4.1.3)\", font_size=30, color=WARN)).to_edge(DOWN, buff=0.3)\n        self.play(FadeIn(bad))\n        self.wait(1)\n        # ---- a curved map is not linear either\n        self.play(FadeOut(VGroup(p2, o2, cap2, bad)))\n        p3 = plane((-7, 7), (-4, 4)).scale(0.8).shift(DOWN * 0.35)\n        p3.prepare_for_nonlinear_transform()\n        self.play(FadeIn(p3))\n        top_layer(self, tb, t)\n        cap3 = boxed(Tex(r\"$M(\\mathbf x) = (x_1,\\ x_2 + 0.08\\,x_1^2)^T$\", font_size=32, color=WARN)).to_corner(UL).shift(DOWN * 0.95)\n        self.play(FadeIn(cap3))\n        o3 = p3.c2p(0, 0)\n        s = 0.8\n\n        def bend(pt):\n            u = (pt[0] - o3[0]) / s\n            return pt + np.array([0, 0.08 * u * u * s, 0])\n\n        self.play(ApplyPointwiseFunction(bend, p3), run_time=2.5)\n        top_layer(self, tb, t, cap3)\n        bad3 = boxed(Tex(r\"Grid lines bend: $M(2\\mathbf x) \\ne 2M(\\mathbf x)$, so $M$ is not linear\", font_size=30, color=WARN)).to_edge(DOWN, buff=0.3)\n        self.play(FadeIn(bad3))\n        self.wait(2)", "StandardMatrix": "class StandardMatrix(Scene):\n    def construct(self):\n        t = title(r\"The standard matrix: column $j$ is $L(\\mathbf e_j)$\")\n        self.add(t)\n        p = plane((-3, 3), (-3, 3)).scale(0.95).shift(LEFT * 3.4 + DOWN * 0.45)\n        self.play(FadeIn(p))\n        o = p.c2p(0, 0)\n        e1, e2 = arrow(p, (0, 0), (1, 0), C1), arrow(p, (0, 0), (0, 1), C2)\n        l1, l2 = lab_at(r\"\\mathbf e_1\", e1.get_end(), DOWN, C1), lab_at(r\"\\mathbf e_2\", e2.get_end(), LEFT, C2)\n        self.play(GrowArrow(e1), GrowArrow(e2), FadeIn(l1, l2))\n        cap = Tex(r\"$L$ = rotation by $\\theta = 60^\\circ$ counterclockwise\", font_size=32).to_edge(RIGHT, buff=0.6).shift(UP * 2.3)\n        self.play(Write(cap))\n        th = PI / 3\n        arc = Arc(radius=0.6, start_angle=0, angle=th, arc_center=o, color=AMB)\n        self.play(Rotate(VGroup(e1), th, about_point=o), Rotate(VGroup(e2), th, about_point=o), Create(arc), FadeOut(l1, l2), run_time=2.2)\n        t1, t2 = lab_at(r\"L(\\mathbf e_1)\", e1.get_end(), RIGHT, C1, 30), lab_at(r\"L(\\mathbf e_2)\", e2.get_end(), LEFT, C2, 30)\n        L1 = MathTex(r\"L(\\mathbf e_1) = (\\cos\\theta,\\ \\sin\\theta)^T\", color=C1, font_size=32)\n        L2 = MathTex(r\"L(\\mathbf e_2) = (-\\sin\\theta,\\ \\cos\\theta)^T\", color=C2, font_size=32)\n        VGroup(L1, L2).arrange(DOWN, aligned_edge=LEFT, buff=0.2).next_to(cap, DOWN, buff=0.35).align_to(cap, LEFT)\n        self.play(FadeIn(t1, t2), TransformFromCopy(t1, L1), TransformFromCopy(t2, L2))\n        A = mat([[r\"\\cos\\theta\", r\"-\\sin\\theta\"], [r\"\\sin\\theta\", r\"\\cos\\theta\"]], h=1.8, scale=0.85)\n        A.get_columns()[0].set_color(C1); A.get_columns()[1].set_color(C2)\n        Arow = VGroup(MathTex(\"A =\", font_size=40), A).arrange(RIGHT).next_to(L2, DOWN, buff=0.35).align_to(cap, LEFT)\n        self.play(TransformFromCopy(L1, A.get_columns()[0]), TransformFromCopy(L2, A.get_columns()[1]), FadeIn(Arow[0], A.get_brackets()))\n        self.wait(1)\n        why = VGroup(\n            MathTex(r\"\\mathbf x = x_1\\mathbf e_1 + x_2\\mathbf e_2\", font_size=34),\n            MathTex(r\"L(\\mathbf x) = x_1 L(\\mathbf e_1) + x_2 L(\\mathbf e_2) = A\\mathbf x\", font_size=34),\n        ).arrange(DOWN, aligned_edge=LEFT, buff=0.25).next_to(Arow, DOWN, buff=0.35).align_to(cap, LEFT)\n        self.play(Write(why[0]))\n        self.play(Write(why[1]))\n        # illustrate with x = (2, 1)\n        xv = np.array([2.0, 1.0])\n        R = np.array([[np.cos(th), -np.sin(th)], [np.sin(th), np.cos(th)]])\n        ghost = arrow(p, (0, 0), xv, MUTE, 4)\n        self.play(GrowArrow(ghost))\n        s1 = arrow(p, (0, 0), 2 * R[:, 0], C1, 5)\n        s2 = arrow(p, 2 * R[:, 0], R @ xv, C2, 5)\n        res = arrow(p, (0, 0), R @ xv, AMB, 6)\n        self.play(GrowArrow(s1))\n        self.play(GrowArrow(s2))\n        self.play(GrowArrow(res), FadeIn(lab_at(r\"A\\mathbf x\", res.get_end(), UL, AMB, 32)))\n        fin = boxed(Tex(r\"Theorem 4.2.1: every linear $L:\\mathbb R^n\\to\\mathbb R^m$ is $L(\\mathbf x) = A\\mathbf x$ with $\\mathbf a_j = L(\\mathbf e_j)$\", font_size=30, color=C3)).to_edge(DOWN, buff=0.25)\n        self.play(FadeIn(fin))\n        self.wait(2)", "KernelRange": "class KernelRange(Scene):\n    def construct(self):\n        t = title(r\"Kernel and range: what goes to $\\mathbf 0$, and where everything lands\")\n        tb = BackgroundRectangle(t, fill_color=BG, fill_opacity=0.95, buff=0.12)\n        p = plane((-7, 7), (-4, 4)).scale(0.8).shift(DOWN * 0.35)\n        self.add(p, tb, t)\n        o = p.c2p(0, 0)\n        ref = p.copy()\n        A = np.array([[1.0, 2.0], [0.5, 1.0]])\n        cap = boxed(MathTex(r\"L(\\mathbf x) = A\\mathbf x,\\quad A = \\begin{pmatrix}1 & 2\\\\ 0.5 & 1\\end{pmatrix}\", font_size=34)).to_corner(UL).shift(DOWN * 0.95)\n        self.play(FadeIn(cap))\n        kline = Line(p.c2p(-6, 3), p.c2p(6, -3), color=WARN, stroke_width=5)\n        kdots = VGroup(*[Dot(p.c2p(2 * s, -s), color=WARN, radius=0.07) for s in (-2, -1, 1, 2)])\n        klab = boxed(MathTex(r\"\\ker(L) = \\mathrm{Span}\\{(2,-1)^T\\}\", color=WARN, font_size=32)).next_to(p.c2p(-5, 2.5), DOWN, buff=0.1)\n        self.play(Create(kline), FadeIn(kdots), FadeIn(klab))\n        others = VGroup(*[Dot(p.c2p(a, b), color=C1, radius=0.07) for a, b in [(1, 1), (-1, 2), (2, 2), (0, -2), (-2, -1), (3, 0)]])\n        self.play(FadeIn(others))\n        self.wait(0.8)\n        top_layer(self, tb, t, cap)\n        self.play(ApplyMatrix(A, VGroup(p, kline, kdots, others), about_point=o), FadeOut(klab), run_time=3)\n        top_layer(self, tb, t, cap)\n        rng = Line(ref.c2p(-6, -3), ref.c2p(6, 3), color=C3, stroke_width=5)\n        self.play(Create(rng))\n        rl = boxed(VGroup(\n            MathTex(r\"\\text{every red point} \\mapsto \\mathbf 0\", color=WARN, font_size=32),\n            MathTex(r\"L(\\mathbb R^2) = \\mathrm{Span}\\{(2,1)^T\\}\", color=C3, font_size=32),\n        ).arrange(DOWN, aligned_edge=LEFT)).to_corner(UR).shift(DOWN * 0.95)\n        self.play(FadeIn(rl))\n        fin = boxed(Tex(r\"$\\dim\\ker(L) + \\dim L(\\mathbb R^2) = 1 + 1 = 2$, the rank--nullity theorem for $A$\", font_size=30, color=C3)).to_edge(DOWN, buff=0.3)\n        self.play(FadeIn(fin))\n        self.wait(2)", "BasisRepresentation": "class BasisRepresentation(Scene):\n    def construct(self):\n        t = title(r\"Matrix of $L$ in a basis: column $j$ is $[L(\\mathbf b_j)]_F$\")\n        tb = BackgroundRectangle(t, fill_color=BG, fill_opacity=0.95, buff=0.12)\n        p = plane((-4, 4), (-1.5, 4.5)).scale(0.95).shift(LEFT * 3.0 + DOWN * 0.9)\n        self.add(p, tb, t)\n        b1, b2 = np.array([1.0, 1.0]), np.array([-1.0, 1.0])\n        grid = VGroup()\n        for k in range(-8, 9):\n            for d, e in ((b1, b2), (b2, b1)):\n                seg = clip_seg(k * d, e, (-4, 4, -1.5, 4.5))\n                if seg:\n                    grid.add(Line(p.c2p(*seg[0]), p.c2p(*seg[1]), color=C2 if d is b1 else C1, stroke_opacity=0.35, stroke_width=1.5))\n        A1, A2 = arrow(p, (0, 0), b1, C1), arrow(p, (0, 0), b2, C2)\n        self.play(Create(grid), run_time=1.5)\n        top_layer(self, tb, t)\n        self.play(GrowArrow(A1), GrowArrow(A2), FadeIn(lab_at(r\"\\mathbf b_1\", A1.get_end(), RIGHT, C1), lab_at(r\"\\mathbf b_2\", A2.get_end(), LEFT, C2)))\n        rule = MathTex(r\"L(\\alpha\\mathbf b_1 + \\beta\\mathbf b_2) = (\\alpha+\\beta)\\mathbf b_1 + 2\\beta\\,\\mathbf b_2\", font_size=32).to_edge(RIGHT, buff=0.4).shift(UP * 2.4)\n        self.play(Write(rule))\n        Lb1 = arrow(p, (0, 0), b1, C1, 9)\n        Lb2 = arrow(p, (0, 0), b1 + 2 * b2, AMB, 6)\n        steps = VGroup(arrow(p, (0, 0), b1, C1, 4), arrow(p, b1, b1 + b2, C2, 4), arrow(p, b1 + b2, b1 + 2 * b2, C2, 4))\n        e1 = MathTex(r\"L(\\mathbf b_1) = 1\\,\\mathbf b_1 + 0\\,\\mathbf b_2\", font_size=34, color=C1)\n        e2 = MathTex(r\"L(\\mathbf b_2) = 1\\,\\mathbf b_1 + 2\\,\\mathbf b_2\", font_size=34, color=AMB)\n        VGroup(e1, e2).arrange(DOWN, aligned_edge=LEFT).next_to(rule, DOWN, buff=0.5).align_to(rule, LEFT)\n        self.play(Indicate(A1), Write(e1), FadeIn(Lb1))\n        self.play(Create(steps), run_time=2)\n        self.play(GrowArrow(Lb2), Write(e2))\n        Am = mat([[1, 1], [0, 2]], scale=0.9)\n        Am.get_columns()[0].set_color(C1); Am.get_columns()[1].set_color(AMB)\n        Arow = VGroup(MathTex(r\"A =\", font_size=40), Am).arrange(RIGHT).next_to(e2, DOWN, buff=0.5).align_to(rule, LEFT)\n        self.play(FadeIn(Arow[0], Am.get_brackets()), TransformFromCopy(e1, Am.get_columns()[0]), TransformFromCopy(e2, Am.get_columns()[1]))\n        rep = MathTex(r\"[L(\\mathbf v)]_F = A\\,[\\mathbf v]_E\", font_size=40, color=C3).next_to(Arow, DOWN, buff=0.5).align_to(rule, LEFT)\n        self.play(Write(rep))\n        fin = boxed(Tex(r\"Leon \\S4.2 Example 4. In $\\mathbb R^m$: $\\mathbf a_j = B^{-1}L(\\mathbf u_j)$, i.e.\\ rref$(B \\mid L(\\mathbf u_1)\\cdots L(\\mathbf u_n)) = (I \\mid A)$\", font_size=28, color=C3)).to_edge(DOWN, buff=0.25)\n        self.play(FadeIn(fin))\n        self.wait(2)", "Homogeneous": "class Homogeneous(Scene):\n    def construct(self):\n        t = title(r\"Computer graphics: homogeneous coordinates make translation a matrix\")\n        tb = BackgroundRectangle(t, fill_color=BG, fill_opacity=0.95, buff=0.12)\n        p = plane((-2, 5), (-2, 4)).scale(0.9).shift(LEFT * 3.4 + DOWN * 0.6)\n        self.add(p, tb, t)\n        T = np.array([[0, 1, 1, 0], [0, 1, -1, 0]], dtype=float)\n\n        def tri(M, color):\n            return Polygon(*[p.c2p(*M[:, k]) for k in range(3)], color=color, fill_opacity=0.35, stroke_width=4)\n\n        shape = tri(T, C1)\n        X0 = p.get_right()[0] + 0.45\n\n        def at_left(m):\n            return m.shift((X0 - m.get_left()[0]) * RIGHT)\n\n        Tm = mat([[0, 1, 1, 0], [0, 1, -1, 0]], scale=0.75)\n        Trow = at_left(VGroup(MathTex(\"T =\", font_size=36), Tm).arrange(RIGHT).shift(UP * 2.3))\n        self.play(DrawBorderThenFill(shape), FadeIn(Trow))\n        c1 = at_left(Tex(r\"vertices as columns; the last repeats $(0,0)$\\\\to close the figure\", font_size=26, color=MUTE).next_to(Trow, DOWN, buff=0.2))\n        self.play(FadeIn(c1))\n        self.wait(0.6)\n        # dilation by 1.5\n        D = 1.5 * np.eye(2)\n        s2 = tri(D @ T, C2)\n        d_eq = MathTex(r\"1.5\\,I\\,T\", font_size=34, color=C2).next_to(c1, DOWN, buff=0.4).align_to(Trow, LEFT)\n        self.play(Transform(shape, s2), Write(d_eq), run_time=1.6)\n        # rotation by 60 degrees\n        th = PI / 3\n        R = np.array([[np.cos(th), -np.sin(th)], [np.sin(th), np.cos(th)]])\n        s3 = tri(R @ D @ T, C3)\n        r_eq = MathTex(r\"R_{60^\\circ}(1.5\\,I)\\,T\", font_size=34, color=C3).next_to(d_eq, DOWN, buff=0.3).align_to(Trow, LEFT)\n        self.play(Transform(shape, s3), Write(r_eq), run_time=1.6)\n        self.wait(0.6)\n        # translation needs a 3x3 matrix\n        warn = at_left(Tex(r\"Translation $\\mathbf x + \\mathbf a$ is not linear:\\\\no $2\\times2$ matrix does it.\", font_size=28, color=WARN).next_to(r_eq, DOWN, buff=0.35))\n        self.play(FadeIn(warn))\n        H = mat([[1, 0, \"a_1\"], [0, 1, \"a_2\"], [0, 0, 1]], scale=0.75)\n        H.get_columns()[2].set_color(AMB)\n        hx = mat([[\"x_1\"], [\"x_2\"], [1]], scale=0.75)\n        res = mat([[\"x_1 + a_1\"], [\"x_2 + a_2\"], [1]], scale=0.75)\n        hrow = at_left(VGroup(H, hx, MathTex(\"=\", font_size=36), res).arrange(RIGHT, buff=0.2).scale(0.9).next_to(warn, DOWN, buff=0.3))\n        self.play(FadeIn(hrow))\n        a = np.array([2.0, 1.0])\n        s4 = tri((R @ D @ T) + a[:, None], AMB)\n        self.play(Transform(shape, s4), run_time=2)\n        fin = boxed(Tex(r\"Each $(x_1, x_2)$ becomes $(x_1, x_2, 1)$; every operation is a $3\\times3$ matrix, and a sequence is one product\", font_size=28, color=C3)).to_edge(DOWN, buff=0.25)\n        self.play(FadeIn(fin))\n        self.wait(2)", "Similarity": "class Similarity(Scene):\n    def construct(self):\n        t = title(r\"Similar matrices: the same operator seen in two bases\")\n        self.add(t)\n        Lx = MathTex(r\"L(\\mathbf x) = (2x_1,\\ x_1 + x_2)^T\", font_size=38).shift(UP * 2.55)\n        self.play(Write(Lx))\n        A = mat([[2, 0], [1, 1]], scale=0.8)\n        U = mat([[1, -1], [1, 1]], scale=0.8)\n        B = mat([[2, -1], [0, 1]], scale=0.8)\n        left = VGroup(Tex(r\"in $[\\mathbf e_1, \\mathbf e_2]$:\", font_size=30), MathTex(\"A =\", font_size=36), A).arrange(RIGHT).move_to(LEFT * 3.4 + UP * 1.05)\n        right = VGroup(Tex(r\"in $[\\mathbf u_1, \\mathbf u_2]$:\", font_size=30), MathTex(\"B =\", font_size=36), B).arrange(RIGHT).move_to(RIGHT * 3.4 + UP * 1.05)\n        self.play(FadeIn(left))\n        ub = MathTex(r\"\\mathbf u_1 = (1,1)^T,\\quad \\mathbf u_2 = (-1,1)^T\", font_size=32, color=C2).shift(UP * 1.95)\n        self.play(FadeIn(ub))\n        # commutative square on the left\n        cx = -2.7\n        y = MathTex(r\"\\mathbf y\", font_size=40).move_to([cx - 1.5, -0.55, 0])\n        tt = MathTex(r\"\\mathbf t\", font_size=40).move_to([cx + 1.5, -0.55, 0])\n        x = MathTex(r\"\\mathbf x\", font_size=40).move_to([cx - 1.5, -2.45, 0])\n        z = MathTex(r\"\\mathbf z\", font_size=40).move_to([cx + 1.5, -2.45, 0])\n        top = Arrow(y.get_right(), tt.get_left(), color=C1, buff=0.15)\n        bot = Arrow(x.get_right(), z.get_left(), color=C2, buff=0.15)\n        upl = Arrow(x.get_top(), y.get_bottom(), color=AMB, buff=0.15)\n        dnr = Arrow(tt.get_bottom(), z.get_top(), color=AMB, buff=0.15)\n        labs = VGroup(MathTex(\"A\", color=C1, font_size=34).next_to(top, UP, buff=0.08),\n                      MathTex(\"B\", color=C2, font_size=34).next_to(bot, DOWN, buff=0.08),\n                      MathTex(\"U\", color=AMB, font_size=34).next_to(upl, LEFT, buff=0.08),\n                      MathTex(\"U^{-1}\", color=AMB, font_size=34).next_to(dnr, RIGHT, buff=0.08))\n        names = VGroup(Tex(r\"standard\", font_size=24, color=MUTE).next_to(y, LEFT, buff=0.5), Tex(r\"$\\mathbf u$-coords\", font_size=24, color=MUTE).next_to(x, LEFT, buff=0.5))\n        self.play(FadeIn(x, names[1]))\n        self.play(GrowArrow(upl), FadeIn(y, labs[2], names[0]))\n        self.play(GrowArrow(top), FadeIn(tt, labs[0]))\n        self.play(GrowArrow(dnr), FadeIn(z, labs[3]))\n        self.play(GrowArrow(bot), FadeIn(labs[1]))\n        eq = MathTex(r\"B = U^{-1}AU\", font_size=40, color=C3).move_to([cx, -1.5, 0])\n        self.play(Write(eq))\n        Ui = mat([[r\"\\tfrac12\", r\"\\tfrac12\"], [r\"-\\tfrac12\", r\"\\tfrac12\"]], scale=0.8)\n        calc = VGroup(Ui, A.copy(), U, MathTex(\"=\", font_size=36), B.copy()).arrange(RIGHT, buff=0.15).scale(0.85).move_to([3.5, -1.5, 0])\n        self.play(FadeIn(calc[:4]))\n        self.play(FadeIn(calc[4]))\n        self.play(FadeIn(right))\n        inv = boxed(Tex(r\"Similar matrices share determinant ($2$), trace ($3$), rank and characteristic polynomial\", font_size=30, color=C3)).to_edge(DOWN, buff=0.25)\n        self.play(FadeIn(inv))\n        self.wait(2)"}</script>
+<script src="../assets/lab-core.js"></script>
+<script>
+(() => {
+"use strict";
+const { $, MINUS, sub, HOOK, goto, el, fmt, Q, matHTML, lbl, linExpr, xv, q, qm, MH, ch, fl, cl, vec, mat, num, buildExercises, sm, renderDefinitions, setStore, plane2D, draggable } = LA;
+setStore("leon-ch4-solved-v1");
+const S_ = n => `<sub>${n}</sub>`;
+const qf = v => Q.parse(String(v));
+const near = (a, b) => Math.abs(a - b) < 1e-9;
+const colM = v => v.map(x => [x]);
+const toF = v => v instanceof Q ? v.n / v.d : +v;
+const fv = v => `(${v.map(x => fmt(x, 2)).join(", ")})`;
+const vtxt = v => `(${v.map(x => String(x).replace("-", "−")).join(", ")})`;
+
+// editable grid; vals (array of arrays of Q) is mutated in place
+function gridIn(host, vals, o = {}) {
+  const n = vals[0].length;
+  let h = `<div class="mat gridin"><table>`;
+  if (o.head) h += `<tr>${o.head.slice(0, n).map(t => `<th>${t}</th>`).join("")}</tr>`;
+  vals.forEach((row, i) => { h += `<tr>${row.map((v, j) => `<td class="inp"><input class="mi" style="width:${o.w || 50}px" data-i="${i}" data-j="${j}" value="${v.txt().replace(MINUS, "-")}" aria-label="${o.name || "entry"} ${i + 1},${j + 1}" autocomplete="off"></td>`).join("")}</tr>`; });
+  h += `</table></div>`;
+  host.innerHTML = o.label ? lbl(h, o.label) : h;
+  host.querySelectorAll("input").forEach(inp => inp.addEventListener("input", () => {
+    const v = Q.parse(inp.value); inp.classList.toggle("wrong", !v);
+    if (v) { vals[+inp.dataset.i][+inp.dataset.j] = v; if (o.onChange) o.onChange(); }
+  }));
+}
+const resize = (vals, m, n) => Array.from({ length: m }, (_, i) => Array.from({ length: n }, (_, j) => (vals[i] && vals[i][j]) || new Q(i === j ? 1 : 0)));
+function chipRow(host, items, cur, onPick, fmtf = x => x) {
+  host.innerHTML = "";
+  items.forEach(v => { const b = document.createElement("button"); b.className = "chip"; b.textContent = fmtf(v); b.setAttribute("aria-pressed", v === cur); b.onclick = () => onPick(v); host.appendChild(b); });
+}
+function presetRow(host, list, onPick) {
+  host.innerHTML = "";
+  list.forEach((p, k) => { const b = document.createElement("button"); b.className = "chip"; b.textContent = p.name || p[0]; b.onclick = () => onPick(k); host.appendChild(b); });
+  return k => host.querySelectorAll(".chip").forEach((b, i) => b.setAttribute("aria-pressed", i === k));
+}
+// "x₁ + 2x₂" style rows of A x
+const rowExpr = (row) => linExpr(null, row.map((c, j) => ({ c: q(c), v: xv(j) })));
+const formula = A => `<span class="x">L</span>(<b>x</b>) = (${A.map(rowExpr).join(", ")})<sup>T</sup>`;
+const vecHTML = v => matHTML(colM(v));
+
+/* =========================================================
+   LAB · Linearity tester
+   ========================================================= */
+(function linLab() {
+  const MAPS = [
+    { name: "L(x) = 3x", f: ([a, b]) => [3 * a, 3 * b], lin: true, why: "L(αx + βy) = 3αx + 3βy = αL(x) + βL(y). A stretching by the factor 3 (Example 4.1.1).", A: [[3, 0], [0, 3]] },
+    { name: "(x₁, 0)", f: ([a]) => [a, 0], lin: true, why: "Projection onto the x₁-axis: L(x) = x₁e₁ (Example 4.1.2). Its kernel is the x₂-axis.", A: [[1, 0], [0, 0]] },
+    { name: "(x₁, −x₂)", f: ([a, b]) => [a, -b], lin: true, why: "Reflection about the x₁-axis (Example 4.1.3).", A: [[1, 0], [0, -1]] },
+    { name: "(−x₂, x₁)", f: ([a, b]) => [-b, a], lin: true, why: "Rotation by 90° counterclockwise (Example 4.1.4).", A: [[0, -1], [1, 0]] },
+    { name: "(x₂, x₁)", f: ([a, b]) => [b, a], lin: true, why: "Reflection about the line x₂ = x₁ (Exercise 4.1.1(c)).", A: [[0, 1], [1, 0]] },
+    { name: "(x₁ + x₂, x₁)", f: ([a, b]) => [a + b, a], lin: true, why: "Each coordinate is a linear combination of x₁ and x₂, so L(x) = Ax with A = (1 1; 1 0) (Test B 1(a)).", A: [[1, 1], [1, 0]] },
+    { name: "x + a, a = (1, 1)", f: ([a, b]) => [a + 1, b + 1], lin: false, cex: { x: [1, 0], y: [0, 1], a: 1, b: 1 }, why: "L(0) = a ≠ 0, and a linear map always sends 0 to 0. Translations are not linear (Exercise 4.1.3)." },
+    { name: "(x₁x₂, x₁)", f: ([a, b]) => [a * b, a], lin: false, cex: { x: [1, 1], y: [1, 1], a: 1, b: 1 }, why: "L(2x) = (4x₁x₂, 2x₁) but 2L(x) = (2x₁x₂, 2x₁): the product of coordinates scales by α², not α (Test B 1(b))." },
+    { name: "(‖x‖, 0)", f: ([a, b]) => [Math.hypot(a, b), 0], lin: false, cex: { x: [1, 0], y: [0, 1], a: -1, b: 0 }, why: "‖αx‖ = |α|‖x‖, so for α < 0, L(αx) ≠ αL(x) (Example 4.1.6)." },
+    { name: "(x₁, x₂ + x₁²/4)", f: ([a, b]) => [a, b + a * a / 4], lin: false, cex: { x: [2, 0], y: [0, 1], a: 2, b: 0 }, why: "The x₁² term makes the grid lines bend: L(2x) ≠ 2L(x) whenever x₁ ≠ 0." },
+  ];
+  const S = { k: 0, x: [2, 1], y: [-1, 1.5], a: 1, b: 1 };
+  const dom = plane2D($("#lin-dom"), { R: 4.2 }), cod = plane2D($("#lin-cod"), { R: 7 });
+  const D = draggable(dom, () => [S.x, S.y], (i, p) => { if (i) S.y = p; else S.x = p; draw(); }, { lim: 4, snap: 0.5 });
+  const as = $("#lin-a"), bs = $("#lin-b");
+  as.oninput = () => { S.a = +as.value; draw(); }; bs.oninput = () => { S.b = +bs.value; draw(); };
+  const mark = presetRow($("#lin-maps"), MAPS, k => { S.k = k; draw(); $("#lin-status").className = "status inf"; });
+  $("#lin-cex").onclick = () => {
+    const m = MAPS[S.k], st = $("#lin-status");
+    if (m.lin) { st.className = "status ok"; st.innerHTML = `<span class="k">No counterexample exists</span>${m.why}`; return; }
+    Object.assign(S, { x: m.cex.x.slice(), y: m.cex.y.slice(), a: m.cex.a, b: m.cex.b }); draw();
+  };
+  $("#lin-verdict").onclick = () => { const m = MAPS[S.k], st = $("#lin-status"); st.className = "status " + (m.lin ? "ok" : "bad"); st.innerHTML = `<span class="k">${m.lin ? "Linear" : "Not linear"}</span>${m.why}`; };
+  function gridImage(f) {
+    const g = cod.layers.under;
+    for (let k = -5; k <= 5; k++) {
+      for (const dir of [0, 1]) {
+        const pts = [];
+        for (let s = -6; s <= 6.0001; s += 0.25) { const p = dir ? [k, s] : [s, k]; pts.push(f(p)); }
+        el("polyline", { points: pts.map(p => `${cod.X(p[0])},${cod.Y(p[1])}`).join(" "), fill: "none", style: `stroke:var(--${k === 0 ? "ink" : "muted"})`, "stroke-opacity": k === 0 ? .55 : .35, "stroke-width": k === 0 ? 1.6 : 1 }, g);
+      }
+    }
+    const o = f([0, 0]);
+    el("circle", { cx: cod.X(o[0]), cy: cod.Y(o[1]), r: 5, style: `fill:var(--${near(o[0], 0) && near(o[1], 0) ? "c3" : "warn"})` }, g);
+  }
+  function draw() {
+    const m = MAPS[S.k]; mark(S.k);
+    as.value = S.a; bs.value = S.b; $("#lin-ao").textContent = fmt(S.a, 1); $("#lin-bo").textContent = fmt(S.b, 1);
+    $("#lin-def").innerHTML = `<span class="op"><span class="x">L</span>(<b>x</b>) = ${m.name.replace(/^L\(x\) = /, "")}</span>`;
+    dom.clear(); cod.clear();
+    const c = [S.a * S.x[0] + S.b * S.y[0], S.a * S.x[1] + S.b * S.y[1]];
+    dom.arrow(dom.layers.mid, [0, 0], S.x, "c1", 3.5); dom.arrow(dom.layers.mid, [0, 0], S.y, "c2", 3.5);
+    dom.arrow(dom.layers.top, [0, 0], c, "amb", 3);
+    dom.text(dom.layers.top, [c[0] + 0.15, c[1] + 0.2], "αx + βy", { style: "fill:var(--pivot)", "font-weight": 600 });
+    D.draw(["x", "y"], ["f1", "f2"]);
+    gridImage(m.f);
+    const Lx = m.f(S.x), Ly = m.f(S.y), Lc = m.f(c), R = [S.a * Lx[0] + S.b * Ly[0], S.a * Lx[1] + S.b * Ly[1]];
+    cod.arrow(cod.layers.mid, [0, 0], Lx, "c1", 3); cod.arrow(cod.layers.mid, [0, 0], Ly, "c2", 3);
+    cod.arrow(cod.layers.top, [0, 0], Lc, "amb", 4.5);
+    cod.arrow(cod.layers.top, [0, 0], R, "ink", 2.2, { "stroke-dasharray": "5 4" });
+    const same = near(Lc[0], R[0]) && near(Lc[1], R[1]);
+    $("#lin-tab").innerHTML = `<table class="lin-t"><tr><td>x, y</td><td>${fv(S.x)}, ${fv(S.y)}</td></tr><tr><td>αx + βy</td><td>${fv(c)}</td></tr>` +
+      `<tr class="amb"><td>L(αx + βy)</td><td>${fv(Lc)}</td></tr><tr><td>αL(x) + βL(y)</td><td>${fv(R)}</td></tr></table>`;
+    const st = $("#lin-status");
+    if (same) { st.className = "status ok"; st.innerHTML = `<span class="k">Equal for these vectors</span>The thick arrow L(αx + βy) and the dashed αL(x) + βL(y) coincide. One example proves nothing; try others or ask for the verdict.`; }
+    else { st.className = "status bad"; st.innerHTML = `<span class="k">Counterexample</span>L(αx + βy) = ${fv(Lc)} but αL(x) + βL(y) = ${fv(R)}. So L is not linear.`; }
+  }
+  HOOK.lin = k => { S.k = k; draw(); goto("#lab-lin"); };
+  draw();
+})();
+
+/* =========================================================
+   LAB · Kernel and range
+   ========================================================= */
+(function kerLab() {
+  const P = [
+    ["Ex 4.1.11: (x₁, 0)", [[1, 0], [0, 0]]],
+    ["(x₁ + 2x₂, x₁/2 + x₂)", [[1, 2], ["1/2", 1]]],
+    ["rotation (−x₂, x₁)", [[0, -1], [1, 0]]],
+    ["Ex 4.1.12", [[1, 1, 0], [0, 1, 1]]],
+    ["Ex 17(a)", [[0, 0, 1], [0, 1, 0], [1, 0, 0]]],
+    ["Ex 17(b)", [[1, 0, 0], [0, 1, 0], [0, 0, 0]]],
+    ["Ex 17(c)", [[1, 0, 0], [1, 0, 0], [1, 0, 0]]],
+    ["Ex 22", [[1, 0, 0], [1, 1, 0], [1, 1, 1]]],
+    ["Test B 3", [[-1, 1, 0], [0, -1, 1], [-1, 0, 1]]],
+    ["Test B 4", [[0, 1], [1, 0], [1, 1]]],
+  ];
+  const S = { A: qm.of(P[1][1]), t: 0, k: 1 };
+  const svg = $("#ker-svg"), Pl = plane2D(svg, { R: 5.2 });
+  const ts = $("#ker-t"); ts.oninput = () => { S.t = +ts.value; picture(); };
+  const mark = presetRow($("#ker-presets"), P, k => load(k));
+  function load(k, A) { S.k = k; S.A = A ? A : qm.of(P[k][1]); S.t = 0; build(); }
+  function build() {
+    const m = S.A.length, n = S.A[0].length;
+    mark(S.k);
+    chipRow($("#ker-m"), [1, 2, 3], m, v => { S.A = resize(S.A, v, n); S.k = -1; build(); });
+    chipRow($("#ker-n"), [1, 2, 3], n, v => { S.A = resize(S.A, m, v); S.k = -1; build(); });
+    gridIn($("#ker-in"), S.A, { label: "standard matrix A", onChange: () => { S.k = -1; mark(-1); analyse(); } });
+    analyse();
+  }
+  function analyse() {
+    const A = S.A, m = A.length, n = A[0].length, { piv } = qm.rref(A), r = piv.length;
+    const K = qm.nullBasis(A), Rg = piv.map(j => A.map(row => row[j]));
+    $("#ker-formula").innerHTML = `<span class="op">${formula(A)}</span>`;
+    const one = r === n, onto = r === m;
+    const st = $("#ker-status");
+    st.className = "status " + (one && onto ? "ok" : "inf");
+    st.innerHTML = `<span class="k math">dim ker(L) = ${n - r}, dim L(ℝ${"⁰¹²³"[n]}) = ${r}; ${n - r} + ${r} = ${n}</span>` +
+      `${one ? "ker(L) = {0}, so L is <b>one-to-one</b> (Exercise 4.1.21)." : "ker(L) ≠ {0}, so L is <b>not one-to-one</b>: x and x + k have the same image for every k in the kernel."} ` +
+      `${onto ? `The range is all of ℝ${"⁰¹²³"[m]}: L is <b>onto</b>.` : `The range is a proper subspace of ℝ${"⁰¹²³"[m]}: L is <b>not onto</b>.`}`;
+    let h = `<span class="op">kernel basis:</span>` + (K.length ? K.map((v, j) => lbl(matHTML(colM(v), { cellClass: () => "hl2" }), `k${S_(j + 1)}`)).join("") : `<span class="op">none, ker = {0}</span>`);
+    h += `<span class="op">range basis:</span>` + (Rg.length ? Rg.map((v, j) => lbl(matHTML(colM(v), { cellClass: () => "hl3" }), `a${S_(piv[j] + 1)}`)).join("") : `<span class="op">none, range = {0}</span>`);
+    $("#ker-bases").innerHTML = h;
+    const two = m === 2 && n === 2;
+    svg.style.display = two ? "" : "none"; ts.parentElement.style.display = two ? "" : "none";
+    $("#ker-note").textContent = two ? "Slide “apply” to move every grid point x to Ax. Points of the kernel (red) end at the origin; everything lands on the range." : "The picture is drawn for 2 × 2 matrices. Choose one of the first three examples, or set m = n = 2.";
+    picture();
+  }
+  function picture() {
+    const A = S.A; if (A.length !== 2 || A[0].length !== 2) return;
+    $("#ker-to").textContent = fmt(S.t, 2);
+    const F = A.map(r => r.map(toF)), t = S.t;
+    const mv = p => [(1 - t) * p[0] + t * (F[0][0] * p[0] + F[0][1] * p[1]), (1 - t) * p[1] + t * (F[1][0] * p[0] + F[1][1] * p[1])];
+    Pl.clear();
+    const K = qm.nullBasis(A), r = 2 - K.length;
+    const inK = p => near(F[0][0] * p[0] + F[0][1] * p[1], 0) && near(F[1][0] * p[0] + F[1][1] * p[1], 0);
+    if (K.length === 1) { const d = K[0].map(toF); Pl.lineThrough(Pl.layers.under, [0, 0], d, { style: "stroke:var(--warn)", "stroke-width": 2.5, "stroke-opacity": 1 - 0.6 * t }); }
+    if (r === 1) { const { piv } = qm.rref(A); const d = A.map(row => toF(row[piv[0]])); Pl.lineThrough(Pl.layers.under, [0, 0], d, { style: "stroke:var(--c3)", "stroke-width": 3, "stroke-opacity": 0.25 + 0.6 * t }); }
+    Pl.poly(Pl.layers.mid, [[0, 0], [1, 0], [1, 1], [0, 1]].map(mv), { style: "fill:var(--c1);stroke:var(--c1)", "fill-opacity": .18, "stroke-width": 1.5 });
+    for (let a = -4; a <= 4; a++) for (let b = -4; b <= 4; b++) {
+      const p = mv([a, b]); const k = inK([a, b]);
+      el("circle", { cx: Pl.X(p[0]), cy: Pl.Y(p[1]), r: k ? 4.5 : 3, style: `fill:var(--${k ? "warn" : "c1"})`, "fill-opacity": k ? 1 : .75 }, Pl.layers.top);
+    }
+  }
+  HOOK.ker = A => { S.k = -1; load(-1, qm.of(A)); goto("#lab-ker"); };
+  load(1);
+})();
+
+/* =========================================================
+   LAB · Build the standard matrix (+ composition)
+   ========================================================= */
+const R2 = th => { const c = Math.cos(th * Math.PI / 180), s = Math.sin(th * Math.PI / 180); return [[c, -s], [s, c]]; };
+const fmul = (A, B) => A.map(r => B[0].map((_, j) => r.reduce((s, v, k) => s + v * B[k][j], 0)));
+const fapp = (A, p) => [A[0][0] * p[0] + A[0][1] * p[1], A[1][0] * p[0] + A[1][1] * p[1]];
+const OPS2 = [
+  { name: "rotate 60°", M: R2(60), tex: "R₆₀" },
+  { name: "rotate 90°", M: [[0, -1], [1, 0]], tex: "R₉₀" },
+  { name: "reflect x₁-axis", M: [[1, 0], [0, -1]], tex: "F₁" },
+  { name: "reflect y-axis", M: [[-1, 0], [0, 1]], tex: "F₂" },
+  { name: "reflect x₂ = x₁", M: [[0, 1], [1, 0]], tex: "F₌" },
+  { name: "project x₁-axis", M: [[1, 0], [0, 0]], tex: "P" },
+  { name: "shear", M: [[1, 1], [0, 1]], tex: "H" },
+  { name: "double", M: [[2, 0], [0, 2]], tex: "2I" },
+];
+(function stdLab() {
+  const PRE = [
+    ["identity", [[1, 0], [0, 1]]], ["rotate 90°", [[0, -1], [1, 0]]], ["rotate 45°", R2(45)], ["reflect x₁-axis", [[1, 0], [0, -1]]],
+    ["reflect x₂ = x₁", [[0, 1], [1, 0]]], ["project onto x₁-axis", [[1, 0], [0, 0]]], ["shear", [[1, 1], [0, 1]]], ["dilate 1.5", [[1.5, 0], [0, 1.5]]], ["singular", [[1, 2], [0.5, 1]]],
+  ];
+  // the letter F (asymmetric, so reflections are visible)
+  const Fig = [[0, 0], [0, 2], [1.2, 2], [1.2, 1.6], [0.4, 1.6], [0.4, 1.15], [1, 1.15], [1, 0.75], [0.4, 0.75], [0.4, 0]];
+  const S = { c1: [0, 1], c2: [-1, 0], k: 1, f: 0, g: 2, comp: false, rev: false };
+  const P = plane2D($("#std-svg"), { R: 3.6 });
+  const D = draggable(P, () => [S.c1, S.c2], (i, p) => { if (i) S.c2 = p; else S.c1 = p; S.k = -1; S.comp = false; draw(); }, { lim: 3.5, snap: 0.25 });
+  const mark = presetRow($("#std-presets"), PRE, k => { S.k = k; const M = PRE[k][1]; S.c1 = [M[0][0], M[1][0]]; S.c2 = [M[0][1], M[1][1]]; S.comp = false; draw(); });
+  const c1r = $("#std-c1"), c2r = $("#std-c2");
+  function chips() {
+    chipRow(c1r, OPS2.map((_, i) => i), S.f, i => { S.f = i; if (S.comp) compose(); else chips(); }, i => OPS2[i].name);
+    chipRow(c2r, OPS2.map((_, i) => i), S.g, i => { S.g = i; if (S.comp) compose(); else chips(); }, i => OPS2[i].name);
+  }
+  $("#std-comp").onclick = () => { S.rev = false; compose(); };
+  $("#std-rev").onclick = () => { S.rev = !S.rev; compose(); };
+  function compose() {
+    S.comp = true; chips();
+    const [a, b] = S.rev ? [S.g, S.f] : [S.f, S.g];
+    const M = fmul(OPS2[b].M, OPS2[a].M);
+    S.c1 = [M[0][0], M[1][0]]; S.c2 = [M[0][1], M[1][1]]; S.k = -1;
+    const other = S.rev ? fmul(OPS2[S.g].M, OPS2[S.f].M) : fmul(OPS2[S.f].M, OPS2[S.g].M);
+    const commute = M.every((r, i) => r.every((v, j) => near(v, other[i][j])));
+    $("#std-cexpr").innerHTML = `<span class="op">first ${OPS2[a].name}, then ${OPS2[b].name}:</span>` +
+      lbl(matHTML(OPS2[b].M), OPS2[b].tex) + lbl(matHTML(OPS2[a].M), OPS2[a].tex) + `<span class="op">=</span>` + lbl(matHTML(M, { cellClass: () => "hl3" }), "A = A₂A₁") +
+      `<span class="op">${commute ? "These two commute: the order does not matter." : "The other order gives a different matrix: press “Reverse the order”."}</span>`;
+    draw(a);
+  }
+  function draw(firstIdx) {
+    mark(S.k);
+    P.clear();
+    const A = [[S.c1[0], S.c2[0]], [S.c1[1], S.c2[1]]];
+    P.poly(P.layers.under, Fig, { style: "fill:var(--muted);stroke:var(--muted)", "fill-opacity": .12, "stroke-dasharray": "4 3" });
+    if (S.comp && firstIdx != null) P.poly(P.layers.under, Fig.map(p => fapp(OPS2[firstIdx].M, p)), { style: "fill:var(--c2);stroke:var(--c2)", "fill-opacity": .1, "stroke-width": 1.2, "stroke-dasharray": "3 3" });
+    P.poly(P.layers.mid, Fig.map(p => fapp(A, p)), { style: "fill:var(--c1);stroke:var(--c1)", "fill-opacity": .25, "stroke-width": 2 });
+    P.arrow(P.layers.top, [0, 0], [1, 0], "ink", 1.5, { "stroke-opacity": .5 }); P.arrow(P.layers.top, [0, 0], [0, 1], "ink", 1.5, { "stroke-opacity": .5 });
+    P.arrow(P.layers.top, [0, 0], S.c1, "c1", 3.5); P.arrow(P.layers.top, [0, 0], S.c2, "c2", 3.5);
+    D.draw(["L(e₁)", "L(e₂)"], ["f1", "f2"]);
+    const d = A[0][0] * A[1][1] - A[0][1] * A[1][0];
+    $("#std-expr").innerHTML = lbl(matHTML(A, { cellClass: (i, j) => j ? "hl2" : "hl1" }), "A = (L(e₁) L(e₂))") + `<span class="op">det A = ${fmt(d, 3)}</span>`;
+    const st = $("#std-status");
+    if (near(d, 0)) { st.className = "status bad"; st.innerHTML = `<span class="k">Singular</span>The columns are parallel, so the whole plane, and the F, is squashed onto a line (or a point).`; }
+    else if (d < 0) { st.className = "status inf"; st.innerHTML = `<span class="k">det A < 0: orientation reversed</span>The F comes out mirror-imaged. Areas are multiplied by |det A| = ${fmt(Math.abs(d), 3)}.`; }
+    else { st.className = "status ok"; st.innerHTML = `<span class="k">det A > 0: orientation kept</span>Areas are multiplied by det A = ${fmt(d, 3)}. ${S.comp ? "The faint pink F is the picture after the first step." : ""}`; }
+    if (!S.comp) $("#std-cexpr").innerHTML = "";
+  }
+  HOOK.std = M => { S.c1 = [M[0][0], M[1][0]]; S.c2 = [M[0][1], M[1][1]]; S.k = -1; S.comp = false; draw(); goto("#lab-std"); };
+  HOOK.comp = (f, g) => { S.f = f; S.g = g; S.rev = false; compose(); goto("#lab-std"); };
+  chips(); draw();
+})();
+
+/* =========================================================
+   LAB · Homogeneous coordinates
+   ========================================================= */
+(function homLab() {
+  const R3 = th => { const c = Math.cos(th * Math.PI / 180), s = Math.sin(th * Math.PI / 180); return [[c, -s, 0], [s, c, 0], [0, 0, 1]]; };
+  const FIGS = [
+    ["triangle T", [[0, 1, 1, 0], [0, 1, -1, 0]]],
+    ["Ex 9: figure R", [[0, 0, 1, 1, 0], [0, 1, 1, 0, 0]]],
+    ["house", [[0, 0, 1, 2, 2, 0], [0, 1.4, 2.2, 1.4, 0, 0]]],
+  ];
+  const OPS = [
+    { name: "dilate ×1.5", M: [[1.5, 0, 0], [0, 1.5, 0], [0, 0, 1]] },
+    { name: "contract ×½", M: [[0.5, 0, 0], [0, 0.5, 0], [0, 0, 1]] },
+    { name: "reflect x-axis", M: [[1, 0, 0], [0, -1, 0], [0, 0, 1]] },
+    { name: "reflect y-axis", M: [[-1, 0, 0], [0, 1, 0], [0, 0, 1]] },
+    { name: "rotate 60°", M: R3(60) },
+    { name: "rotate −45°", M: R3(-45) },
+    { name: "Ex 9(b)(iii)", M: [[1, 0, 2], [0, 1, -3], [0, 0, 1]] },
+  ];
+  const S = { f: 0, ops: [], anim: null, shown: null };
+  const P = plane2D($("#hom-svg"), { R: 5 });
+  const markF = presetRow($("#hom-figs"), FIGS, k => { S.f = k; S.ops = []; S.shown = null; draw(); });
+  const opsHost = $("#hom-ops");
+  OPS.forEach(o => { const b = document.createElement("button"); b.className = "chip"; b.textContent = o.name; b.onclick = () => push(o.name, o.M); opsHost.appendChild(b); });
+  $("#hom-tr").onclick = () => {
+    const a1 = Q.parse($("#hom-a1").value), a2 = Q.parse($("#hom-a2").value);
+    if (!a1 || !a2) return;
+    push(`translate (${a1.txt()}, ${a2.txt()})`, [[1, 0, toF(a1)], [0, 1, toF(a2)], [0, 0, 1]]);
+  };
+  $("#hom-undo").onclick = () => { S.ops.pop(); draw(); };
+  $("#hom-reset").onclick = () => { S.ops = []; draw(); };
+  const prod = () => S.ops.reduce((M, o) => fmul(o.M, M), [[1, 0, 0], [0, 1, 0], [0, 0, 1]]);
+  const pts = (M) => { const F = FIGS[S.f][1]; return F[0].map((_, k) => { const v = [F[0][k], F[1][k], 1]; return [0, 1].map(i => M[i][0] * v[0] + M[i][1] * v[1] + M[i][2] * v[2]); }); };
+  function push(name, M) {
+    const before = pts(prod());
+    S.ops.push({ name, M });
+    const after = pts(prod());
+    if (S.anim) cancelAnimationFrame(S.anim);
+    const t0 = performance.now(), dur = 900;
+    const step = now => {
+      const t = Math.min(1, (now - t0) / dur), e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+      S.shown = before.map((p, k) => [p[0] + e * (after[k][0] - p[0]), p[1] + e * (after[k][1] - p[1])]);
+      draw(true);
+      if (t < 1) S.anim = requestAnimationFrame(step); else { S.anim = null; S.shown = null; draw(); }
+    };
+    S.anim = requestAnimationFrame(step);
+  }
+  function draw(animating) {
+    markF(S.f);
+    P.clear();
+    const F = FIGS[S.f][1], orig = F[0].map((_, k) => [F[0][k], F[1][k]]);
+    P.poly(P.layers.under, orig, { style: "fill:var(--muted);stroke:var(--muted)", "fill-opacity": .12, "stroke-dasharray": "4 3" });
+    const M = prod(), cur = S.shown || pts(M);
+    P.poly(P.layers.mid, cur, { style: "fill:var(--c1);stroke:var(--c1)", "fill-opacity": .28, "stroke-width": 2 });
+    el("circle", { cx: P.X(cur[0][0]), cy: P.Y(cur[0][1]), r: 4, style: "fill:var(--c2)" }, P.layers.top);
+    if (animating) return;
+    $("#hom-list").innerHTML = S.ops.length ? S.ops.map((o, i) => `<li>${o.name}</li>`).join("") : `<li class="none">no operations yet: pick one above</li>`;
+    const Fh = [F[0], F[1], F[0].map(() => 1)];
+    let h = "";
+    if (S.ops.length) h += S.ops.slice().reverse().map((o, i) => lbl(matHTML(o.M), `step ${S.ops.length - i}`)).join("") + `<span class="op">=</span>`;
+    h += lbl(matHTML(M, { cellClass: (i, j) => i < 2 && j === 2 ? "hl3" : "" }), "M (3 × 3)");
+    h += `<span class="op">M ·</span>` + lbl(matHTML(Fh), "figure, homogeneous") + `<span class="op">=</span>` + lbl(matHTML(fmul(M, Fh)), "new vertices");
+    $("#hom-expr").innerHTML = h;
+  }
+  HOOK.hom = (f, ops) => { S.f = f; S.ops = ops.map(i => ({ name: OPS[i].name, M: OPS[i].M })); draw(); goto("#lab-hom"); };
+  draw();
+})();
+
+/* =========================================================
+   LAB · Representation in other bases by RREF (Corollary 4.2.4)
+   ========================================================= */
+(function repLab() {
+  const PRE = [
+    { name: "Example 4.2.6", L: [[0, 1], [1, 1], [1, -1]], U: [[1, 3], [2, 1]], B: [[1, 1, 1], [0, 1, 1], [0, 0, 1]] },
+    { name: "Example 4.2.3", L: [[1, -1, -1], [1, 1, 1]], U: [[1, 0, 0], [0, 1, 0], [0, 0, 1]], B: [[1, -1], [1, 1]] },
+    { name: "Ex 4.2.6", L: [[2, 1], [1, 1], [1, 2]], U: [[1, 0], [0, 1]], B: [[1, 1, 0], [1, 0, 1], [0, 1, 1]] },
+    { name: "Ex 4.2.18(a)", L: [[0, 0, 1], [1, 0, 0]], U: [[1, 1, -1], [0, 2, 1], [-1, 1, 1]], B: [[1, 2], [-1, -1]] },
+    { name: "Ex 4.2.18(b)", L: [[1, 1, 0], [1, 0, -1]], U: [[1, 1, -1], [0, 2, 1], [-1, 1, 1]], B: [[1, 2], [-1, -1]] },
+    { name: "Ex 4.2.18(c)", L: [[0, 2, 0], [-1, 0, 0]], U: [[1, 1, -1], [0, 2, 1], [-1, 1, 1]], B: [[1, 2], [-1, -1]] },
+    { name: "Section 4.3 operator", L: [[2, 0], [1, 1]], U: [[1, -1], [1, 1]], B: [[1, -1], [1, 1]] },
+  ];
+  const S = { k: 0 };
+  const mark = presetRow($("#rep-presets"), PRE, k => load(k));
+  function load(k) { S.k = k; const p = PRE[k]; S.L = qm.of(p.L); S.U = qm.of(p.U); S.B = qm.of(p.B); build(); }
+  function build() {
+    const m = S.L.length, n = S.L[0].length;
+    mark(S.k);
+    chipRow($("#rep-n"), [1, 2, 3], n, v => { S.L = resize(S.L, m, v); S.U = resize(S.U, v, v); S.k = -1; build(); });
+    chipRow($("#rep-m"), [1, 2, 3], m, v => { S.L = resize(S.L, v, n); S.B = resize(S.B, v, v); S.k = -1; build(); });
+    const ch = () => { S.k = -1; mark(-1); calc(); };
+    gridIn($("#rep-L"), S.L, { label: "standard matrix of L (m × n)", onChange: ch, name: "L" });
+    gridIn($("#rep-U"), S.U, { label: "domain basis E: u₁ … uₙ as columns", onChange: ch, name: "U", head: ["u₁", "u₂", "u₃"] });
+    gridIn($("#rep-B"), S.B, { label: "codomain basis F: b₁ … bₘ as columns", onChange: ch, name: "B", head: ["b₁", "b₂", "b₃"] });
+    calc();
+  }
+  function calc() {
+    const m = S.L.length, n = S.L[0].length, st = $("#rep-status");
+    if (qm.det(S.U).zero || qm.det(S.B).zero) {
+      $("#rep-out").innerHTML = ""; st.className = "status bad";
+      st.innerHTML = `<span class="k">Not a basis</span>${qm.det(S.U).zero ? "The columns u₁ … uₙ are dependent." : "The columns b₁ … bₘ are dependent."} Both must be bases (nonzero determinant).`; return;
+    }
+    const LU = qm.mul(S.L, S.U), M = S.B.map((r, i) => [...r, ...LU[i]]), { R } = qm.rref(M, { cols: m });
+    const A = R.map(r => r.slice(m));
+    $("#rep-out").innerHTML = `<span class="op">L(u<sub>j</sub>) = (standard matrix)·u<sub>j</sub>:</span>` + lbl(matHTML(LU, { cellClass: () => "hl1" }), "L(u₁) … L(uₙ)") +
+      `<span class="op">rref</span>` + lbl(matHTML(M, { split: m }), "(B | L(u₁) … L(uₙ))") + `<span class="op">→</span>` + lbl(matHTML(R, { split: m, cellClass: (i, j) => j >= m ? "hl3" : "" }), "(I | A)");
+    const expl = A[0].map((_, j) => `L(u${S_(j + 1)}) = ${linExpr(null, A.map((row, i) => ({ c: row[j], v: `b${S_(i + 1)}` })))}`).join("; ");
+    st.className = "status ok";
+    st.innerHTML = `<span class="k">A = B⁻¹ L(U), ${m} × ${n}</span>${expl}. Column j of A holds the coordinates of L(u<sub>j</sub>) in the basis F.`;
+  }
+  HOOK.rep = p => { S.k = -1; S.L = qm.of(p.L); S.U = qm.of(p.U); S.B = qm.of(p.B); build(); goto("#lab-rep"); };
+  load(0);
+})();
+
+/* =========================================================
+   LAB · Similarity explorer
+   ========================================================= */
+(function simLab() {
+  const PRE = [
+    ["Section 4.3 example", [[2, 0], [1, 1]], [[1, 1], [-1, 1]]],
+    ["eigenvector basis", [[2, 0], [1, 1]], [[1, 1], [0, 1]]],
+    ["Ex 4.3.1(a)", [[-1, 0], [0, 1]], [[1, 1], [-1, 1]]],
+    ["Ex 4.3.1(c)", [[0, 1], [1, 0]], [[1, 1], [-1, 1]]],
+    ["Ex 4.3.1(e)", [[0, 0], [0, 1]], [[1, 1], [-1, 1]]],
+    ["Test B 9", [[2, 1], [3, 2]], [[3, 1], [5, 2]]],
+  ];
+  const S = { A: qm.of(PRE[0][1]), u: PRE[0][2].map(a => a.slice()), k: 0 };
+  const P = plane2D($("#sim-svg"), { R: 6 });
+  const D = draggable(P, () => S.u, (i, p) => { S.u[i] = p; S.k = -1; draw(); }, { lim: 5.5, snap: 0.5 });
+  const mark = presetRow($("#sim-presets"), PRE, k => { S.k = k; S.A = qm.of(PRE[k][1]); S.u = PRE[k][2].map(a => a.slice()); build(); });
+  function build() { gridIn($("#sim-A"), S.A, { label: "A, in the standard basis", onChange: () => { S.k = -1; draw(); } }); draw(); }
+  function draw() {
+    mark(S.k); P.clear();
+    const U = [[qf(S.u[0][0]), qf(S.u[1][0])], [qf(S.u[0][1]), qf(S.u[1][1])]], dU = qm.det(U), F = S.A.map(r => r.map(toF));
+    if (!dU.zero) for (let k = -10; k <= 10; k++) {
+      P.lineThrough(P.layers.under, [k * S.u[0][0], k * S.u[0][1]], S.u[1], { class: "c1", "stroke-opacity": .2, "stroke-width": 1 });
+      P.lineThrough(P.layers.under, [k * S.u[1][0], k * S.u[1][1]], S.u[0], { class: "c1", "stroke-opacity": .2, "stroke-width": 1 });
+    }
+    const Lu = S.u.map(u => fapp(F, u));
+    P.arrow(P.layers.mid, [0, 0], S.u[0], "c1", 3.5); P.arrow(P.layers.mid, [0, 0], S.u[1], "c2", 3.5);
+    P.arrow(P.layers.top, [0, 0], Lu[0], "c1", 2.5, { "stroke-dasharray": "6 4" }); P.arrow(P.layers.top, [0, 0], Lu[1], "c2", 2.5, { "stroke-dasharray": "6 4" });
+    P.text(P.layers.top, [Lu[0][0] + 0.15, Lu[0][1] - 0.35], "L(u₁)", { class: "f1", "font-weight": 600 });
+    P.text(P.layers.top, [Lu[1][0] + 0.15, Lu[1][1] + 0.2], "L(u₂)", { class: "f2", "font-weight": 600 });
+    D.draw(["u₁", "u₂"], ["f1", "f2"]);
+    const st = $("#sim-status");
+    if (dU.zero) { $("#sim-expr").innerHTML = ""; $("#sim-inv").innerHTML = ""; st.className = "status bad"; st.innerHTML = `<span class="k">Not a basis</span>u₁ and u₂ are parallel.`; return; }
+    const B = qm.mul(qm.mul(qm.inv(U), S.A), U);
+    $("#sim-expr").innerHTML = lbl(matHTML(qm.inv(U)), "U⁻¹") + lbl(matHTML(S.A), "A") + lbl(matHTML(U, { cellClass: (i, j) => j ? "hl2" : "hl1" }), "U = (u₁ u₂)") + `<span class="op">=</span>` + lbl(matHTML(B, { cellClass: (i, j) => j ? "hl2" : "hl1" }), "B");
+    const tr = M => M[0][0].add(M[1][1]);
+    $("#sim-inv").innerHTML = `<table class="lin-t"><tr><td></td><td>A</td><td>B</td></tr><tr><td>det</td><td>${qm.det(S.A).txt()}</td><td>${qm.det(B).txt()}</td></tr><tr><td>trace</td><td>${tr(S.A).txt()}</td><td>${tr(B).txt()}</td></tr><tr><td>rank</td><td>${qm.rank(S.A)}</td><td>${qm.rank(B)}</td></tr></table>`;
+    const diag = B[0][1].zero && B[1][0].zero;
+    st.className = "status " + (diag ? "ok" : "inf");
+    st.innerHTML = diag ? `<span class="k">B is diagonal</span>Each u<sub>j</sub> is mapped to a multiple of itself: L(u₁) = ${B[0][0].txt()}u₁, L(u₂) = ${B[1][1].txt()}u₂. These are eigenvectors (Chapter 6).`
+      : `<span class="k math">L(u₁) = ${B[0][0].txt()}u₁ + ${B[1][0].txt()}u₂, L(u₂) = ${B[0][1].txt()}u₁ + ${B[1][1].txt()}u₂</span>Those coordinates are the columns of B. Determinant, trace and rank agree with A.`;
+  }
+  HOOK.sim = (A, u) => { S.k = -1; S.A = qm.of(A); S.u = u.map(a => a.slice()); build(); goto("#lab-sim"); };
+  build();
+})();
+
+/* =========================================================
+   Definitions
+   ========================================================= */
+renderDefinitions([
+  { sec: "s41", id: "def-lin", term: "Linear transformation", ref: "§4.1 · Definition", scene: "LinearMap", lab: ["#lab-lin", "Open the linearity tester"],
+    html: `A mapping <i>L</i> from a vector space <i>V</i> into a vector space <i>W</i> is a <b>linear transformation</b> if <i>L</i>(α<b>v</b>${S_(1)} + β<b>v</b>${S_(2)}) = α<i>L</i>(<b>v</b>${S_(1)}) + β<i>L</i>(<b>v</b>${S_(2)}) for all <b>v</b>${S_(1)}, <b>v</b>${S_(2)} ∈ <i>V</i> and all scalars α, β. Equivalently <i>L</i>(<b>v</b>${S_(1)} + <b>v</b>${S_(2)}) = <i>L</i>(<b>v</b>${S_(1)}) + <i>L</i>(<b>v</b>${S_(2)}) and <i>L</i>(α<b>v</b>) = α<i>L</i>(<b>v</b>). A linear map from <i>V</i> to itself is a <b>linear operator</b>. Consequences: <i>L</i>(<b>0</b>) = <b>0</b> and <i>L</i>(−<b>v</b>) = −<i>L</i>(<b>v</b>).`,
+    note: "The animation applies a matrix to the plane, then a translation and a curved map, which fail." },
+  { sec: "s41", id: "def-ker", term: "Kernel, image, range", ref: "§4.1 · Definitions, Theorem 4.1.1", scene: "KernelRange", lab: ["#lab-ker", "Open the kernel and range lab"],
+    html: `The <b>kernel</b> of <i>L</i> : <i>V</i> → <i>W</i> is ker(<i>L</i>) = {<b>v</b> ∈ <i>V</i> : <i>L</i>(<b>v</b>) = <b>0</b>${S_("W")}}. The <b>image</b> of a subspace <i>S</i> is <i>L</i>(<i>S</i>) = {<i>L</i>(<b>v</b>) : <b>v</b> ∈ <i>S</i>}; the image of all of <i>V</i> is the <b>range</b> <i>L</i>(<i>V</i>). Both ker(<i>L</i>) and <i>L</i>(<i>S</i>) are subspaces (4.1.1). For <i>L</i>(<b>x</b>) = <i>A</i><b>x</b>: ker(<i>L</i>) = <i>N</i>(<i>A</i>) and the range is the column space of <i>A</i>.` },
+  { sec: "s42", id: "def-std", term: "Standard matrix representation", ref: "§4.2 · Theorem 4.2.1", scene: "StandardMatrix", lab: ["#lab-std", "Build a standard matrix"],
+    html: `If <i>L</i> is a linear transformation from ℝ<sup><i>n</i></sup> into ℝ<sup><i>m</i></sup>, there is an <i>m</i> × <i>n</i> matrix <i>A</i> with <i>L</i>(<b>x</b>) = <i>A</i><b>x</b> for every <b>x</b>, and its <i>j</i>th column is <b>a</b>${S_("j")} = <i>L</i>(<b>e</b>${S_("j")}). Rotation by θ: <i>A</i> = (cos θ  −sin θ; sin θ  cos θ).` },
+  { sec: "s42", id: "def-rep", term: "Matrix representation relative to bases", ref: "§4.2 · Theorems 4.2.2, 4.2.3, Corollary 4.2.4", scene: "BasisRepresentation", lab: ["#lab-rep", "Compute one by row reduction"],
+    html: `If <i>E</i> = [<b>v</b>${S_(1)}, …, <b>v</b>${S_("n")}] and <i>F</i> = [<b>w</b>${S_(1)}, …, <b>w</b>${S_("m")}] are ordered bases of <i>V</i> and <i>W</i>, each linear <i>L</i> : <i>V</i> → <i>W</i> has an <i>m</i> × <i>n</i> matrix <i>A</i> with [<i>L</i>(<b>v</b>)]${S_("F")} = <i>A</i>[<b>v</b>]${S_("E")}; its columns are <b>a</b>${S_("j")} = [<i>L</i>(<b>v</b>${S_("j")})]${S_("F")}. In ℝ<sup><i>n</i></sup>, ℝ<sup><i>m</i></sup> with <i>B</i> = (<b>b</b>${S_(1)} … <b>b</b>${S_("m")}): <b>a</b>${S_("j")} = <i>B</i><sup>−1</sup><i>L</i>(<b>u</b>${S_("j")}), so (<i>B</i> | <i>L</i>(<b>u</b>${S_(1)}) … <i>L</i>(<b>u</b>${S_("n")})) row reduces to (<i>I</i> | <i>A</i>).` },
+  { sec: "s42", id: "def-hom", term: "Homogeneous coordinates", ref: "§4.2 · Application 1", scene: "Homogeneous", lab: ["#lab-hom", "Open the graphics lab"],
+    html: `Identify (<i>x</i>${S_(1)}, <i>x</i>${S_(2)}) with (<i>x</i>${S_(1)}, <i>x</i>${S_(2)}, 1). A linear map with 2 × 2 matrix <i>A</i> becomes the 3 × 3 matrix with <i>A</i> in the top left corner and the last row and column of <i>I</i>. A translation by <b>a</b>, not linear in ℝ<sup>2</sup>, becomes the 3 × 3 matrix (1 0 <i>a</i>${S_(1)}; 0 1 <i>a</i>${S_(2)}; 0 0 1). A sequence of operations is one matrix product, the first operation on the right.` },
+  { sec: "s43", id: "def-sim", term: "Similar matrices", ref: "§4.3 · Theorem 4.3.1, Definition", scene: "Similarity", lab: ["#lab-sim", "Open the similarity explorer"],
+    html: `If <i>A</i> represents a linear operator <i>L</i> with respect to <i>E</i>, <i>B</i> represents it with respect to <i>F</i>, and <i>S</i> is the transition matrix from <i>F</i> to <i>E</i>, then <i>B</i> = <i>S</i><sup>−1</sup><i>A</i><i>S</i>. In general, <i>B</i> is <b>similar</b> to <i>A</i> if <i>B</i> = <i>S</i><sup>−1</sup><i>A</i><i>S</i> for some nonsingular <i>S</i>. Similar matrices have equal determinants, traces and characteristic polynomials (Exercises 4.3.11, 4.3.14, 4.3.15).`,
+    note: "The animation uses the opening example of Section 4.3: L(x) = (2x₁, x₁ + x₂)ᵀ with u₁ = (1, 1)ᵀ, u₂ = (−1, 1)ᵀ." },
+], { s41: "4.1", s42: "4.2", s43: "4.3" });
+
+/* =========================================================
+   Exercises
+   ========================================================= */
+const TF = ["True", "False"];
+const LC = ["Linear", "Not linear"];
+const linAct = k => ({ label: "Test it in the lab", run: () => HOOK.lin(k) });
+const kerAct = A => ({ label: "Open in the kernel lab", run: () => HOOK.ker(A) });
+const colsToX = cols => qm.of(cols[0].map((_, i) => cols.map(c => c[i])));
+const vecQ = v => v.map(q);
+const coordsIn = (cols, v) => qm.solve(colsToX(cols), v);
+
+buildExercises("s41", "Exercises · §4.1", "From the Section 4.1 exercises (p. 174–175) and the Chapter Tests.", [
+  cl("4.1 · Ex 1, Test B 1", "Is each mapping a linear operator on ℝ²?", LC, [
+    { tag: "(a)", html: "L(x) = (−x₁, x₂)ᵀ", ans: 0, why: "Reflection about the x₂-axis: L(x) = Ax with A = (−1 0; 0 1)." },
+    { tag: "(b)", html: "L(x) = −x", ans: 0, why: "Multiplication by −1, i.e. by −I." },
+    { tag: "(c)", html: "L(x) = (x₂, x₁)ᵀ", ans: 0, why: "Reflection about the line x₂ = x₁.", action: linAct(4) },
+    { tag: "(d)", html: "L(x) = (x₁ + x₂, x₁)ᵀ", ans: 0, why: "Each coordinate is a linear combination of x₁, x₂.", action: linAct(5) },
+    { tag: "(e)", html: "L(x) = (x₁x₂, x₁)ᵀ", ans: 1, why: "L(2x) = (4x₁x₂, 2x₁) ≠ 2L(x) when x₁x₂ ≠ 0.", action: linAct(7) },
+    { tag: "(f)", html: "L(x) = x + (1, 1)ᵀ", ans: 1, why: "L(0) = (1, 1) ≠ 0 (Exercise 3: a translation).", action: linAct(6) },
+  ], { wide: true }),
+  cl("4.1 · Ex 5, 6", "Linear transformations from ℝ³ into ℝ² (Ex 5) and from ℝ² into ℝ³ (Ex 6)?", LC, [
+    { tag: "5(a)", html: "L(x) = (x₂, x₃)ᵀ", ans: 0, why: "Picks coordinates: A = (0 1 0; 0 0 1)." },
+    { tag: "5(b)", html: "L(x) = (0, 0)ᵀ", ans: 0, why: "The zero map is linear." },
+    { tag: "5(c)", html: "L(x) = (1 + x₁, x₂)ᵀ", ans: 1, why: "L(0) = (1, 0) ≠ 0." },
+    { tag: "5(d)", html: "L(x) = (x₃, x₁ + x₂)ᵀ", ans: 0, why: "A = (0 0 1; 1 1 0)." },
+    { tag: "6(a)", html: "L(x) = (x₁, x₂, 1)ᵀ", ans: 1, why: "L(0) = (0, 0, 1) ≠ 0." },
+    { tag: "6(b)", html: "L(x) = (x₁, x₂, x₁ + 2x₂)ᵀ", ans: 0, why: "A = (1 0; 0 1; 1 2)." },
+    { tag: "6(c)", html: "L(x) = (x₁, 0, 0)ᵀ", ans: 0, why: "A = (1 0; 0 0; 0 0)." },
+    { tag: "6(d)", html: "L(x) = (x₁, x₂, x₁² + x₂²)ᵀ", ans: 1, why: "The third coordinate scales by α²." },
+  ], { wide: true }),
+  cl("4.1 · Ex 7–11", "Linear or not? (ℝⁿˣⁿ, polynomials and C[0, 1]; C is a fixed n × n matrix.)", LC, [
+    { tag: "7(b)", html: "L(A) = Aᵀ on ℝⁿˣⁿ", ans: 0, why: "(αA + βB)ᵀ = αAᵀ + βBᵀ." },
+    { tag: "7(c)", html: "L(A) = A + I on ℝⁿˣⁿ", ans: 1, why: "L(O) = I ≠ O." },
+    { tag: "7(d)", html: "L(A) = A − Aᵀ", ans: 0, why: "A difference of two linear maps." },
+    { tag: "8(a)", html: "L(A) = CA + AC", ans: 0, why: "Matrix multiplication distributes over addition and commutes with scalars." },
+    { tag: "8(c)", html: "L(A) = A²C", ans: 1, why: "L(2A) = 4A²C ≠ 2L(A)." },
+    { tag: "9(a)", html: "L(p(x)) = x p(x), P₂ → P₃", ans: 0, why: "x(αp + βq) = αxp + βxq." },
+    { tag: "9(b)", html: "L(p(x)) = x² + p(x)", ans: 1, why: "L(0) = x² ≠ 0." },
+    { tag: "9(c)", html: "L(p(x)) = p(x) + x p(x) + x² p′(x)", ans: 0, why: "Each term is linear in p (differentiation is linear)." },
+    { tag: "11(a)", html: "L(f) = f(0), C[0, 1] → ℝ", ans: 0, why: "Evaluation at a point is linear." },
+    { tag: "11(b)", html: "L(f) = |f(0)|", ans: 1, why: "L(−f) = L(f) ≠ −L(f) unless f(0) = 0." },
+    { tag: "11(c)", html: "L(f) = [f(0) + f(1)]/2", ans: 0, why: "An average of two evaluations." },
+    { tag: "11(d)", html: "L(f) = (∫₀¹ f(x)² dx)^½", ans: 1, why: "This is a norm: L(−f) = L(f)." },
+  ], { wide: true }),
+  fl("4.1 · Ex 4", "L is a linear operator on ℝ² with L((1, 2)ᵀ) = (−2, 3)ᵀ and L((1, −1)ᵀ) = (5, 2)ᵀ. Find L((7, 5)ᵀ).",
+    [vec("L((7, 5)ᵀ)", (() => { const c = coordsIn([[1, 2], [1, -1]], [7, 5]); return [0, 1].map(i => c[0].mul(q([-2, 3][i])).add(c[1].mul(q([5, 2][i])))); })())],
+    "Write (7, 5) = 4(1, 2) + 3(1, −1). By linearity L((7, 5)) = 4(−2, 3) + 3(5, 2) = (7, 18).",
+    { hint: "Express (7, 5)ᵀ as a combination of (1, 2)ᵀ and (1, −1)ᵀ first." }),
+  fl("4.1 · Test B 2", "v₁ = (1, 1)ᵀ, v₂ = (−1, 2)ᵀ, v₃ = (1, 7)ᵀ. If L(v₁) = (2, 5)ᵀ and L(v₂) = (−3, 1)ᵀ, find L(v₃).",
+    [vec("L(v₃)", (() => { const c = coordsIn([[1, 1], [-1, 2]], [1, 7]); return [0, 1].map(i => c[0].mul(q([2, 5][i])).add(c[1].mul(q([-3, 1][i])))); })())],
+    "v₃ = 3v₁ + 2v₂, so L(v₃) = 3(2, 5) + 2(−3, 1) = (0, 17)."),
+  fl("4.1 · Ex 17", "Kernel and range of the operators on ℝ³: (a) L(x) = (x₃, x₂, x₁)ᵀ, (b) L(x) = (x₁, x₂, 0)ᵀ, (c) L(x) = (x₁, x₁, x₁)ᵀ. Give the dimensions.",
+    [num("(a) dim ker", 0), num("(a) dim range", 3), num("(b) dim ker", 1), num("(b) dim range", 2), num("(c) dim ker", 2), num("(c) dim range", 1)],
+    "(a) ker = {0}, range ℝ³. (b) ker = Span(e₃), range = Span(e₁, e₂). (c) ker = Span(e₂, e₃), range = Span((1, 1, 1)ᵀ). In each case dim ker + dim range = 3.",
+    { wide: true, actions: [["(a)", [[0, 0, 1], [0, 1, 0], [1, 0, 0]]], ["(b)", [[1, 0, 0], [0, 1, 0], [0, 0, 0]]], ["(c)", [[1, 0, 0], [1, 0, 0], [1, 0, 0]]]].map(([t, A]) => ({ label: `Open ${t} in the lab`, run: () => HOOK.ker(A) })) }),
+  fl("4.1 · Example 12", "L(x) = (x₁ + x₂, x₂ + x₃)ᵀ maps ℝ³ into ℝ². Find a nonzero vector in ker(L).",
+    [vec("x", [1, -1, 1])], "x₁ + x₂ = 0 and x₂ + x₃ = 0. With x₃ = a: x = a(1, −1, 1)ᵀ.",
+    { check: ([v]) => { const x = v[0], ok = x[0].add(x[1]).zero && x[1].add(x[2]).zero, nz = x.some(c => !c.zero); return ok && nz ? { ok: true, msg: "Correct: L(x) = 0 and x ≠ 0. Every kernel vector is a multiple of (1, −1, 1)ᵀ." } : { ok: false, msg: nz ? `L(x) = (${x[0].add(x[1]).txt()}, ${x[1].add(x[2]).txt()}) ≠ 0.` : "The zero vector is always in the kernel; find a nonzero one." }; },
+      actions: [{ label: "Open in the kernel lab", run: () => HOOK.ker([[1, 1, 0], [0, 1, 1]]) }] }),
+  fl("4.1 · Test B 3", "L(x) = (x₂ − x₁, x₃ − x₂, x₃ − x₁)ᵀ on ℝ³ and S = Span((1, 0, 1)ᵀ). (a) Give a nonzero vector spanning ker(L). (b) L(S) is spanned by L((1, 0, 1)ᵀ); compute it.",
+    [vec("(a) k", [1, 1, 1]), vec("(b) L((1,0,1)ᵀ)", [-1, 1, 0])],
+    "(a) L(x) = 0 forces x₁ = x₂ = x₃: ker(L) = Span((1, 1, 1)ᵀ). (b) L((1, 0, 1)ᵀ) = (−1, 1, 0)ᵀ, so L(S) = Span((−1, 1, 0)ᵀ).",
+    { wide: true, check: ([k, w]) => { const x = k[0], y = w[0]; const okK = x.some(c => !c.zero) && x[0].eq(x[1]) && x[1].eq(x[2]); const okW = y[0].eq(-1) && y[1].eq(1) && y[2].zero;
+      return okK && okW ? { ok: true, msg: "Both correct." } : { ok: false, msg: !okK ? "(a) A kernel vector needs x₁ = x₂ = x₃ and must be nonzero." : "(b) Apply the formula to x = (1, 0, 1)ᵀ." }; },
+      actions: [kerAct([[-1, 1, 0], [0, -1, 1], [-1, 0, 1]])] }),
+  cl("4.1 · Test A 1–3, Ex 21", "True or false?", TF, [
+    { tag: "A1", html: "If L : ℝⁿ → ℝⁿ is linear and L(x₁) = L(x₂), then x₁ = x₂.", ans: 1, why: "False: the projection (x₁, 0) sends (0, 1) and (0, 2) to 0. It holds exactly when ker(L) = {0}." },
+    { tag: "A2", html: "If L₁ and L₂ are linear operators on V, so is L₁ + L₂.", ans: 0, why: "True: (L₁ + L₂)(αv + βw) splits term by term." },
+    { tag: "A3", html: "If x ∈ ker(L), then L(v + x) = L(v) for all v.", ans: 0, why: "True: L(v + x) = L(v) + L(x) = L(v) + 0." },
+    { tag: "Ex 21", html: "L is one-to-one if and only if ker(L) = {0}.", ans: 0, why: "True: L(v₁) = L(v₂) ⇔ v₁ − v₂ ∈ ker(L)." },
+  ], { wide: true }),
+]);
+
+const R90 = [[0, -1], [1, 0]], Fx = [[1, 0], [0, -1]], Fd = [[0, 1], [1, 0]], Px = [[1, 0], [0, 0]];
+buildExercises("s42", "Exercises · §4.2", "From the Section 4.2 exercises (p. 187–189) and the Chapter Tests.", [
+  fl("4.2 · Ex 1", "Standard matrices of the operators of Exercise 4.1.1: (a) (−x₁, x₂)ᵀ (b) −x (c) (x₂, x₁)ᵀ (d) ½x (e) x₂e₂.",
+    [mat("(a)", [[-1, 0], [0, 1]]), mat("(b)", [[-1, 0], [0, -1]]), mat("(c)", [[0, 1], [1, 0]]), mat("(d)", [["1/2", 0], [0, "1/2"]]), mat("(e)", [[0, 0], [0, 1]])],
+    "Column j is L(e_j). For (e): L(e₁) = 0, L(e₂) = e₂.", { wide: true }),
+  fl("4.2 · Ex 2", "Find A with L(x) = Ax for L : ℝ³ → ℝ²: (a) (x₁ + x₂, 0)ᵀ (b) (x₁, x₂)ᵀ (c) (x₂ − x₁, x₃ − x₂)ᵀ.",
+    [mat("(a)", [[1, 1, 0], [0, 0, 0]]), mat("(b)", [[1, 0, 0], [0, 1, 0]]), mat("(c)", [[-1, 1, 0], [0, -1, 1]])],
+    "Read off the coefficients of x₁, x₂, x₃ row by row, or compute L(e₁), L(e₂), L(e₃).", { wide: true }),
+  fl("4.2 · Ex 3", "Find A for the operators on ℝ³: (a) (x₃, x₂, x₁)ᵀ (b) (x₁, x₁ + x₂, x₁ + x₂ + x₃)ᵀ (c) (2x₃, x₂ + 3x₁, 2x₁ − x₃)ᵀ.",
+    [mat("(a)", [[0, 0, 1], [0, 1, 0], [1, 0, 0]]), mat("(b)", [[1, 0, 0], [1, 1, 0], [1, 1, 1]]), mat("(c)", [[0, 0, 2], [3, 1, 0], [2, 0, -1]])],
+    "In (c) the second coordinate is 3x₁ + x₂: put the coefficients in the right columns.", { wide: true }),
+  fl("4.2 · Ex 4", "L(x) = (2x₁ − x₂ − x₃, 2x₂ − x₁ − x₃, 2x₃ − x₁ − x₂)ᵀ. Find A, then L(x) for (a) (1, 1, 1)ᵀ (b) (2, 1, 1)ᵀ (c) (−5, 3, 2)ᵀ.",
+    (() => { const A = [[2, -1, -1], [-1, 2, -1], [-1, -1, 2]]; return [mat("A", A), ...[[1, 1, 1], [2, 1, 1], [-5, 3, 2]].map((x, k) => vec(`(${"abc"[k]})`, qm.mul(qm.of(A), qm.col(x)).map(r => r[0])))]; })(),
+    "A has 2 on the diagonal and −1 elsewhere. (1, 1, 1)ᵀ is in the kernel.", { wide: true }),
+  fl("4.2 · Ex 5(b), (d)", "(b) Reflect about the x₁-axis, then rotate 90° counterclockwise. (d) Reflect about the line x₂ = x₁, then project onto the x₁-axis. Find the standard matrices.",
+    [mat("(b)", qm.mul(qm.of(R90), qm.of(Fx)).map(r => r.map(v => v.txt()))), mat("(d)", qm.mul(qm.of(Px), qm.of(Fd)).map(r => r.map(v => v.txt())))],
+    "The first operation stands on the right: (b) R₉₀F₁ = (0 1; 1 0). (d) P·F₌ = (0 1; 0 0).",
+    { wide: true, actions: [{ label: "Compose (b) in the lab", run: () => HOOK.comp(2, 1) }, { label: "Compose (d) in the lab", run: () => HOOK.comp(4, 5) }] }),
+  ch("4.2 · Ex 5(a)", "The standard matrix of the clockwise rotation by 45° is", [
+    `${sm([["1/√2", "1/√2"], ["−1/√2", "1/√2"]])}`, `${sm([["1/√2", "−1/√2"], ["1/√2", "1/√2"]])}`, `${sm([[0, 1], [-1, 0]])}`, `${sm([["1/√2", "1/√2"], ["1/√2", "−1/√2"]])}`], 0,
+    "Rotation by θ = −45°: (cos θ  −sin θ; sin θ  cos θ) with cos θ = 1/√2 and sin θ = −1/√2. The second option rotates counterclockwise; the last is a reflection."),
+  ch("4.2 · Test B 6", "Rotate by 30° counterclockwise, then reflect about the y-axis. The standard matrix is", [
+    `${sm([["−√3/2", "1/2"], ["1/2", "√3/2"]])}`, `${sm([["−√3/2", "−1/2"], ["−1/2", "√3/2"]])}`, `${sm([["√3/2", "−1/2"], ["1/2", "√3/2"]])}`, `${sm([["−√3/2", "1/2"], ["−1/2", "−√3/2"]])}`], 0,
+    "F·R₃₀ with F = (−1 0; 0 1): F negates the first row of R₃₀ = (√3/2 −1/2; 1/2 √3/2). The second option is R₃₀F, the other order.",
+    { actions: [{ label: "See composition order in the lab", run: () => HOOK.comp(0, 3) }] }),
+  ch("4.2 · Test A 4", "L₁ rotates by 60° and then reflects about the x-axis; L₂ does the same two steps in the reverse order. Is L₁ = L₂?", ["No", "Yes"], 0,
+    "F₁R₆₀ ≠ R₆₀F₁: reflecting reverses the sense of rotation, so the two orders differ by a rotation of 120°. Try it in the composition panel.",
+    { actions: [{ label: "Compare the orders in the lab", run: () => HOOK.comp(0, 2) }] }),
+  fl("4.2 · Ex 6", "b₁ = (1, 1, 0)ᵀ, b₂ = (1, 0, 1)ᵀ, b₃ = (0, 1, 1)ᵀ, and L(x) = x₁b₁ + x₂b₂ + (x₁ + x₂)b₃. Find the matrix representing L with respect to {e₁, e₂} and {b₁, b₂, b₃}.",
+    [mat("A", [[1, 0], [0, 1], [1, 1]])], "L(e₁) = b₁ + b₃ and L(e₂) = b₂ + b₃: the coordinates are read off directly.",
+    { actions: [{ label: "Check with row reduction", run: () => HOOK.rep({ L: [[2, 1], [1, 1], [1, 2]], U: [[1, 0], [0, 1]], B: [[1, 1, 0], [1, 0, 1], [0, 1, 1]] }) }] }),
+  fl("4.2 · Ex 7(b)", "y₁ = (1, 1, 1)ᵀ, y₂ = (1, 1, 0)ᵀ, y₃ = (1, 0, 0)ᵀ. Find A such that Ax is the coordinate vector of x with respect to {y₁, y₂, y₃}.",
+    [mat("A", qm.inv(colsToX([[1, 1, 1], [1, 1, 0], [1, 0, 0]])).map(r => r.map(v => v.txt())))],
+    "A represents the identity from the standard basis to {y₁, y₂, y₃}: A = Y⁻¹ with Y = (y₁ y₂ y₃)."),
+  fl("4.2 · Ex 8", "With y₁, y₂, y₃ from Ex 7, L(c₁y₁ + c₂y₂ + c₃y₃) = (c₁ + c₂ + c₃)y₁ + (2c₁ + c₃)y₂ − (2c₂ + c₃)y₃. (a) Matrix of L with respect to {y₁, y₂, y₃}. (b)(i) L((7, 5, 2)ᵀ).",
+    (() => { const A = [[1, 1, 1], [2, 0, 1], [0, -2, -1]], Y = colsToX([[1, 1, 1], [1, 1, 0], [1, 0, 0]]); const c = qm.mul(qm.inv(Y), qm.col([7, 5, 2])); const Lx = qm.mul(Y, qm.mul(qm.of(A), c)).map(r => r[0]); return [mat("(a) A", A), vec("(b) L(x)", Lx)]; })(),
+    "(a) Column j holds the coefficients of L(y_j). (b) x = 2y₁ + 3y₂ + 2y₃, so [L(x)] = A(2, 3, 2)ᵀ = (7, 6, −8)ᵀ and L(x) = 7y₁ + 6y₂ − 8y₃ = (5, 13, 7)ᵀ.", { wide: true }),
+  ch("4.2 · Ex 9(a)", `The columns of R = ${sm([[0, 0, 1, 1, 0], [0, 1, 1, 0, 0], [1, 1, 1, 1, 1]])} are homogeneous coordinates of points. Joined in order they draw`, ["a unit square", "a triangle", "a line segment", "the letter F"], 0,
+    "The points are (0, 0), (0, 1), (1, 1), (1, 0), (0, 0).", { actions: [{ label: "Draw it in the graphics lab", run: () => HOOK.hom(1, []) }] }),
+  fl("4.2 · Ex 10, Test B 7", "Homogeneous-coordinate matrices for: (b) translate 3 units left and 5 up; (c) contract by one-third; (d) reflect about the y-axis, then translate up 2; (Test B 7) translate by a = (2, 5)ᵀ.",
+    [mat("(b)", [[1, 0, -3], [0, 1, 5], [0, 0, 1]]), mat("(c)", [["1/3", 0, 0], [0, "1/3", 0], [0, 0, 1]]), mat("(d)", [[-1, 0, 0], [0, 1, 2], [0, 0, 1]]), mat("Test B 7", [[1, 0, 2], [0, 1, 5], [0, 0, 1]])],
+    "A translation puts a in the last column of I. In (d) the product T·F has the reflection in the corner and the translation in the last column.", { wide: true }),
+  fl("4.2 · Example 5, Ex 13", "(Example 5) D(p) = p′ from P₃ to P₂ with bases [x², x, 1] and [x, 1]. (Ex 13) L(p) = (∫₀¹ p(x) dx, p(0))ᵀ on P₂ with L(α + βx) = A(α, β)ᵀ.",
+    [mat("Example 5", [[2, 0, 0], [0, 1, 0]]), mat("Ex 13: A", [[1, "1/2"], [1, 0]])],
+    "D(x²) = 2x, D(x) = 1, D(1) = 0 give the columns (2, 0), (0, 1), (0, 0). For Ex 13: ∫₀¹(α + βx)dx = α + β/2 and p(0) = α.", { wide: true }),
+  fl("4.2 · Ex 14, 15", "(14) L(p) = p′(x) + p(0) from P₃ to P₂, bases [x², x, 1] and [2, 1 − x]. (15) D on Span(eˣ, xeˣ, x²eˣ) with basis [eˣ, xeˣ, x²eˣ].",
+    [mat("Ex 14", [[1, "1/2", "1/2"], [-2, 0, 0]]), mat("Ex 15", [[1, 1, 0], [0, 1, 2], [0, 0, 1]])],
+    "(14) L(x²) = 2x = 1·2 − 2(1 − x); L(x) = 1 = ½·2; L(1) = 1 = ½·2. (15) D(eˣ) = eˣ, D(xeˣ) = eˣ + xeˣ, D(x²eˣ) = 2xeˣ + x²eˣ.", { wide: true }),
+  fl("4.2 · Ex 18(a)", "u₁ = (1, 0, −1)ᵀ, u₂ = (1, 2, 1)ᵀ, u₃ = (−1, 1, 1)ᵀ, b₁ = (1, −1)ᵀ, b₂ = (2, −1)ᵀ and L(x) = (x₃, x₁)ᵀ. Find the matrix representing L with respect to E and F.",
+    (() => { const U = colsToX([[1, 0, -1], [1, 2, 1], [-1, 1, 1]]), B = colsToX([[1, -1], [2, -1]]); return [mat("A", qm.mul(qm.inv(B), qm.mul(qm.of([[0, 0, 1], [1, 0, 0]]), U)).map(r => r.map(v => v.txt())))]; })(),
+    "A = B⁻¹(L(u₁) L(u₂) L(u₃)) with L(u₁) = (−1, 1), L(u₂) = (1, 1), L(u₃) = (1, −1). Corollary 4.2.4: row reduce (B | L(u₁) L(u₂) L(u₃)).",
+    { actions: [{ label: "Row reduce it in the lab", run: () => HOOK.rep({ L: [[0, 0, 1], [1, 0, 0]], U: [[1, 1, -1], [0, 2, 1], [-1, 1, 1]], B: [[1, 2], [-1, -1]] }) }] }),
+  fl("4.2 · Ex 11(a), (b)", `Yaw Y = ${sm([[0, 1, 0], [-1, 0, 0], [0, 0, 1]])} (u = 90°) and pitch P = ${sm([[0, 0, -1], [0, 1, 0], [1, 0, 0]])} (v = 90°). Matrix of (a) a yaw of 90° followed by a pitch of 90°; (b) a pitch of 90° followed by a yaw of 90°.`,
+    (() => { const Y = qm.of([[0, 1, 0], [-1, 0, 0], [0, 0, 1]]), P = qm.of([[0, 0, -1], [0, 1, 0], [1, 0, 0]]); return [mat("(a)", qm.mul(Y, P).map(r => r.map(v => v.txt()))), mat("(b)", qm.mul(P, Y).map(r => r.map(v => v.txt())))]; })(),
+    "For yaw, pitch and roll the axes move with the aircraft, so the composite is YP (the first maneuver on the left), as derived in Application 2. (b) is PY.", { wide: true }),
+]);
+
+const U43 = [[1, -1], [1, 1]];
+const Bof = (A, U) => qm.mul(qm.mul(qm.inv(qm.of(U)), qm.of(A)), qm.of(U)).map(r => r.map(v => v.txt()));
+buildExercises("s43", "Exercises · §4.3", "From the Section 4.3 exercises (p. 194–195) and the Chapter Tests.", [
+  fl("4.3 · Ex 1", "With u₁ = (1, 1)ᵀ, u₂ = (−1, 1)ᵀ, find B = U⁻¹AU for the operators (a) (−x₁, x₂)ᵀ (b) −x (c) (x₂, x₁)ᵀ (d) ½x (e) x₂e₂.",
+    [[[-1, 0], [0, 1]], [[-1, 0], [0, -1]], [[0, 1], [1, 0]], [["1/2", 0], [0, "1/2"]], [[0, 0], [0, 1]]].map((A, k) => mat(`(${"abcde"[k]})`, Bof(A, U43))),
+    "(b) and (d) are multiples of I, so B = A. In (c), u₁ and u₂ are eigenvectors and B is diagonal.",
+    { wide: true, actions: [["(a)", [[-1, 0], [0, 1]]], ["(c)", [[0, 1], [1, 0]]], ["(e)", [[0, 0], [0, 1]]]].map(([t, A]) => ({ label: `See ${t} in the explorer`, run: () => HOOK.sim(A, [[1, 1], [-1, 1]]) })) }),
+  fl("4.3 · Ex 2", "u₁ = (1, 1)ᵀ, u₂ = (−1, 1)ᵀ, v₁ = (2, 1)ᵀ, v₂ = (1, 0)ᵀ; L(x) = (−x₁, x₂)ᵀ with B from Ex 1(a). (a) Transition matrix S from {u₁, u₂} to {v₁, v₂}. (b) A = SBS⁻¹, the matrix of L with respect to {v₁, v₂}.",
+    (() => { const U = qm.of(U43), V = colsToX([[2, 1], [1, 0]]), S = qm.mul(qm.inv(V), U), B = qm.mul(qm.mul(qm.inv(U), qm.of([[-1, 0], [0, 1]])), U); return [mat("(a) S", S.map(r => r.map(v => v.txt()))), mat("(b) A", qm.mul(qm.mul(S, B), qm.inv(S)).map(r => r.map(v => v.txt())))]; })(),
+    "S = V⁻¹U. Then A = SBS⁻¹ = V⁻¹(standard matrix)V.", { wide: true }),
+  fl("4.3 · Ex 3", `A = ${sm([[2, -1, -1], [-1, 2, -1], [-1, -1, 2]])} (Ex 4.2.4), u₁ = (1, 1, 0)ᵀ, u₂ = (1, 0, 1)ᵀ, u₃ = (0, 1, 1)ᵀ. Find B = U⁻¹AU.`,
+    [mat("B", Bof([[2, -1, -1], [-1, 2, -1], [-1, -1, 2]], [[1, 1, 0], [1, 0, 1], [0, 1, 1]]))], "Compute AU first, then multiply by U⁻¹ (or solve UB = AU)."),
+  fl("4.3 · Ex 4", `A = ${sm([[3, -1, -2], [2, 0, -2], [2, -1, -1]])}, v₁ = (1, 1, 1)ᵀ, v₂ = (1, 2, 0)ᵀ, v₃ = (0, −2, 1)ᵀ. Find V and B = V⁻¹AV.`,
+    [mat("V", [[1, 1, 0], [1, 2, -2], [1, 0, 1]]), mat("B", Bof([[3, -1, -2], [2, 0, -2], [2, -1, -1]], [[1, 1, 0], [1, 2, -2], [1, 0, 1]]))],
+    "Av₁ = 0, Av₂ = v₂, Av₃ = v₃: the vᵢ are eigenvectors, so B is diagonal.", { wide: true }),
+  fl("4.3 · Ex 5", "L(p) = xp′(x) + p″(x) on P₃. (a) A with respect to [1, x, x²]; (b) B with respect to [1, x, 1 + x²]; (c) S with B = S⁻¹AS.",
+    [mat("(a) A", [[0, 0, 2], [0, 1, 0], [0, 0, 2]]), mat("(b) B", [[0, 0, 0], [0, 1, 0], [0, 0, 2]]), mat("(c) S", [[1, 0, 1], [0, 1, 0], [0, 0, 1]])],
+    "L(1) = 0, L(x) = x, L(x²) = 2x² + 2 = 2(1 + x²). S is the transition matrix from [1, x, 1 + x²] to [1, x, x²]; its last column is the coordinates of 1 + x².", { wide: true }),
+  fl("4.3 · Example 1", "D = d/dx on P₃. Find the matrix A representing D with respect to [1, 2x, 4x² − 2].",
+    [mat("A", [[0, 2, 0], [0, 0, 4], [0, 0, 0]])], "D(1) = 0, D(2x) = 2 = 2·1, D(4x² − 2) = 8x = 4·(2x). Compare B with respect to [1, x, x²]: (0 1 0; 0 0 2; 0 0 0); A = S⁻¹BS."),
+  fl("4.3 · Test B 9", "u₁ = (3, 1)ᵀ, u₂ = (5, 2)ᵀ, v₁ = (1, −2)ᵀ, v₂ = (1, −1)ᵀ, and L has matrix A = (2 1; 3 2) with respect to {u₁, u₂}. (a) Transition matrix S from {v₁, v₂} to {u₁, u₂}. (b) Matrix of L with respect to {v₁, v₂}.",
+    (() => { const U = colsToX([[3, 1], [5, 2]]), V = colsToX([[1, -2], [1, -1]]), S = qm.mul(qm.inv(U), V); return [mat("(a) S", S.map(r => r.map(v => v.txt()))), mat("(b)", qm.mul(qm.mul(qm.inv(S), qm.of([[2, 1], [3, 2]])), S).map(r => r.map(v => v.txt())))]; })(),
+    "S = U⁻¹V converts v-coordinates into u-coordinates. Then the new matrix is S⁻¹AS.", { wide: true }),
+  cl("4.3 · Test A 8–10, Ex 11, 15", "True or false? (A, B, C are n × n.)", TF, [
+    { tag: "A9", html: "If A is similar to B and B is similar to C, then A is similar to C.", ans: 0, why: "True: C = T⁻¹BT = T⁻¹S⁻¹AST = (ST)⁻¹A(ST)." },
+    { tag: "A10", html: "Any two matrices with the same trace are similar.", ans: 1, why: "False: I and (1 1; 0 1) both have trace 2, but S⁻¹IS = I for every S." },
+    { tag: "Ex 11", html: "Similar matrices have the same determinant.", ans: 0, why: "True: det(S⁻¹AS) = det(S)⁻¹ det(A) det(S) = det(A)." },
+    { tag: "Ex 15", html: "Similar matrices have the same trace.", ans: 0, why: "True: tr(S⁻¹(AS)) = tr((AS)S⁻¹) = tr(A), using tr(XY) = tr(YX)." },
+    { tag: "A8", html: "If A is the standard matrix of L : ℝⁿ → ℝⁿ, then B represents L in some basis if and only if B is similar to A.", ans: 0, why: "True: Theorem 4.3.1 and its converse in Section 4.3." },
+    { tag: "+", html: "If A and B are similar and A is diagonal, then B is diagonal.", ans: 1, why: "False: (1 0; 0 2) is similar to (1 1; 0 2) (eigenvectors (1, 0) and (1, 1))." },
+  ], { wide: true }),
+]);
+})();
+
+</script>
+</body>
+</html>
