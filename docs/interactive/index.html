@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Interactive companion to Leon, Linear Algebra with Applications: animated definitions, labs and self-checking exercises for every chapter.">
+<title>Linear Algebra Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@400;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="assets/lab.css">
+<style>
+body{margin:0}
+.cgrid{display:grid; gap:12px; margin-top:8px}
+.ccard{display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:start; padding:18px 20px; border:1px solid var(--rule); border-radius:12px; background:var(--panel); color:var(--ink); text-decoration:none}
+a.ccard:hover{border-color:var(--c1)}
+a.ccard:focus-visible{outline:2px solid var(--c1); outline-offset:2px}
+.ccard.soon{opacity:.6}
+.cnum{font-family:var(--mono); font-weight:600; font-size:34px; line-height:1; color:var(--c1); min-width:1.2em}
+.cbody{display:grid; gap:6px; min-width:0}
+.cbody b{font-family:var(--display); font-size:21px; font-weight:700}
+.cdesc{color:var(--muted); font-size:16px; max-width:75ch}
+.cmeta{display:flex; flex-wrap:wrap; gap:6px}
+.cmeta span{font-family:var(--mono); font-size:12px; padding:2px 8px; border-radius:999px; border:1px solid var(--rule); color:var(--muted)}
+.how{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr)); gap:12px; margin-top:8px}
+.how div{border-left:3px solid var(--c1); padding:4px 0 4px 14px}
+.how b{font-family:var(--display); display:block; margin-bottom:2px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="eyebrow">Companion to Steven J. Leon, <i>Linear Algebra with Applications</i>, 8th ed. · course 1-AIN-152</div>
+  <h1>Linear Algebra <em>Lab</em></h1>
+  <p class="lede">Every chapter of the book, as something to push on. Each page has the chapter's definitions with short Manim animations, interactive labs built on the book's own examples, and exercises from the book that check your answers exactly. Nothing to install: it runs in the browser.</p>
+</header>
+<main class="wrap">
+  <section class="sec" style="padding-top:20px">
+    <div class="sec-head"><span class="sec-num">≡</span><h2>Chapters</h2><span class="sub">Pick a chapter. Progress on exercises is remembered in this browser.</span></div>
+    <div class="cgrid"><a class="ccard" href="chapter1/"><span class="cnum">1</span><span class="cbody"><b>Matrices and systems of equations</b><span class="cdesc">Systems of linear equations, row echelon form, matrix arithmetic and algebra, elementary matrices and LU, partitioned matrices, Strassen's algorithm, and a linear neural network.</span><span class="cmeta"><span>16 animated definitions</span><span>13 labs</span><span>71 checked exercises</span></span></span></a><a class="ccard" href="chapter2/"><span class="cnum">2</span><span class="cbody"><b>Determinants</b><span class="cdesc">Cofactor expansion, the determinant as signed area, row operations and the product rule, Cramer's rule, the adjoint, and coded messages.</span><span class="cmeta"><span>5 animated definitions</span><span>5 labs</span><span>26 checked exercises</span></span></span></a><div class="ccard soon"><span class="cnum">3</span><span class="cbody"><b>Vector spaces</b><span class="cdesc">Subspaces, span, deciding linear dependence by row reduction, bases and dimension, coordinates and change of basis, row and column spaces, rank–nullity.</span><span class="cmeta"><span>in preparation</span></span></span></div><div class="ccard soon"><span class="cnum">4</span><span class="cbody"><b>Linear transformations</b><span class="cdesc">What makes a map linear, kernel and image, standard matrices and matrix representations, computer graphics with homogeneous coordinates, similarity.</span><span class="cmeta"><span>in preparation</span></span></span></div><div class="ccard soon"><span class="cnum">5</span><span class="cbody"><b>Orthogonality</b><span class="cdesc">Scalar products and projections, orthogonal subspaces, least squares fitting, inner products and norms, orthonormal sets, Gram–Schmidt and QR.</span><span class="cmeta"><span>in preparation</span></span></span></div><div class="ccard soon"><span class="cnum">6</span><span class="cbody"><b>Eigenvalues</b><span class="cdesc">Eigenvectors as invariant directions, linear differential equations, diagonalization and Markov chains, the SVD and image compression, quadratic forms.</span><span class="cmeta"><span>in preparation</span></span></span></div><div class="ccard soon"><span class="cnum">7</span><span class="cbody"><b>Numerical linear algebra</b><span class="cdesc">Floating-point numbers, Gaussian elimination and its cost, pivoting strategies, matrix norms and condition numbers, Householder transformations, the power method.</span><span class="cmeta"><span>in preparation</span></span></span></div></div>
+  </section>
+  <section class="sec">
+    <div class="sec-head"><span class="sec-num">?</span><h2>How to use a chapter page</h2><span class="sub">Read, play, then check yourself</span></div>
+    <div class="how">
+      <div><b>1 · Definitions</b>Read the definition card, then watch its animation. Use the speed buttons to slow it down.</div>
+      <div><b>2 · Labs</b>Each lab starts on an example from the book. Change the numbers, drag the vectors, and follow the “Try this” prompts.</div>
+      <div><b>3 · Exercises</b>Exercises are taken from the book's exercise sets. Answers are checked exactly; fractions like −5/2 are accepted. Use Hint before Solution.</div>
+    </div>
+  </section>
+</main>
+<footer>Notation, examples and exercise numbers follow Steven J. Leon, <i>Linear Algebra with Applications</i>, 8th edition. Animations were made with Manim Community; their source is in <code>extras/manim/</code> of the course repository.</footer>
+</body>
+</html>

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Interactive companion to Chapter 1 of Leon, Linear Algebra with Applications: animated definitions, labs and checked exercises.">
-<style>body{margin:0} img{max-width:100%}</style>
+<style>body{margin:0} img{max-width:100%}.chapnav{display:flex; flex-wrap:wrap; gap:6px}.chapnav a{font-family:var(--display); font-size:13px; text-decoration:none; color:var(--ink); padding:4px 10px; border:1px solid var(--rule); border-radius:999px; background:var(--panel)}.chapnav a b{font-family:var(--mono); color:var(--c1); margin-right:6px}.chapnav a[aria-current="page"]{background:var(--c1); border-color:var(--c1); color:var(--panel)}.chapnav a[aria-current="page"] b{color:var(--panel)}.eyebrow a{color:inherit}</style>
 <title>Matrices &amp; Systems Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -296,9 +296,10 @@ footer{margin-top:60px; padding-top:18px; border-top:1px solid var(--rule); colo
 </head>
 <body>
 <header class="top">
-  <div class="eyebrow">Chapter 1 · Leon, <i>Linear Algebra with Applications</i>, 8th ed.</div>
+  <div class="eyebrow"><a href="../">Course index</a> · Chapter 1 · Leon, <i>Linear Algebra with Applications</i>, 8th ed.</div>
   <h1>Matrices &amp; systems, <em>hands-on</em></h1>
   <p class="lede">Thirteen small labs for the first chapter, including a closing look at a linear neural network, plus checked exercises from the book at the end of every section. Each lab takes an example from the text and lets you push on it: move a line, apply a row operation, drag a vector, raise a matrix to a power. Read the short summary, play with the lab, then work the exercises. Answers are checked exactly, and fractions like −5/2 are accepted. Every definition of the chapter also has its own card with a short animation made in Manim.</p>
+<nav class="chapnav" aria-label="Chapters"><a href="../chapter1/" aria-current="page"><b>1</b>Matrices &amp; systems</a><a href="../chapter2/"><b>2</b>Determinants</a></nav>
 </header>
 <nav class="toc" aria-label="Sections"><div class="row">
   <a href="#defs"><b>≔</b>Definitions</a>

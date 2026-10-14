@@ -12,13 +12,13 @@ manim -pql extras/manim/linear_transform.py LinearTrans
 
 Do not install TeX/system packages automatically in a student notebook or pin an old IPython version to make the optional renderer work. Consult the Manim documentation for your operating system and review the extracted scene before rendering.
 
-## Chapter 1 definition animations
+## Chapter definition animations
 
-[`chapter1_definitions.py`](chapter1_definitions.py) contains the 16 scenes shown on the [Chapter 1 interactive companion](../../docs/interactive/chapter1/index.html), one per definition of Leon, Chapter 1, plus a linear neural-network layer. The rendered videos are committed in `docs/interactive/chapter1/video/`, so rendering is only needed after editing a scene:
+`chapterN_definitions.py` contains the scenes shown on chapter N of the [Linear Algebra Lab](../../docs/interactive/index.html). [`chapter1_definitions.py`](chapter1_definitions.py) is self-contained; the later chapters import the shared palette, pacing and helpers from [`la_style.py`](la_style.py). The rendered videos are committed in `docs/interactive/chapterN/video/`, so rendering is only needed after editing a scene:
 
 ```bash
-manim -qm extras/manim/chapter1_definitions.py RowOperations   # one scene
-manim -qm -a extras/manim/chapter1_definitions.py              # all scenes
+manim -qm extras/manim/chapter2_definitions.py CramersRule   # one scene
+manim -qm -a extras/manim/chapter2_definitions.py            # all scenes of a chapter
 ```
 
-The pacing constants at the top of the file (`SLOW`, `MIN_RT`, `HOLD`, `WAIT_SLOW`) retime every scene at once. The page expects H.264 MP4 and VP9 WebM copies plus a JPEG poster per scene, converted with `ffmpeg` from Manim's 720p output.
+The pacing constants `SLOW`, `MIN_RT`, `HOLD`, `WAIT_SLOW` (top of `chapter1_definitions.py`, and in `la_style.py` for the other chapters) retime every scene at once. The page expects H.264 MP4 and VP9 WebM copies plus a JPEG poster per scene, converted with `ffmpeg` from Manim's 720p output.
