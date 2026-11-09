@@ -1,0 +1,151 @@
+<!-- ============ 4.1 ============ -->
+<section class="sec" id="s41">
+  <div class="sec-head"><span class="sec-num">4.1</span><h2>Definition and examples</h2><span class="sub">Linear maps, kernel and range</span></div>
+  <div class="concept">
+    <p>A mapping <span class="x">L</span> from a vector space <span class="x">V</span> into a vector space <span class="x">W</span> is a <strong>linear transformation</strong> if <span class="x">L</span>(α<b>v</b><sub>1</sub> + β<b>v</b><sub>2</sub>) = α<span class="x">L</span>(<b>v</b><sub>1</sub>) + β<span class="x">L</span>(<b>v</b><sub>2</sub>) for all vectors and scalars. Equivalently, <span class="x">L</span> respects sums and scalar multiples separately. Every matrix gives one, <span class="x">L<sub>A</sub></span>(<b>x</b>) = <span class="x">A</span><b>x</b>; so do differentiation and integration of functions.</p>
+    <p>Two quick tests for “not linear”: <span class="x">L</span>(<b>0</b>) ≠ <b>0</b> (a translation), or a single pair where scaling or adding fails (a norm, a product of coordinates).</p>
+  </div>
+  <div class="defs" id="defs-s41"></div>
+
+  <div class="lab" id="lab-lin">
+    <div class="lab-title"><h3>Linearity tester</h3><span class="src">Examples 4.1.1–4.1.6 · Exercises 4.1.1, 4.1.3 · Test B 1</span></div>
+    <div class="chips" id="lin-maps" role="group" aria-label="Mappings"></div>
+    <div class="pair">
+      <figure><svg class="fig" id="lin-dom" viewBox="0 0 420 420" role="img" aria-label="Domain: x, y and αx + βy"></svg><figcaption>domain: drag <b style="color:var(--c1)">x</b> and <b style="color:var(--c2)">y</b></figcaption></figure>
+      <figure><svg class="fig" id="lin-cod" viewBox="0 0 420 420" role="img" aria-label="Image of the grid under L"></svg><figcaption>image of the grid under <i>L</i>: thick arrow L(αx + βy), dashed αL(x) + βL(y)</figcaption></figure>
+    </div>
+    <div class="bench even">
+      <div class="col">
+        <div class="mexpr" id="lin-def"></div>
+        <div class="sl"><label for="lin-a">α</label><input type="range" id="lin-a" min="-2" max="2" step="0.5"><output id="lin-ao"></output></div>
+        <div class="sl"><label for="lin-b">β</label><input type="range" id="lin-b" min="-2" max="2" step="0.5"><output id="lin-bo"></output></div>
+        <div class="scroll"><div class="lin-tab" id="lin-tab"></div></div>
+      </div>
+      <div class="col">
+        <div class="btnrow"><button class="btn" id="lin-cex">Find a counterexample</button><button class="btn primary" id="lin-verdict">Is it linear?</button></div>
+        <div class="status inf" id="lin-status"></div>
+      </div>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>For each linear map, the image grid has straight, parallel, evenly spaced lines and keeps the origin. Check it.</li>
+      <li>For the translation, set α = β = 0: then αx + βy = 0, and the two sides differ by <b>a</b>.</li>
+      <li>For ‖<b>x</b>‖<b>e</b>₁, additivity can hold by luck. Set α = −1 and β = 0 to break homogeneity (Example 4.1.6).</li>
+    </ul></div>
+  </div>
+
+  <div class="lab" id="lab-ker">
+    <div class="lab-title"><h3>Kernel and range</h3><span class="src">Examples 4.1.11, 4.1.12 · Exercises 4.1.17, 4.1.21–4.1.22 · Test B 3, 4</span></div>
+    <div class="chips" id="ker-presets" role="group" aria-label="Transformations"></div>
+    <div class="sz-row"><span>m (rows) <span class="chips" id="ker-m"></span></span><span>n (columns) <span class="chips" id="ker-n"></span></span></div>
+    <div class="bench even">
+      <div class="col">
+        <div class="scroll"><div id="ker-in"></div></div>
+        <div class="mexpr" id="ker-formula"></div>
+        <div class="status inf" id="ker-status"></div>
+        <div class="scroll"><div class="mexpr basis-list" id="ker-bases"></div></div>
+      </div>
+      <div class="col">
+        <svg class="fig" id="ker-svg" viewBox="0 0 420 420" role="img" aria-label="Kernel and range in the plane"></svg>
+        <div class="sl"><label for="ker-t">apply</label><input type="range" id="ker-t" min="0" max="1" step="0.02" value="0"><output id="ker-to"></output></div>
+        <p class="note" id="ker-note"></p>
+      </div>
+    </div>
+  </div>
+  <div class="exset" id="ex-s41"></div>
+</section>
+
+<!-- ============ 4.2 ============ -->
+<section class="sec" id="s42">
+  <div class="sec-head"><span class="sec-num">4.2</span><h2>Matrix representations</h2><span class="sub">Columns are images of basis vectors</span></div>
+  <div class="concept">
+    <p>Every linear <span class="x">L</span> : ℝ<sup><span class="x">n</span></sup> → ℝ<sup><span class="x">m</span></sup> is multiplication by the <span class="x">m</span> × <span class="x">n</span> matrix whose <span class="x">j</span>th column is <span class="x">L</span>(<b>e</b><sub><span class="x">j</span></sub>) (Theorem 4.2.1). With other ordered bases <span class="x">E</span> and <span class="x">F</span>, the representing matrix has columns [<span class="x">L</span>(<b>v</b><sub><span class="x">j</span></sub>)]<sub><span class="x">F</span></sub>, and then [<span class="x">L</span>(<b>v</b>)]<sub><span class="x">F</span></sub> = <span class="x">A</span>[<b>v</b>]<sub><span class="x">E</span></sub> (Theorem 4.2.2).</p>
+    <p>Doing <span class="x">L</span><sub>1</sub> first and <span class="x">L</span><sub>2</sub> second is represented by <span class="x">A</span><sub>2</sub><span class="x">A</span><sub>1</sub>: the matrix of the first step stands on the right.</p>
+  </div>
+  <div class="defs" id="defs-s42"></div>
+
+  <div class="lab" id="lab-std">
+    <div class="lab-title"><h3>Build the standard matrix</h3><span class="src">Theorem 4.2.1 · Example 4.2.2 · Exercises 4.2.1, 4.2.5 · Test A 4</span></div>
+    <div class="chips" id="std-presets" role="group" aria-label="Operators"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="scroll"><div class="mexpr" id="std-expr"></div></div>
+        <div class="status inf" id="std-status"></div>
+        <div class="comp">
+          <div class="kpick"><span>first L₁</span><span class="chips" id="std-c1"></span></div>
+          <div class="kpick"><span>then L₂</span><span class="chips" id="std-c2"></span></div>
+          <div class="btnrow"><button class="btn" id="std-comp">Show L₂ ∘ L₁</button><button class="btn" id="std-rev">Reverse the order</button></div>
+          <div class="scroll"><div class="mexpr" id="std-cexpr"></div></div>
+        </div>
+      </div>
+      <svg class="fig" id="std-svg" viewBox="0 0 420 420" role="img" aria-label="Images of e1, e2 and of a figure"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Drag the tips of <b>L(e₁)</b> and <b>L(e₂)</b>. The matrix columns follow, and the letter F is carried along.</li>
+      <li>Make the two columns parallel. The F collapses onto a line: the matrix is singular.</li>
+      <li>When does the F come out mirror-reversed? Compare with the sign of det <i>A</i>.</li>
+    </ul></div>
+  </div>
+
+  <div class="lab" id="lab-hom">
+    <div class="lab-title"><h3>Computer graphics in homogeneous coordinates</h3><span class="src">Application 4.2.1 · Exercises 4.2.9, 4.2.10 · Test B 7</span></div>
+    <div class="chips" id="hom-figs" role="group" aria-label="Figures"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="chips" id="hom-ops" role="group" aria-label="Operations"></div>
+        <div class="trow"><span>translate by</span><input class="mi" id="hom-a1" value="2" aria-label="a1"><input class="mi" id="hom-a2" value="1" aria-label="a2"><button class="btn sm" id="hom-tr">Add translation</button></div>
+        <div class="btnrow"><button class="btn sm" id="hom-undo">Undo</button><button class="btn sm" id="hom-reset">Reset</button></div>
+        <ol class="oplist" id="hom-list"></ol>
+        <div class="scroll"><div class="mexpr" id="hom-expr"></div></div>
+      </div>
+      <svg class="fig" id="hom-svg" viewBox="0 0 420 420" role="img" aria-label="Figure after the transformations"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Rotate by 60° and then translate, then do it in the opposite order. Same matrices, different product, different picture.</li>
+      <li>The last row of every product stays (0 0 1). Why does that keep points of the form (x₁, x₂, 1)?</li>
+    </ul></div>
+  </div>
+
+  <div class="lab" id="lab-rep">
+    <div class="lab-title"><h3>Matrix in other bases by row reduction</h3><span class="src">Theorem 4.2.3 · Corollary 4.2.4 · Example 4.2.6 · Exercise 4.2.18</span></div>
+    <div class="chips" id="rep-presets" role="group" aria-label="Examples"></div>
+    <div class="sz-row"><span>dim of domain n <span class="chips" id="rep-n"></span></span><span>dim of codomain m <span class="chips" id="rep-m"></span></span></div>
+    <div class="rep-in">
+      <div class="scroll"><div id="rep-L"></div></div>
+      <div class="scroll"><div id="rep-U"></div></div>
+      <div class="scroll"><div id="rep-B"></div></div>
+    </div>
+    <div class="scroll"><div class="mexpr" id="rep-out"></div></div>
+    <div class="status inf" id="rep-status"></div>
+  </div>
+  <div class="exset" id="ex-s42"></div>
+</section>
+
+<!-- ============ 4.3 ============ -->
+<section class="sec" id="s43">
+  <div class="sec-head"><span class="sec-num">4.3</span><h2>Similarity</h2><span class="sub">One operator, many matrices</span></div>
+  <div class="concept">
+    <p>If <span class="x">A</span> represents a linear operator in one basis and <span class="x">B</span> represents it in another, with <span class="x">S</span> the transition matrix from the second basis to the first, then <span class="x">B</span> = <span class="x">S</span><sup>−1</sup><span class="x">A</span><span class="x">S</span> (Theorem 4.3.1). Matrices related this way are <strong>similar</strong>. Similar matrices have the same determinant, trace and rank, because they describe the same map.</p>
+    <p>Choosing the basis well can make <span class="x">B</span> diagonal (Example 4.3.2). That is the subject of Chapter 6.</p>
+  </div>
+  <div class="defs" id="defs-s43"></div>
+
+  <div class="lab" id="lab-sim">
+    <div class="lab-title"><h3>Similarity explorer</h3><span class="src">Section 4.3 opening example · Example 4.3.2 · Exercises 4.3.1, 4.3.2</span></div>
+    <div class="chips" id="sim-presets" role="group" aria-label="Examples"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="scroll"><div id="sim-A"></div></div>
+        <div class="scroll"><div class="mexpr" id="sim-expr"></div></div>
+        <div class="scroll"><div id="sim-inv"></div></div>
+        <div class="status inf" id="sim-status"></div>
+      </div>
+      <svg class="fig" id="sim-svg" viewBox="0 0 420 420" role="img" aria-label="Basis u1, u2 and their images"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Read column <i>j</i> of <i>B</i> off the picture: count steps along <b>u₁</b> and <b>u₂</b> to reach <b>L(u<sub>j</sub>)</b>.</li>
+      <li>Find a basis in which <i>B</i> is diagonal: each <b>u<sub>j</sub></b> must be sent to a multiple of itself.</li>
+    </ul></div>
+  </div>
+  <div class="exset" id="ex-s43"></div>
+</section>
+

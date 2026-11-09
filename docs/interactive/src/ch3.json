@@ -1,0 +1,40 @@
+{
+ "title": "Vector Spaces Lab",
+ "description": "Interactive companion to Chapter 3 of Leon, Linear Algebra with Applications: subspaces, span, deciding linear dependence, bases, change of basis, rank and nullity.",
+ "h1": "Vector spaces, <em>hands-on</em>",
+ "lede": "Which sets behave like ℝⁿ, how much do a few vectors span, and how do you decide whether they are linearly dependent? Test subspaces by dragging vectors, let row reduction decide dependence and hand you the relation, read coordinates in any basis, and watch rank and nullity add up.",
+ "toc": [
+  [
+   "s31",
+   "3.1",
+   "Vector spaces"
+  ],
+  [
+   "s32",
+   "3.2",
+   "Subspaces & span"
+  ],
+  [
+   "s33",
+   "3.3",
+   "Linear independence"
+  ],
+  [
+   "s34",
+   "3.4",
+   "Basis & dimension"
+  ],
+  [
+   "s35",
+   "3.5",
+   "Change of basis"
+  ],
+  [
+   "s36",
+   "3.6",
+   "Row & column space"
+  ]
+ ],
+ "footer": "",
+ "css": ".deps{display:grid; gap:10px}\n.dep-rel{font-family:var(--mono); font-size:15px; padding:8px 10px; border:1px solid var(--rule); border-radius:8px; background:var(--panel)}\n.dep-rel b{color:var(--c3)}\n.stepper{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-family:var(--mono); font-size:13.5px}\n.sub-mem{display:grid; grid-template-columns:auto 1fr; gap:4px 12px; font-family:var(--mono); font-size:14px}\n.sub-mem .yes{color:var(--c3)} .sub-mem .no{color:var(--warn)}\n.gridin th{font-family:var(--mono); font-size:12px; font-weight:400; color:var(--muted); padding-bottom:2px}\n.gridin td{padding:2px 3px}\n.sz-row{display:flex; flex-wrap:wrap; gap:10px 18px; align-items:center; font-family:var(--display); font-size:14px; color:var(--muted)}\n.basis-list{display:flex; flex-wrap:wrap; gap:10px; align-items:center}"
+}

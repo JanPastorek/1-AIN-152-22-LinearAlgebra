@@ -1,0 +1,25 @@
+{
+ "title": "Determinants Lab",
+ "description": "Interactive companion to Chapter 2 of Leon, Linear Algebra with Applications: cofactor expansion, determinants as signed area, elimination, Cramer's rule and coded messages.",
+ "h1": "Determinants, <em>hands-on</em>",
+ "lede": "One number decides whether a square matrix can be inverted. Here you can compute it three ways (cofactors, elimination, geometry), see why row operations change it the way they do, solve systems with Cramer's rule, and decode a hidden message. Every exercise is checked exactly.",
+ "toc": [
+  [
+   "s21",
+   "2.1",
+   "The determinant"
+  ],
+  [
+   "s22",
+   "2.2",
+   "Properties"
+  ],
+  [
+   "s23",
+   "2.3",
+   "Cramer, adjoint, codes"
+  ]
+ ],
+ "footer": "",
+ "css": ".cof-terms{display:grid; gap:8px}\n.cof-row{display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; font-family:var(--mono); font-size:14.5px; padding:6px 10px; border:1px solid var(--rule); border-radius:8px; background:var(--panel)}\n.cof-row.skip{color:var(--muted); border-style:dashed}\n.cof-row.total{border-color:var(--c3); font-size:16px}\n.cof-sign{font-weight:600; color:var(--c1); min-width:1em}\n.cof-note{font-family:var(--body); font-size:13px}\n.mat.detbar::before,.mat.detbar::after{border-top:none; border-bottom:none; width:3px}\n.cof-cost summary{cursor:pointer; font-family:var(--display); font-size:14px; color:var(--muted)}\n.cr-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr)); gap:14px}\n.cr-item{display:grid; gap:8px; justify-items:start; border:1px solid var(--rule); border-radius:8px; padding:10px; min-width:0}\n.cr-eq{font-family:var(--mono); font-size:14px}\n.code-in{font-family:var(--mono); font-size:16px; padding:8px 10px; border:1px solid var(--rule); border-radius:8px; background:var(--panel); color:var(--ink); width:100%}\n.code-box{border:1px solid var(--rule); border-radius:8px; padding:10px 12px; display:grid; gap:6px}\n.code-box .k{font-family:var(--mono); font-size:11.5px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted)}\n.code-nums{display:flex; flex-wrap:wrap; gap:4px; font-family:var(--mono); font-size:14px}\n.code-nums span{padding:2px 6px; border-radius:4px; background:var(--paper)}\n.code-nums span.sent{background:color-mix(in oklab,var(--c2) 14%,var(--panel))}\n.code-nums .muted{background:none; color:var(--muted); font-family:var(--body)}\n.code-text{flex-basis:100%; font-family:var(--display); font-size:20px; font-weight:700; color:var(--c3); margin-top:4px}"
+}

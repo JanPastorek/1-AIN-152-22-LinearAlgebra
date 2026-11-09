@@ -1,0 +1,40 @@
+{
+ "title": "Numerical Linear Algebra Lab",
+ "description": "Interactive companion to Chapter 7 of Leon, Linear Algebra with Applications: floating-point numbers and machine epsilon, Gaussian elimination and its cost, pivoting in t-digit arithmetic, matrix norms and condition numbers, Householder and Givens transformations, the power method and the QR algorithm.",
+ "h1": "Numerical linear algebra, <em>hands-on</em>",
+ "lede": "Computers round. See which numbers a floating-point system can hold, watch cancellation destroy digits, run Gaussian elimination in 3-digit arithmetic with and without pivoting, perturb an ill-conditioned system, reflect vectors with Householder matrices, and find eigenvalues by iteration.",
+ "toc": [
+  [
+   "s71",
+   "7.1",
+   "Floating point"
+  ],
+  [
+   "s72",
+   "7.2",
+   "Elimination"
+  ],
+  [
+   "s73",
+   "7.3",
+   "Pivoting"
+  ],
+  [
+   "s74",
+   "7.4",
+   "Conditioning"
+  ],
+  [
+   "s75",
+   "7.5",
+   "Householder"
+  ],
+  [
+   "s76",
+   "7.6",
+   "Eigenvalues"
+  ]
+ ],
+ "footer": "",
+ "css": ".fp-ctl{display:flex; flex-wrap:wrap; gap:10px 22px; align-items:center; margin:8px 0}\n.fp-ctl input.mi, .kpick input.mi{width:52px}\n.fig.wide{max-width:100%; width:100%}\n.trow select{font-family:var(--mono); font-size:14px; padding:4px 6px; border:1px solid var(--rule); border-radius:6px; background:var(--panel); color:var(--ink)}\n.subh{font-family:var(--display); font-size:15px; margin:18px 0 6px}\n.bits{font-family:var(--mono); font-size:13px; word-break:break-all; line-height:1.6; padding:6px 0}\n.bits .bs{color:var(--warn)} .bits .be{color:var(--c3)} .bits .bm{color:var(--c1)}\n.bits .bl{display:flex; gap:16px; font-size:11.5px; color:var(--muted)}\ntable.kv.hilb td, table.kv.hilb th{padding-right:22px}\n#ct-tab td, #ct-time td{padding-right:22px}\n.trow .chips{min-width:0; flex:1 1 220px; flex-wrap:wrap}\n.trow{max-width:100%}\n#ar-a,#ar-b{width:110px!important}\n#ie-status,#fp-status{overflow-wrap:anywhere}\n#pw-tab td,#pw-tab th{padding-right:16px}"
+}

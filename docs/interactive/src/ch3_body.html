@@ -1,0 +1,154 @@
+<!-- ============ 3.1 ============ -->
+<section class="sec" id="s31">
+  <div class="sec-head"><span class="sec-num">3.1</span><h2>Definition and examples</h2><span class="sub">What makes a set a vector space</span></div>
+  <div class="concept">
+    <p>A <strong>vector space</strong> is a set <span class="x">V</span> with an addition and a scalar multiplication that never leave <span class="x">V</span> (closure) and obey eight familiar rules: commutativity and associativity of addition, a zero vector, negatives, and the distributive and associative laws for scalars. Arrows in ℝ<sup>2</sup>, column vectors in ℝ<sup><span class="x">n</span></sup>, <span class="x">m</span> × <span class="x">n</span> matrices, polynomials <span class="x">P<sub>n</sub></span> and continuous functions <span class="x">C</span>[<span class="x">a</span>, <span class="x">b</span>] all qualify.</p>
+    <p>Once a set is known to be a vector space, every theorem of this chapter applies to it, whatever its elements look like.</p>
+  </div>
+  <div class="defs" id="defs-s31"></div>
+  <div class="exset" id="ex-s31"></div>
+</section>
+
+<!-- ============ 3.2 ============ -->
+<section class="sec" id="s32">
+  <div class="sec-head"><span class="sec-num">3.2</span><h2>Subspaces</h2><span class="sub">Closed under addition and scalar multiplication; spans and spanning sets</span></div>
+  <div class="concept">
+    <p>A nonempty subset <span class="x">S</span> of a vector space is a <strong>subspace</strong> if α<b>x</b> ∈ <span class="x">S</span> whenever <b>x</b> ∈ <span class="x">S</span>, and <b>x</b> + <b>y</b> ∈ <span class="x">S</span> whenever <b>x</b>, <b>y</b> ∈ <span class="x">S</span>. Every subspace contains <b>0</b>. Two important examples: the <strong>null space</strong> <span class="x">N</span>(<span class="x">A</span>) = {<b>x</b> : <span class="x">A</span><b>x</b> = <b>0</b>}, and the <strong>span</strong> of a set of vectors, all their linear combinations.</p>
+  </div>
+  <div class="defs" id="defs-s32"></div>
+
+  <div class="lab" id="lab-sub">
+    <div class="lab-title"><h3>Subspace tester</h3><span class="src">Exercise 3.2.1 and more</span></div>
+    <div class="chips" id="sub-sets" role="group" aria-label="Candidate sets"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="sl"><label for="sub-c">scalar α</label><input type="range" id="sub-c" min="-2" max="2" step="0.5"><output id="sub-co"></output></div>
+        <div class="sub-mem" id="sub-mem"></div>
+        <div class="btnrow"><button class="btn" id="sub-cex">Find a counterexample</button><button class="btn primary" id="sub-verdict">Is it a subspace?</button></div>
+        <div class="status inf" id="sub-status"></div>
+        <p style="font-size:14px;color:var(--muted)">Drag <b style="color:var(--c1)">u</b> and <b style="color:var(--c2)">v</b>. The page draws <b>u</b> + <b>v</b> and α<b>u</b> and checks whether they stay in the green set.</p>
+      </div>
+      <svg class="fig" id="sub-svg" viewBox="0 0 420 420" role="img" aria-label="Candidate set and test vectors"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>For a line through the origin, try hard to break closure. You can't.</li>
+      <li>For x₁x₂ = 0 (the two axes), put <b>u</b> on one axis and <b>v</b> on the other.</li>
+      <li>Every subspace must contain <b>0</b>. Which sets fail that test immediately?</li>
+    </ul></div>
+  </div>
+
+  <div class="lab" id="lab-span">
+    <div class="lab-title"><h3>Span explorer</h3><span class="src">Spanning sets of ℝ² · Exercises 3.2.11, 3.2.13</span></div>
+    <div class="bench">
+      <div class="col">
+        <div class="kpick" role="group" aria-label="Number of vectors"><span>vectors</span><span class="chips" id="span-k"></span></div>
+        <div class="chips" id="span-presets" role="group" aria-label="Examples"></div>
+        <div class="scroll"><div class="mexpr" id="span-expr"></div></div>
+        <div class="status inf" id="span-status"></div>
+        <p style="font-size:14px;color:var(--muted)">Drag the vectors and the target <b>b</b> (ring).</p>
+      </div>
+      <svg class="fig" id="span-svg" viewBox="0 0 420 420" role="img" aria-label="Span of the vectors"></svg>
+    </div>
+  </div>
+
+  <div class="exset" id="ex-s32"></div>
+</section>
+
+<!-- ============ 3.3 ============ -->
+<section class="sec" id="s33">
+  <div class="sec-head"><span class="sec-num">3.3</span><h2>Linear independence</h2><span class="sub">Deciding dependence by row reduction</span></div>
+  <div class="concept">
+    <p>Vectors <b>v</b><sub>1</sub>, …, <b>v</b><sub><span class="x">n</span></sub> are <strong>linearly independent</strong> if <span class="x">c</span><sub>1</sub><b>v</b><sub>1</sub> + ⋯ + <span class="x">c<sub>n</sub></span><b>v</b><sub><span class="x">n</span></sub> = <b>0</b> forces every <span class="x">c<sub>i</sub></span> = 0, and <strong>linearly dependent</strong> if some nontrivial combination gives <b>0</b>. Dependent means at least one vector is a combination of the others, so it adds nothing to the span.</p>
+    <div class="defn"><span class="tag">How to decide (vectors in ℝ<sup>m</sup>)</span>Put the vectors in the columns of <span class="x">X</span> and solve <span class="x">X</span><b>c</b> = <b>0</b> by row reduction. <strong>Independent ⇔ every column has a pivot.</strong> Each free column gives a dependence relation, read off from the reduced row echelon form. Shortcuts: more vectors than entries (<span class="x">n</span> &gt; <span class="x">m</span>) ⇒ dependent; for <span class="x">n</span> vectors in ℝ<sup><span class="x">n</span></sup>, independent ⇔ det <span class="x">X</span> ≠ 0 (Theorem 3.3.1).</div>
+  </div>
+  <div class="defs" id="defs-s33"></div>
+
+  <div class="lab" id="lab-dep">
+    <div class="lab-title"><h3>Linear dependence decider</h3><span class="src">Theorem 3.3.1 · Exercises 3.3.1, 3.3.2, 3.6.2</span></div>
+    <div class="chips" id="dep-presets" role="group" aria-label="Examples"></div>
+    <div class="sz-row"><span>entries per vector <span class="chips" id="dep-m"></span></span><span>number of vectors <span class="chips" id="dep-k"></span></span></div>
+    <div class="bench even">
+      <div class="col">
+        <div class="scroll"><div id="dep-in"></div></div>
+        <div class="btnrow"><button class="btn primary" id="dep-go">Decide</button><span style="font-size:14px;color:var(--muted)">Each column is one vector.</span></div>
+        <div class="badges" id="dep-badges"></div>
+      </div>
+      <div class="col">
+        <div class="stepper" id="dep-stepper"></div>
+        <div class="scroll"><div class="mexpr" id="dep-mat"></div></div>
+      </div>
+    </div>
+    <div class="status inf" id="dep-status"></div>
+    <div class="deps" id="dep-rel"></div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Load Exercise 3.3.2(c). Step through the reduction and watch for a column without a pivot.</li>
+      <li>Change one entry of a dependent set so it becomes independent. How small a change is enough?</li>
+      <li>Polynomials are vectors too: 2, x², x, 2x + 3 in P₃ become columns of coefficients.</li>
+    </ul></div>
+  </div>
+
+  <div class="exset" id="ex-s33"></div>
+</section>
+
+<!-- ============ 3.4 ============ -->
+<section class="sec" id="s34">
+  <div class="sec-head"><span class="sec-num">3.4</span><h2>Basis and dimension</h2><span class="sub">Minimal spanning sets, maximal independent sets</span></div>
+  <div class="concept">
+    <p>A <strong>basis</strong> of <span class="x">V</span> is a linearly independent spanning set. Every vector then has <em>exactly one</em> expression as a combination of the basis vectors (Theorem 3.3.2). All bases of <span class="x">V</span> have the same number of vectors, the <strong>dimension</strong> of <span class="x">V</span>. In an <span class="x">n</span>-dimensional space, any <span class="x">n</span> independent vectors span, and any <span class="x">n</span> spanning vectors are independent (Theorem 3.4.3).</p>
+  </div>
+  <div class="defs" id="defs-s34"></div>
+  <div class="exset" id="ex-s34"></div>
+</section>
+
+<!-- ============ 3.5 ============ -->
+<section class="sec" id="s35">
+  <div class="sec-head"><span class="sec-num">3.5</span><h2>Change of basis</h2><span class="sub">Coordinates and transition matrices</span></div>
+  <div class="concept">
+    <p>If <span class="x">E</span> = [<b>v</b><sub>1</sub>, …, <b>v</b><sub><span class="x">n</span></sub>] is an ordered basis and <b>x</b> = <span class="x">c</span><sub>1</sub><b>v</b><sub>1</sub> + ⋯ + <span class="x">c<sub>n</sub></span><b>v</b><sub><span class="x">n</span></sub>, then [<b>x</b>]<sub><span class="x">E</span></sub> = (<span class="x">c</span><sub>1</sub>, …, <span class="x">c<sub>n</sub></span>)<sup>T</sup> is the <strong>coordinate vector</strong> of <b>x</b> with respect to <span class="x">E</span>. With <span class="x">U</span> = (<b>u</b><sub>1</sub> … <b>u</b><sub><span class="x">n</span></sub>), standard coordinates are <b>x</b> = <span class="x">U</span>[<b>x</b>]<sub><span class="x">U</span></sub>, so [<b>x</b>]<sub><span class="x">U</span></sub> = <span class="x">U</span><sup>−1</sup><b>x</b>; the transition matrix from basis <span class="x">U</span> to basis <span class="x">V</span> is <span class="x">V</span><sup>−1</sup><span class="x">U</span>.</p>
+  </div>
+  <div class="defs" id="defs-s35"></div>
+
+  <div class="lab" id="lab-basis">
+    <div class="lab-title"><h3>Coordinates in any basis</h3><span class="src">Example 3.5.1 · Exercises 3.5.1–3.5.4</span></div>
+    <div class="bench">
+      <div class="col">
+        <div class="chips" id="bas-presets" role="group" aria-label="Examples"></div>
+        <div class="chips" role="group" aria-label="Second basis"><button class="chip" id="bas-two" aria-pressed="false">Compare with a second basis</button></div>
+        <div class="scroll"><div class="mexpr" id="bas-expr"></div></div>
+        <div class="status inf" id="bas-status"></div>
+        <p style="font-size:14px;color:var(--muted)">Drag the basis vectors and the point <b>x</b>. The slanted grid is the coordinate grid of the basis.</p>
+      </div>
+      <svg class="fig" id="bas-svg" viewBox="0 0 420 420" role="img" aria-label="Basis grid and coordinates"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Count grid steps along <b>u₁</b> and then <b>u₂</b> to reach <b>x</b>: that is [<b>x</b>]<sub>U</sub>.</li>
+      <li>Make <b>u₁</b> and <b>u₂</b> parallel. The grid collapses and coordinates no longer exist: not a basis.</li>
+    </ul></div>
+  </div>
+  <div class="exset" id="ex-s35"></div>
+</section>
+
+<!-- ============ 3.6 ============ -->
+<section class="sec" id="s36">
+  <div class="sec-head"><span class="sec-num">3.6</span><h2>Row space and column space</h2><span class="sub">Rank, nullity, and when Ax = b is solvable</span></div>
+  <div class="concept">
+    <p>The <strong>row space</strong> of an <span class="x">m</span> × <span class="x">n</span> matrix <span class="x">A</span> is spanned by its rows, the <strong>column space</strong> by its columns. The <strong>rank</strong> is the dimension of the row space, which equals the dimension of the column space (Theorem 3.6.6); the <strong>nullity</strong> is dim <span class="x">N</span>(<span class="x">A</span>).</p>
+    <div class="defn"><span class="tag">Theorem 3.6.5 · rank–nullity</span>If <span class="x">A</span> is <span class="x">m</span> × <span class="x">n</span>, then rank(<span class="x">A</span>) + nullity(<span class="x">A</span>) = <span class="x">n</span>. Bases come straight from the reduced row echelon form <span class="x">U</span>: the nonzero rows of <span class="x">U</span> (row space), the columns of <span class="x">A</span> in pivot positions (column space), one special solution per free variable (null space).</div>
+  </div>
+  <div class="defs" id="defs-s36"></div>
+
+  <div class="lab" id="lab-rank">
+    <div class="lab-title"><h3>Rank–nullity explorer</h3><span class="src">Example 3.6.5 · Exercises 3.6.1, 3.6.3, 3.6.4</span></div>
+    <div class="chips" id="rk-presets" role="group" aria-label="Matrices"></div>
+    <div class="sz-row"><span>rows <span class="chips" id="rk-m"></span></span><span>columns <span class="chips" id="rk-n"></span></span></div>
+    <div class="bench even">
+      <div class="col"><div class="scroll"><div id="rk-in"></div></div>
+        <div class="scroll"><div id="rk-b"></div></div></div>
+      <div class="col"><div class="scroll"><div class="mexpr" id="rk-rref"></div></div></div>
+    </div>
+    <div class="status inf" id="rk-status"></div>
+    <div class="scroll"><div class="basis-list" id="rk-bases"></div></div>
+  </div>
+  <div class="exset" id="ex-s36"></div>
+</section>
+

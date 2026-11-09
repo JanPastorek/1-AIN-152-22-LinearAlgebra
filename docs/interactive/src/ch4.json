@@ -1,0 +1,25 @@
+{
+ "title": "Linear Transformations Lab",
+ "description": "Interactive companion to Chapter 4 of Leon, Linear Algebra with Applications: linear maps, kernel and range, standard matrices, composition, computer graphics in homogeneous coordinates, matrices relative to bases, similarity.",
+ "h1": "Linear transformations, <em>hands-on</em>",
+ "lede": "A matrix is a machine that moves the whole plane. Test whether a map is linear by watching what it does to a grid, see the kernel collapse to the origin, build a standard matrix by dragging the images of e₁ and e₂, animate a figure with homogeneous coordinates, and watch one operator take different matrices in different bases.",
+ "toc": [
+  [
+   "s41",
+   "4.1",
+   "Linear maps, kernel"
+  ],
+  [
+   "s42",
+   "4.2",
+   "Matrix representations"
+  ],
+  [
+   "s43",
+   "4.3",
+   "Similarity"
+  ]
+ ],
+ "footer": "",
+ "css": ".pair{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-bottom:14px}\n.pair figure{margin:0; display:grid; gap:4px}\n.pair figcaption{font-family:var(--display); font-size:13px; color:var(--muted); text-align:center}\n@media (max-width:520px){ .pair{grid-template-columns:minmax(0,1fr)} }\n.lin-t{border-collapse:collapse; font-family:var(--mono); font-size:13.5px}\n.lin-t td{padding:3px 10px 3px 0; white-space:nowrap}\n.lin-t td:first-child{color:var(--muted)}\n.lin-t tr.amb td{font-weight:600}\n.note{font-size:14px; color:var(--muted); margin:0}\n.comp{display:grid; gap:10px; border-top:1px dashed var(--rule); padding-top:12px}\n.comp .kpick{flex-wrap:wrap}\n.comp .kpick > span:first-child{min-width:4.5em}\n.trow{display:flex; flex-wrap:wrap; gap:8px; align-items:center; font-family:var(--mono); font-size:13.5px}\n.trow input.mi{width:56px}\n.oplist{margin:0; padding-left:1.4em; font-family:var(--mono); font-size:13.5px; display:grid; gap:2px}\n.oplist .none{list-style:none; margin-left:-1.4em; color:var(--muted)}\n.rep-in{display:flex; flex-wrap:wrap; gap:14px 24px; align-items:flex-start}\n.sl label{white-space:nowrap}"
+}

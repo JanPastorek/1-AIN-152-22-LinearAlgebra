@@ -293,6 +293,7 @@ footer{margin-top:60px; padding-top:18px; border-top:1px solid var(--rule); colo
 @media (prefers-reduced-motion: reduce){ *{transition:none!important; animation:none!important} }
 @media (max-width:520px){ body{font-size:16px} .lab{padding:14px} .mat.big td{padding:4px 6px; font-size:14px; min-width:2.2em} }
 </style>
+<link rel="stylesheet" href="../assets/lab-plus.css">
 </head>
 <body>
 <header class="top">
@@ -2639,7 +2640,7 @@ buildExercises("snn", "Exercises Â· linear neural network", "Use the network Wâ‚
       const card = document.createElement("article");
       card.className = "dcard"; card.id = d.id;
       const media = d.scene
-        ? `<video poster="video/${d.scene}.jpg" controls muted playsinline preload="none" aria-label="Manim animation: ${d.term}"><source src="video/${d.scene}.mp4" type='video/mp4; codecs="avc1.64001f"'><source src="video/${d.scene}.webm" type="video/webm"></video>`
+        ? `<video poster="video/${d.scene}.jpg" controls muted playsinline preload="none" aria-label="Manim animation: ${d.term}"><source src="video/${d.scene}.webm" type="video/webm"><source src="video/${d.scene}.mp4" type='video/mp4; codecs="avc1.64001f"'></video>`
         : "";
       const speed = d.scene ? `<div class="dspeed" role="group" aria-label="Playback speed"><span>speed</span>${[0.5, 0.75, 1, 1.5].map(r => `<button class="chip" data-rate="${r}" aria-pressed="${r === 1}">${r}Ã—</button>`).join("")}</div>` : "";
       card.innerHTML = media + speed + `<div class="dbody"><div class="dtop"><h3 class="dterm">${d.term}</h3><span class="dref">${d.ref}</span></div><p class="dtext">${d.html}</p>` +
@@ -2672,5 +2673,7 @@ buildExercises("snn", "Exercises Â· linear neural network", "Use the network Wâ‚
 })();
 })();
 </script>
+<script src="../assets/lab-plus.js"></script>
+<script src="plus.js"></script>
 </body>
 </html>

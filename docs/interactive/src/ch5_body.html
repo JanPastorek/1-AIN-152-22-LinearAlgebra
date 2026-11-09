@@ -1,0 +1,192 @@
+<!-- ============ 5.1 ============ -->
+<section class="sec" id="s51">
+  <div class="sec-head"><span class="sec-num">5.1</span><h2>The scalar product in ℝ<sup>n</sup></h2><span class="sub">Length, angle, projection</span></div>
+  <div class="concept">
+    <p>The <strong>scalar product</strong> of <b>x</b>, <b>y</b> ∈ ℝ<sup><span class="x">n</span></sup> is <b>x</b><sup>T</sup><b>y</b> = <span class="x">x</span><sub>1</sub><span class="x">y</span><sub>1</sub> + ⋯ + <span class="x">x<sub>n</sub>y<sub>n</sub></span>. It gives length ‖<b>x</b>‖ = (<b>x</b><sup>T</sup><b>x</b>)<sup>1/2</sup>, distance ‖<b>x</b> − <b>y</b>‖, and angle: <b>x</b><sup>T</sup><b>y</b> = ‖<b>x</b>‖ ‖<b>y</b>‖ cos θ. Vectors are <strong>orthogonal</strong> when <b>x</b><sup>T</sup><b>y</b> = 0.</p>
+    <p>The <strong>vector projection</strong> of <b>x</b> onto <b>y</b> is <b>p</b> = (<b>x</b><sup>T</sup><b>y</b> / <b>y</b><sup>T</sup><b>y</b>) <b>y</b>. What is left over, <b>x</b> − <b>p</b>, is orthogonal to <b>y</b>. Everything in this chapter grows from that picture.</p>
+  </div>
+  <div class="defs" id="defs-s51"></div>
+
+  <div class="lab" id="lab-proj">
+    <div class="lab-title"><h3>Angle and projection</h3><span class="src">Theorem 5.1.1 · Examples 5.1.2–5.1.4 · Exercises 5.1.1–5.1.3</span></div>
+    <div class="chips" id="pj-presets" role="group" aria-label="Examples"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="scroll"><table class="kv" id="pj-tab"></table></div>
+        <div class="status inf" id="pj-status"></div>
+        <p class="note">Drag the tips of <b style="color:var(--c1)">x</b> and <b style="color:var(--c2)">y</b>. Square roots that do not simplify are shown as decimals.</p>
+      </div>
+      <svg class="fig" id="pj-svg" viewBox="0 0 420 420" role="img" aria-label="x, y and the projection of x onto y"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Make <b>x</b><sup>T</sup><b>y</b> negative. Where does <b>p</b> point now?</li>
+      <li>Load Exercise 1(b). The projection is <b>0</b>: the vectors are orthogonal.</li>
+      <li>Drag <b>x</b> along a line perpendicular to <b>y</b>. Why does <b>p</b> not move?</li>
+    </ul></div>
+  </div>
+  <div class="exset" id="ex-s51"></div>
+</section>
+
+<!-- ============ 5.2 ============ -->
+<section class="sec" id="s52">
+  <div class="sec-head"><span class="sec-num">5.2</span><h2>Orthogonal subspaces</h2><span class="sub">The four fundamental subspaces</span></div>
+  <div class="concept">
+    <p>The <strong>orthogonal complement</strong> of a subspace <span class="x">Y</span> of ℝ<sup><span class="x">n</span></sup> is <span class="x">Y</span><sup>⊥</sup> = {<b>x</b> : <b>x</b><sup>T</sup><b>y</b> = 0 for every <b>y</b> ∈ <span class="x">Y</span>}. For an <span class="x">m</span> × <span class="x">n</span> matrix <span class="x">A</span>, the equation <span class="x">A</span><b>x</b> = <b>0</b> says exactly that <b>x</b> is orthogonal to every row, so <span class="x">N</span>(<span class="x">A</span>) = <span class="x">R</span>(<span class="x">A</span><sup>T</sup>)<sup>⊥</sup>; applied to <span class="x">A</span><sup>T</sup>, <span class="x">N</span>(<span class="x">A</span><sup>T</sup>) = <span class="x">R</span>(<span class="x">A</span>)<sup>⊥</sup> (Theorem 5.2.1).</p>
+    <p>Dimensions add up: dim <span class="x">S</span> + dim <span class="x">S</span><sup>⊥</sup> = <span class="x">n</span>, and every vector splits uniquely as ℝ<sup><span class="x">n</span></sup> = <span class="x">S</span> ⊕ <span class="x">S</span><sup>⊥</sup> (Theorems 5.2.2, 5.2.3).</p>
+  </div>
+  <div class="defs" id="defs-s52"></div>
+
+  <div class="lab" id="lab-four">
+    <div class="lab-title"><h3>The four fundamental subspaces</h3><span class="src">Theorem 5.2.1 · Exercises 5.2.1, 5.2.12</span></div>
+    <div class="chips" id="fs-presets" role="group" aria-label="Matrices"></div>
+    <div class="sz-row"><span>m (rows) <span class="chips" id="fs-m"></span></span><span>n (columns) <span class="chips" id="fs-n"></span></span></div>
+    <div class="bench even">
+      <div class="col">
+        <div class="scroll"><div id="fs-in"></div></div>
+        <div class="status inf" id="fs-status"></div>
+        <div class="scroll"><div class="mexpr basis-list" id="fs-bases"></div></div>
+        <div class="scroll"><div id="fs-dots"></div></div>
+      </div>
+      <div class="col">
+        <div class="pair">
+          <figure><svg class="fig" id="fs-dom" viewBox="0 0 420 420" role="img" aria-label="Domain: row space and null space"></svg><figcaption id="fs-domc">domain ℝⁿ</figcaption></figure>
+          <figure><svg class="fig" id="fs-cod" viewBox="0 0 420 420" role="img" aria-label="Codomain: column space and left null space"></svg><figcaption id="fs-codc">codomain ℝᵐ</figcaption></figure>
+        </div>
+        <p class="note" id="fs-note"></p>
+      </div>
+    </div>
+  </div>
+  <div class="exset" id="ex-s52"></div>
+</section>
+
+<!-- ============ 5.3 ============ -->
+<section class="sec" id="s53">
+  <div class="sec-head"><span class="sec-num">5.3</span><h2>Least squares problems</h2><span class="sub">The best approximate solution of an inconsistent system</span></div>
+  <div class="concept">
+    <p>When <span class="x">A</span><b>x</b> = <b>b</b> has no solution, choose <b>x̂</b> to make the residual <b>r</b> = <b>b</b> − <span class="x">A</span><b>x</b> as short as possible. Then <span class="x">A</span><b>x̂</b> is the projection <b>p</b> of <b>b</b> onto the column space, and <b>r</b> is orthogonal to every column: <span class="x">A</span><sup>T</sup><b>r</b> = <b>0</b>. That is the system of <strong>normal equations</strong> <span class="x">A</span><sup>T</sup><span class="x">A</span><b>x̂</b> = <span class="x">A</span><sup>T</sup><b>b</b>, which has a unique solution when <span class="x">A</span> has rank <span class="x">n</span> (Theorem 5.3.2).</p>
+    <p>Fitting a polynomial of degree <span class="x">k</span> to data points is the special case where column <span class="x">j</span> of <span class="x">A</span> holds the powers <span class="x">x<sub>i</sub><sup>j</sup></span>.</p>
+  </div>
+  <div class="defs" id="defs-s53"></div>
+
+  <div class="lab" id="lab-ls">
+    <div class="lab-title"><h3>Least squares fit</h3><span class="src">Examples 5.3.2, 5.3.3 · Exercises 5.3.5, 5.3.6 · Figure 5.3.3</span></div>
+    <div class="chips" id="ls-presets" role="group" aria-label="Data sets"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="kpick"><span>degree</span><span class="chips" id="ls-deg"></span></div>
+        <div class="btnrow"><button class="btn sm" id="ls-add">Add a point</button><button class="btn sm" id="ls-del">Remove last point</button><button class="btn sm" id="ls-res" aria-pressed="true">Residuals</button></div>
+        <div class="status inf" id="ls-status"></div>
+        <div class="scroll"><div class="mexpr" id="ls-ne"></div></div>
+      </div>
+      <svg class="fig" id="ls-svg" viewBox="0 0 420 420" role="img" aria-label="Data points and the least squares curve"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Drag one point far away (an outlier). How much does the line move?</li>
+      <li>With 3 points, set the degree to 2. The residual is 0: the parabola interpolates.</li>
+      <li>Check the claim A<sup>T</sup>r = 0 in the status line for any data you like.</li>
+    </ul></div>
+  </div>
+  <div class="exset" id="ex-s53"></div>
+</section>
+
+<!-- ============ 5.4 ============ -->
+<section class="sec" id="s54">
+  <div class="sec-head"><span class="sec-num">5.4</span><h2>Inner product spaces</h2><span class="sub">Inner products, norms, distance</span></div>
+  <div class="concept">
+    <p>An <strong>inner product</strong> ⟨<b>x</b>, <b>y</b>⟩ is any rule that is positive (⟨<b>x</b>, <b>x</b>⟩ &gt; 0 for <b>x</b> ≠ <b>0</b>), symmetric, and linear in each argument. Examples: weighted sums Σ<span class="x">w<sub>i</sub>x<sub>i</sub>y<sub>i</sub></span>, ⟨<span class="x">A</span>, <span class="x">B</span>⟩ = Σ<span class="x">a<sub>ij</sub>b<sub>ij</sub></span> for matrices, ∫<span class="x">f g</span> for functions. Every inner product gives a norm, angles, projections, the Pythagorean law and the Cauchy–Schwarz inequality |⟨<b>x</b>, <b>y</b>⟩| ≤ ‖<b>x</b>‖ ‖<b>y</b>‖.</p>
+    <p>A <strong>norm</strong> need not come from an inner product. The 1-norm and the ∞-norm are norms whose unit circles have corners.</p>
+  </div>
+  <div class="defs" id="defs-s54"></div>
+
+  <div class="lab" id="lab-norm">
+    <div class="lab-title"><h3>Norms and unit balls</h3><span class="src">Example 5.4.5 · Exercises 5.4.13–5.4.23</span></div>
+    <div class="bench">
+      <div class="col">
+        <div class="kpick"><span>p</span><span class="chips" id="nm-p"></span></div>
+        <div class="scroll"><table class="kv" id="nm-tab"></table></div>
+        <div class="status inf" id="nm-status"></div>
+        <p class="note">Drag <b>x</b>. Faint curves are the unit balls ‖<b>x</b>‖ = 1 of the 1-, 2- and ∞-norms; the bold curve is the ball of the chosen p-norm passing through <b>x</b>.</p>
+      </div>
+      <svg class="fig" id="nm-svg" viewBox="0 0 420 420" role="img" aria-label="Unit balls of p-norms"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Find a nonzero <b>x</b> with ‖<b>x</b>‖<sub>1</sub> = ‖<b>x</b>‖<sub>2</sub> = ‖<b>x</b>‖<sub>∞</sub> (Exercise 23).</li>
+      <li>Where on the unit circle is ‖<b>x</b>‖<sub>1</sub> largest? What is its value?</li>
+    </ul></div>
+  </div>
+  <div class="exset" id="ex-s54"></div>
+</section>
+
+<!-- ============ 5.5 ============ -->
+<section class="sec" id="s55">
+  <div class="sec-head"><span class="sec-num">5.5</span><h2>Orthonormal sets</h2><span class="sub">Coordinates without solving, orthogonal matrices, projections</span></div>
+  <div class="concept">
+    <p>An <strong>orthonormal</strong> set consists of mutually orthogonal unit vectors. In an orthonormal basis <b>u</b><sub>1</sub>, …, <b>u</b><sub><span class="x">n</span></sub>, the coordinates of <b>x</b> are simply <span class="x">c<sub>i</sub></span> = ⟨<b>x</b>, <b>u</b><sub><span class="x">i</span></sub>⟩, and ‖<b>x</b>‖<sup>2</sup> = Σ<span class="x">c<sub>i</sub></span><sup>2</sup> (Parseval). A square matrix <span class="x">Q</span> with orthonormal columns is an <strong>orthogonal matrix</strong>: <span class="x">Q</span><sup>T</sup><span class="x">Q</span> = <span class="x">I</span>, so <span class="x">Q</span><sup>−1</sup> = <span class="x">Q</span><sup>T</sup>, and <span class="x">Q</span> preserves lengths and angles.</p>
+    <p>The projection of <b>x</b> onto a subspace with orthonormal basis <b>u</b><sub>1</sub>, …, <b>u</b><sub><span class="x">k</span></sub> is <b>p</b> = Σ⟨<b>x</b>, <b>u</b><sub><span class="x">i</span></sub>⟩<b>u</b><sub><span class="x">i</span></sub> = <span class="x">UU</span><sup>T</sup><b>x</b>, the closest point of the subspace (Theorems 5.5.7, 5.5.8).</p>
+  </div>
+  <div class="defs" id="defs-s55"></div>
+
+  <div class="lab" id="lab-on">
+    <div class="lab-title"><h3>Orthonormal coordinates and orthogonal matrices</h3><span class="src">Theorems 5.5.2, 5.5.5, 5.5.7 · Example 5.5.6</span></div>
+    <div class="chips" id="on-presets" role="group" aria-label="Bases"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="sl"><label for="on-th">θ</label><input type="range" id="on-th" min="0" max="360" step="1"><output id="on-tho"></output></div>
+        <div class="btnrow"><button class="btn sm" id="on-refl" aria-pressed="false">Reflection (det Q = −1)</button><button class="btn sm" id="on-qx" aria-pressed="false">Show Qx</button></div>
+        <div class="scroll"><div class="mexpr" id="on-expr"></div></div>
+        <div class="status inf" id="on-status"></div>
+      </div>
+      <svg class="fig" id="on-svg" viewBox="0 0 420 420" role="img" aria-label="Orthonormal basis and coordinates"></svg>
+    </div>
+  </div>
+  <div class="exset" id="ex-s55"></div>
+</section>
+
+<!-- ============ 5.6 ============ -->
+<section class="sec" id="s56">
+  <div class="sec-head"><span class="sec-num">5.6</span><h2>The Gram–Schmidt process</h2><span class="sub">Orthonormalize a basis; QR factorization</span></div>
+  <div class="concept">
+    <p>Given independent <b>a</b><sub>1</sub>, …, <b>a</b><sub><span class="x">n</span></sub>, set <b>q</b><sub>1</sub> = <b>a</b><sub>1</sub>/‖<b>a</b><sub>1</sub>‖ and, for each next vector, subtract its projections onto the <b>q</b>'s already built and normalize what is left: <span class="x">r<sub>ik</sub></span> = <b>q</b><sub><span class="x">i</span></sub><sup>T</sup><b>a</b><sub><span class="x">k</span></sub>, <span class="x">r<sub>kk</sub></span> = ‖<b>a</b><sub><span class="x">k</span></sub> − Σ<span class="x">r<sub>ik</sub></span><b>q</b><sub><span class="x">i</span></sub>‖. The numbers <span class="x">r<sub>ik</sub></span> fill an upper triangular <span class="x">R</span> with <span class="x">A</span> = <span class="x">QR</span> (Theorem 5.6.2). Then least squares is easy: <span class="x">R</span><b>x̂</b> = <span class="x">Q</span><sup>T</sup><b>b</b> (Theorem 5.6.3).</p>
+  </div>
+  <div class="defs" id="defs-s56"></div>
+
+  <div class="lab" id="lab-gs">
+    <div class="lab-title"><h3>Gram–Schmidt and QR, step by step</h3><span class="src">Examples 5.6.2–5.6.4 · Exercises 5.6.1–5.6.8, 5.6.12</span></div>
+    <div class="chips" id="gs-presets" role="group" aria-label="Matrices"></div>
+    <div class="sz-row"><span>m (rows) <span class="chips" id="gs-m"></span></span><span>n (columns) <span class="chips" id="gs-n"></span></span><span><button class="btn sm" id="gs-useb" aria-pressed="false">right-hand side b</button></span></div>
+    <div class="rep-in">
+      <div class="scroll"><div id="gs-in"></div></div>
+      <div class="scroll"><div id="gs-b"></div></div>
+    </div>
+    <div class="stepper" id="gs-step"></div>
+    <div class="scroll"><div class="mexpr" id="gs-work"></div></div>
+    <div class="status inf" id="gs-status"></div>
+    <div class="scroll"><div class="mexpr" id="gs-out"></div></div>
+  </div>
+  <div class="exset" id="ex-s56"></div>
+</section>
+
+<!-- ============ 5.7 ============ -->
+<section class="sec" id="s57">
+  <div class="sec-head"><span class="sec-num">5.7</span><h2>Orthogonal polynomials</h2><span class="sub">Legendre and Chebyshev</span></div>
+  <div class="concept">
+    <p>A sequence <span class="x">p</span><sub>0</sub>, <span class="x">p</span><sub>1</sub>, … with deg <span class="x">p<sub>i</sub></span> = <span class="x">i</span> and ⟨<span class="x">p<sub>i</sub></span>, <span class="x">p<sub>j</sub></span>⟩ = 0 for <span class="x">i</span> ≠ <span class="x">j</span> is a sequence of <strong>orthogonal polynomials</strong>. They always satisfy a three-term recursion (Theorem 5.7.2). Legendre polynomials use ⟨<span class="x">p</span>, <span class="x">q</span>⟩ = ∫<sub>−1</sub><sup>1</sup> <span class="x">p q</span> d<span class="x">x</span>; Chebyshev polynomials <span class="x">T<sub>n</sub></span>(cos θ) = cos <span class="x">n</span>θ use the weight (1 − <span class="x">x</span><sup>2</sup>)<sup>−1/2</sup>.</p>
+  </div>
+  <div class="defs" id="defs-s57"></div>
+
+  <div class="lab" id="lab-poly">
+    <div class="lab-title"><h3>Orthogonal polynomial families</h3><span class="src">Section 5.7 · Theorems 5.7.1, 5.7.2</span></div>
+    <div class="chips" id="op-fam" role="group" aria-label="Family"></div>
+    <div class="kpick"><span>show up to degree</span><span class="chips" id="op-n"></span></div>
+    <div class="bench">
+      <div class="col">
+        <div class="scroll"><div class="polylist" id="op-list"></div></div>
+        <div class="scroll"><div id="op-gram"></div></div>
+        <div class="status inf" id="op-status"></div>
+      </div>
+      <svg class="fig" id="op-svg" viewBox="0 0 420 420" role="img" aria-label="Graphs of orthogonal polynomials on [−1, 1]"></svg>
+    </div>
+  </div>
+  <div class="exset" id="ex-s57"></div>
+</section>
+

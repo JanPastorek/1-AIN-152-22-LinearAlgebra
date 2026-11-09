@@ -1,0 +1,149 @@
+<!-- ============ 2.1 ============ -->
+<section class="sec" id="s21">
+  <div class="sec-head"><span class="sec-num">2.1</span><h2>The determinant of a matrix</h2><span class="sub">Minors, cofactors, and expansion along any row or column</span></div>
+  <div class="concept">
+    <p>For a 2 × 2 matrix, det(<span class="x">A</span>) = <span class="x">a</span><sub>11</sub><span class="x">a</span><sub>22</sub> − <span class="x">a</span><sub>12</sub><span class="x">a</span><sub>21</sub>, and <span class="x">A</span> is nonsingular exactly when this number is not 0. Larger determinants are defined <strong>inductively</strong>: delete a row and a column to get a smaller matrix (a <strong>minor</strong>), attach a sign, and add up.</p>
+    <p>Geometrically, |det <span class="x">A</span>| is the area (in 3D, the volume) of the parallelogram spanned by the columns, and the sign records whether the columns keep or reverse the orientation of the plane.</p>
+  </div>
+  <div class="defs" id="defs-s21"></div>
+
+  <div class="lab" id="lab-cof">
+    <div class="lab-title"><h3>Cofactor expansion explorer</h3><span class="src">Definition, Theorem 2.1.1 · Exercises 2.1.1, 2.1.3</span></div>
+    <div class="btnrow">
+      <div class="chips" id="cof-presets" role="group" aria-label="Examples"></div>
+    </div>
+    <div class="bench even">
+      <div class="col">
+        <div class="scroll"><div class="mexpr" id="cof-in"></div></div>
+        <div class="kpick" role="group" aria-label="Expand along"><span>expand along</span><span class="chips" id="cof-lines"></span></div>
+        <div class="status inf" id="cof-status"></div>
+      </div>
+      <div class="col">
+        <div class="scroll"><div id="cof-terms" class="cof-terms"></div></div>
+      </div>
+    </div>
+    <details class="cof-cost"><summary>How much work is this? (Table 1 of §2.2)</summary>
+      <div class="scroll"><table class="gtab" id="cof-table"></table></div>
+      <p style="font-size:14px;color:var(--muted);margin-top:8px">A cofactor expansion of an <span class="x">n</span> × <span class="x">n</span> determinant needs about <span class="x">n</span>! multiplications; elimination needs about <span class="x">n</span><sup>3</sup>/3. For <span class="x">n</span> = 25 the factorial is about 1.5 × 10<sup>25</sup>.</p>
+    </details>
+    <div class="try"><b>Try this</b><ul>
+      <li>Expand the same matrix along different rows and columns. The terms change but the total does not (Theorem 2.1.1).</li>
+      <li>Load the 4 × 4 example with many zeros. The suggested line skips every zero entry, so only one 3 × 3 minor is needed.</li>
+      <li>Make two rows equal, or a row of zeros, and watch the determinant become 0 (Theorem 2.1.4).</li>
+    </ul></div>
+  </div>
+
+  <div class="lab" id="lab-area">
+    <div class="lab-title"><h3>The determinant as a signed area</h3><span class="src">Geometric meaning of det for 2 × 2 matrices</span></div>
+    <div class="bench">
+      <div class="col">
+        <div class="chips" id="area-presets" role="group" aria-label="Examples"></div>
+        <div class="scroll"><div class="mexpr" id="area-expr"></div></div>
+        <div class="badges" id="area-badges"></div>
+        <div class="status inf" id="area-status"></div>
+        <p style="font-size:14px;color:var(--muted)">Drag the tips of <b style="color:var(--c1)">a₁</b> and <b style="color:var(--c2)">a₂</b>, the columns of <span class="x">A</span>.</p>
+      </div>
+      <svg class="fig" id="area-svg" viewBox="0 0 420 420" role="img" aria-label="Parallelogram spanned by the columns"></svg>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Swap the two columns. The area stays the same, the sign flips, and the letter F comes out mirrored.</li>
+      <li>Make the columns parallel. The parallelogram collapses and det <span class="x">A</span> = 0: no inverse can undo a collapse.</li>
+      <li>Slide <b>a₂</b> parallel to <b>a₁</b> (a shear). The area does not change: that is row/column operation III.</li>
+    </ul></div>
+  </div>
+
+  <div class="exset" id="ex-s21"></div>
+</section>
+
+<!-- ============ 2.2 ============ -->
+<section class="sec" id="s22">
+  <div class="sec-head"><span class="sec-num">2.2</span><h2>Properties of determinants</h2><span class="sub">Row operations, singularity, and det(AB) = det(A) det(B)</span></div>
+  <div class="concept">
+    <p>Each elementary row operation changes the determinant in a predictable way: <strong>I.</strong> interchanging two rows changes its sign, <strong>II.</strong> multiplying a row by α multiplies it by α, <strong>III.</strong> adding a multiple of one row to another leaves it unchanged. So the determinant can be computed by reducing to triangular form and multiplying the diagonal entries, at a cost of about <span class="x">n</span><sup>3</sup>/3 operations instead of <span class="x">n</span>!.</p>
+    <div class="defn"><span class="tag">Theorem 2.2.2 · Theorem 2.2.3</span>An <span class="x">n</span> × <span class="x">n</span> matrix <span class="x">A</span> is singular if and only if det(<span class="x">A</span>) = 0. For <span class="x">n</span> × <span class="x">n</span> matrices <span class="x">A</span> and <span class="x">B</span>, det(<span class="x">AB</span>) = det(<span class="x">A</span>) det(<span class="x">B</span>).</div>
+  </div>
+  <div class="defs" id="defs-s22"></div>
+
+  <div class="lab" id="lab-elim">
+    <div class="lab-title"><h3>Determinant by elimination, with a ledger</h3><span class="src">Lemma 2.2.1–Theorem 2.2.2 · Exercise 2.2.2</span></div>
+    <div class="chips" id="el-presets" role="group" aria-label="Load a matrix"></div>
+    <div class="bench even">
+      <div class="col">
+        <div class="scroll"><div class="rr-mat" id="el-mat"></div></div>
+        <div class="status inf" id="el-status"></div>
+      </div>
+      <div class="col">
+        <div class="opbox">
+          <div class="tabs" role="group" aria-label="Operation type">
+            <button class="chip" data-op="swap" aria-pressed="false">I · Swap</button>
+            <button class="chip" data-op="scale" aria-pressed="false">II · Scale</button>
+            <button class="chip" data-op="add" aria-pressed="true">III · Add a multiple</button>
+          </div>
+          <div class="opform" id="el-form"></div>
+          <div class="btnrow"><button class="btn" id="el-apply">Apply</button><span class="err" id="el-err" role="alert"></span></div>
+        </div>
+        <div class="btnrow">
+          <button class="btn primary" id="el-next">Next elimination step</button>
+          <button class="btn" id="el-run">Run to triangular</button>
+          <button class="btn" id="el-undo">Undo</button>
+          <button class="btn" id="el-reset">Reset</button>
+        </div>
+        <ol class="log" id="el-log" aria-live="polite"></ol>
+      </div>
+    </div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Load Exercise 2.2.2 and run to triangular form. The ledger multiplies the diagonal and undoes each swap's sign change.</li>
+      <li>Scale a row by 3 yourself. The ledger divides by 3 at the end, so the answer for det(<span class="x">A</span>) does not change.</li>
+    </ul></div>
+  </div>
+
+  <div class="exset" id="ex-s22"></div>
+</section>
+
+<!-- ============ 2.3 ============ -->
+<section class="sec" id="s23">
+  <div class="sec-head"><span class="sec-num">2.3</span><h2>Additional topics and applications</h2><span class="sub">The adjoint, Cramer's rule, and coded messages</span></div>
+  <div class="concept">
+    <p>The <strong>adjoint</strong> adj <span class="x">A</span> is the transpose of the matrix of cofactors. It satisfies <span class="x">A</span>(adj <span class="x">A</span>) = det(<span class="x">A</span>)<span class="x">I</span>, so when det(<span class="x">A</span>) ≠ 0, <span class="x">A</span><sup>−1</sup> = adj <span class="x">A</span> / det(<span class="x">A</span>). Applied to <span class="x">A</span><b>x</b> = <b>b</b>, this gives <strong>Cramer's rule</strong>.</p>
+    <div class="defn"><span class="tag">Theorem 2.3.1 · Cramer's rule</span>If <span class="x">A</span> is a nonsingular <span class="x">n</span> × <span class="x">n</span> matrix and <b>b</b> ∈ ℝ<sup><span class="x">n</span></sup>, let <span class="x">A<sub>i</sub></span> be the matrix obtained by replacing the <span class="x">i</span>th column of <span class="x">A</span> by <b>b</b>. Then the unique solution of <span class="x">A</span><b>x</b> = <b>b</b> is <span class="x">x<sub>i</sub></span> = det(<span class="x">A<sub>i</sub></span>) / det(<span class="x">A</span>).</div>
+  </div>
+  <div class="defs" id="defs-s23"></div>
+
+  <div class="lab" id="lab-cr">
+    <div class="lab-title"><h3>Cramer's rule and the adjoint</h3><span class="src">Theorem 2.3.1 · Exercises 2.3.1–2.3.3</span></div>
+    <div class="btnrow">
+      <div class="chips" role="group" aria-label="View"><button class="chip" id="cr-mode1" aria-pressed="true">Cramer's rule</button><button class="chip" id="cr-mode2" aria-pressed="false">Adjoint &amp; inverse</button></div>
+      <div class="chips" id="cr-presets" role="group" aria-label="Systems"></div>
+    </div>
+    <div class="scroll"><div class="mexpr" id="cr-sys"></div></div>
+    <div class="scroll"><div id="cr-out" class="cr-out"></div></div>
+    <div class="status inf" id="cr-status"></div>
+    <div class="try"><b>Try this</b><ul>
+      <li>Each <span class="x">A<sub>i</sub></span> differs from <span class="x">A</span> in one column only, highlighted. Watch which determinant ends up in which numerator.</li>
+      <li>In the adjoint view, check that <span class="x">A</span> times adj <span class="x">A</span> is det(<span class="x">A</span>) times the identity.</li>
+    </ul></div>
+  </div>
+
+  <div class="lab" id="lab-code">
+    <div class="lab-title"><h3>Coded messages</h3><span class="src">Application 1 · Exercise 2.3.14</span></div>
+    <div class="concept" style="margin:0"><p>Write each letter as a number (space = 0, A = 1, …, Z = 26), put the numbers into the columns of a matrix <span class="x">B</span>, and send <span class="x">AB</span>. If <span class="x">A</span> has integer entries and det(<span class="x">A</span>) = ±1, then <span class="x">A</span><sup>−1</sup> = ±adj <span class="x">A</span> also has integer entries, so the receiver can decode exactly.</p></div>
+    <div class="bench even">
+      <div class="col">
+        <label for="code-text" style="font-family:var(--display);font-size:14px;color:var(--muted)">Message (letters and spaces)</label>
+        <input id="code-text" class="code-in" value="SEND MONEY" autocomplete="off" maxlength="40">
+        <div class="chips" id="code-key" role="group" aria-label="Encoding matrix"></div>
+        <div class="scroll"><div class="mexpr" id="code-A"></div></div>
+        <div class="status inf" id="code-status"></div>
+      </div>
+      <div class="col">
+        <div class="code-box"><span class="k">1 · numbers</span><div id="code-nums" class="code-nums"></div></div>
+        <div class="code-box"><span class="k">2 · sent (A × columns)</span><div id="code-sent" class="code-nums"></div></div>
+        <div class="code-box"><span class="k">3 · decoded with A⁻¹</span><div id="code-back" class="code-nums"></div></div>
+        <div class="btnrow"><button class="btn" id="code-book">Decode the book's message (Ex 14)</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="exset" id="ex-s23"></div>
+</section>
+

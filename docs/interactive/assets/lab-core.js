@@ -278,7 +278,7 @@ function renderDefinitions(D, secName) {
       const card = document.createElement("article");
       card.className = "dcard"; card.id = d.id;
       const media = d.scene
-        ? `<video poster="video/${d.scene}.jpg" controls muted playsinline preload="none" aria-label="Manim animation: ${d.term}"><source src="video/${d.scene}.mp4" type='video/mp4; codecs="avc1.64001f"'><source src="video/${d.scene}.webm" type="video/webm"></video>`
+        ? `<video poster="video/${d.scene}.jpg" controls muted playsinline preload="none" aria-label="Manim animation: ${d.term}"><source src="video/${d.scene}.webm" type="video/webm"><source src="video/${d.scene}.mp4" type='video/mp4; codecs="avc1.64001f"'></video>`
         : "";
       const speed = d.scene ? `<div class="dspeed" role="group" aria-label="Playback speed"><span>speed</span>${[0.5, 0.75, 1, 1.5].map(r => `<button class="chip" data-rate="${r}" aria-pressed="${r === 1}">${r}×</button>`).join("")}</div>` : "";
       card.innerHTML = media + speed + `<div class="dbody"><div class="dtop"><h3 class="dterm">${d.term}</h3><span class="dref">${d.ref}</span></div><p class="dtext">${d.html}</p>` +

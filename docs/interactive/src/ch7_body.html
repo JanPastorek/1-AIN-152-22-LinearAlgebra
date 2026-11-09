@@ -1,0 +1,161 @@
+<!-- ============ 7.1 ============ -->
+<section class="sec" id="s71">
+  <div class="sec-head"><span class="sec-num">7.1</span><h2>Floating-point numbers</h2><span class="sub">What a computer can store, and what it loses</span></div>
+  <div class="concept">
+    <p>A computer stores a real number as a <strong>floating-point number</strong> ±(0.<span class="x">d</span><sub>1</sub><span class="x">d</span><sub>2</sub>⋯<span class="x">d<sub>t</sub></span>)<sub><span class="x">b</span></sub> × <span class="x">b<sup>e</sup></span> with <span class="x">t</span> digits in base <span class="x">b</span> and exponent <span class="x">L</span> ≤ <span class="x">e</span> ≤ <span class="x">U</span>. Everything else is rounded: <span class="x">fl</span>(<span class="x">x</span>) = <span class="x">x</span>(1 + δ) with |δ| ≤ ε, the <strong>machine epsilon</strong>. Each arithmetic operation rounds again. Mostly harmless, until two nearly equal numbers are subtracted and the leading digits cancel.</p>
+  </div>
+  <div class="defs" id="defs-s71"></div>
+
+  <div class="lab" id="lab-fp">
+    <div class="lab-title"><h3>Floating-point explorer</h3><span class="src">Definition · Examples 7.1.1–7.1.3 · Exercises 7.1.1–7.1.3, 7.1.6–7.1.8</span></div>
+    <div class="chips" id="fp-presets" role="group" aria-label="Number systems"></div>
+    <div class="fp-ctl">
+      <div class="kpick"><span>base b</span><span class="chips" id="fp-b"></span></div>
+      <div class="kpick"><span>digits t</span><span class="chips" id="fp-t"></span></div>
+      <div class="kpick"><span>exponent L … U</span><input class="mi" id="fp-L" value="-1" aria-label="L"><span>…</span><input class="mi" id="fp-U" value="1" aria-label="U"></div>
+    </div>
+    <svg class="fig wide" id="fp-svg" viewBox="0 0 840 170" role="img" aria-label="Positive floating-point numbers on a number line"></svg>
+    <div class="kpick"><span>zoom: show [0,</span><span class="chips" id="fp-zoom"></span><span>]</span></div>
+    <div class="bench even">
+      <div class="col">
+        <div class="trow"><span>x =</span><input class="mi" id="fp-x" value="1.37" style="width:140px" aria-label="x"></div>
+        <div class="scroll"><table class="kv" id="fp-tab"></table></div>
+      </div>
+      <div class="col">
+        <div class="status inf" id="fp-status"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lab" id="lab-arith">
+    <div class="lab-title"><h3>Arithmetic with t digits, and IEEE doubles</h3><span class="src">Examples 7.1.4, 7.1.5 · Exercises 7.1.4, 7.1.5</span></div>
+    <div class="chips" id="ar-presets" role="group" aria-label="Examples"></div>
+    <div class="trow"><span>a =</span><input class="mi" id="ar-a" style="width:120px" aria-label="a"><select id="ar-op" aria-label="operation"><option>+</option><option>−</option><option>×</option><option>÷</option></select><span>b =</span><input class="mi" id="ar-b" style="width:120px" aria-label="b"><span>t =</span><span class="chips" id="ar-t"></span></div>
+    <div class="scroll"><table class="kv" id="ar-tab"></table></div>
+    <div class="status inf" id="ar-status"></div>
+    <h4 class="subh">Your browser's doubles (IEEE 754, b = 2, 53 significant bits)</h4>
+    <div class="trow"><span>x =</span><input class="mi" id="ie-x" value="0.1" style="width:160px" aria-label="double x"><button class="btn sm" data-ie="0.1">0.1</button><button class="btn sm" data-ie="0.1+0.2">0.1 + 0.2</button><button class="btn sm" data-ie="1+2**-52">1 + 2⁻⁵²</button><button class="btn sm" data-ie="1+2**-53">1 + 2⁻⁵³</button><button class="btn sm" data-ie="1e308*10">10³⁰⁹</button><button class="btn sm" data-ie="2**-1074">2⁻¹⁰⁷⁴</button></div>
+    <div class="scroll"><div class="bits" id="ie-bits"></div></div>
+    <div class="status inf" id="ie-status"></div>
+  </div>
+  <div class="exset" id="ex-s71"></div>
+</section>
+
+<!-- ============ 7.2 ============ -->
+<section class="sec" id="s72">
+  <div class="sec-head"><span class="sec-num">7.2</span><h2>Gaussian elimination</h2><span class="sub">LU factorization and its cost</span></div>
+  <div class="concept">
+    <p>Elimination without interchanges computes multipliers <span class="x">m<sub>ki</sub></span> = <span class="x">a<sub>ki</sub></span>/<span class="x">a<sub>ii</sub></span> and factors <span class="x">A</span> = <span class="x">LU</span> (unit lower <span class="x">L</span> holding the multipliers, upper <span class="x">U</span>). Then <span class="x">A</span><b>x</b> = <b>b</b> is solved by forward substitution <span class="x">L</span><b>y</b> = <b>b</b> and back substitution <span class="x">U</span><b>x</b> = <b>y</b>. The factorization costs about <span class="x">n</span><sup>3</sup>/3 multiplications; each further right-hand side costs only about <span class="x">n</span><sup>2</sup>. Doubling <span class="x">n</span> makes elimination about 8 times slower.</p>
+  </div>
+  <div class="defs" id="defs-s72"></div>
+  <div class="lab" id="lab-cost">
+    <div class="lab-title"><h3>Operation counts and timing</h3><span class="src">Algorithms 7.2.1, 7.2.2</span></div>
+    <div class="scroll"><table class="kv" id="ct-tab"></table></div>
+    <div class="btnrow"><button class="btn primary" id="ct-run">Time elimination in this browser</button></div>
+    <div class="scroll"><table class="kv" id="ct-time"></table></div>
+    <div class="status inf" id="ct-status"></div>
+  </div>
+  <div class="exset" id="ex-s72"></div>
+</section>
+
+<!-- ============ 7.3 ============ -->
+<section class="sec" id="s73">
+  <div class="sec-head"><span class="sec-num">7.3</span><h2>Pivoting strategies</h2><span class="sub">Avoid small pivots and large multipliers</span></div>
+  <div class="concept">
+    <p>A small pivot produces large multipliers, and large multipliers amplify rounding errors. <strong>Partial pivoting</strong> picks, in each column, the entry of largest absolute value as pivot, so every |<span class="x">m<sub>ki</sub></span>| ≤ 1; the row interchanges give <span class="x">PA</span> = <span class="x">LU</span>. <strong>Complete pivoting</strong> searches the whole remaining submatrix and also swaps columns. Partial pivoting is the standard choice.</p>
+  </div>
+  <div class="defs" id="defs-s73"></div>
+
+  <div class="lab" id="lab-ge">
+    <div class="lab-title"><h3>Elimination in t-digit arithmetic</h3><span class="src">Examples 7.3.1–7.3.3, 7.4.2 · Exercises 7.3.1–7.3.4, 7.3.7</span></div>
+    <div class="chips" id="ge-presets" role="group" aria-label="Systems"></div>
+    <div class="sz-row"><span>n <span class="chips" id="ge-n"></span></span><span>digits t <span class="chips" id="ge-t"></span></span><span>pivoting <span class="chips" id="ge-piv"></span></span></div>
+    <div class="scroll"><div id="ge-in"></div></div>
+    <div class="stepper" id="ge-step"></div>
+    <div class="scroll"><div class="mexpr" id="ge-mat"></div></div>
+    <div class="status inf" id="ge-status"></div>
+    <div class="scroll"><table class="kv" id="ge-res"></table></div>
+  </div>
+  <div class="exset" id="ex-s73"></div>
+</section>
+
+<!-- ============ 7.4 ============ -->
+<section class="sec" id="s74">
+  <div class="sec-head"><span class="sec-num">7.4</span><h2>Matrix norms and condition numbers</h2><span class="sub">How sensitive is Ax = b?</span></div>
+  <div class="concept">
+    <p>A matrix norm measures how much <span class="x">A</span> can stretch a vector: ‖<span class="x">A</span>‖ = max ‖<span class="x">A</span><b>x</b>‖/‖<b>x</b>‖. For the 1- and ∞-norms this is the largest column sum or row sum of |<span class="x">a<sub>ij</sub></span>|; for the 2-norm it is σ<sub>1</sub>. The <strong>condition number</strong> cond(<span class="x">A</span>) = ‖<span class="x">A</span>‖ ‖<span class="x">A</span><sup>−1</sup>‖ bounds how relative errors in the data grow in the solution:</p>
+    <div class="defn"><span class="tag">Error bound (Section 7.4)</span>(1/cond(<span class="x">A</span>)) · ‖<b>r</b>‖/‖<b>b</b>‖ ≤ ‖<b>x</b> − <b>x′</b>‖/‖<b>x</b>‖ ≤ cond(<span class="x">A</span>) · ‖<b>r</b>‖/‖<b>b</b>‖, where <b>r</b> = <b>b</b> − <span class="x">A</span><b>x′</b> is the residual of a computed <b>x′</b>.</div>
+  </div>
+  <div class="defs" id="defs-s74"></div>
+
+  <div class="lab" id="lab-cond">
+    <div class="lab-title"><h3>Ill-conditioned systems</h3><span class="src">Examples 7.4.1–7.4.5 · Exercises 7.4</span></div>
+    <div class="chips" id="cd-presets" role="group" aria-label="Systems"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="rep-in"><div class="scroll"><div id="cd-A"></div></div><div class="scroll"><div id="cd-b"></div></div></div>
+        <div class="sl"><label for="cd-d">δ in b₂</label><input type="range" id="cd-d" min="-1" max="1" step="0.01" value="0"><output id="cd-do"></output></div>
+        <div class="scroll"><table class="kv" id="cd-tab"></table></div>
+        <div class="status inf" id="cd-status"></div>
+      </div>
+      <svg class="fig" id="cd-svg" viewBox="0 0 420 420" role="img" aria-label="The two lines and their intersection"></svg>
+    </div>
+    <h4 class="subh">Hilbert matrices hᵢⱼ = 1/(i + j − 1): solving Hx = H·(1, …, 1)ᵀ in double precision</h4>
+    <div class="scroll"><table class="kv hilb" id="cd-hilb"></table></div>
+  </div>
+  <div class="exset" id="ex-s74"></div>
+</section>
+
+<!-- ============ 7.5 ============ -->
+<section class="sec" id="s75">
+  <div class="sec-head"><span class="sec-num">7.5</span><h2>Orthogonal transformations</h2><span class="sub">Householder reflections and Givens rotations</span></div>
+  <div class="concept">
+    <p>Orthogonal matrices do not magnify errors: ‖<span class="x">Q</span><b>x</b>‖<sub>2</sub> = ‖<b>x</b>‖<sub>2</sub> and cond<sub>2</sub>(<span class="x">Q</span>) = 1. A <strong>Householder matrix</strong> <span class="x">H</span> = <span class="x">I</span> − (1/β)<b>v</b><b>v</b><sup>T</sup> reflects across the hyperplane orthogonal to <b>v</b>; choosing <b>v</b> = <b>x</b> − α<b>e</b><sub>1</sub> with α = ±‖<b>x</b>‖ sends <b>x</b> to α<b>e</b><sub>1</sub>, zeroing all entries below the first. A <strong>Givens rotation</strong> zeroes one entry at a time. Applying such matrices column by column gives the stable QR factorization.</p>
+  </div>
+  <div class="defs" id="defs-s75"></div>
+
+  <div class="lab" id="lab-hh">
+    <div class="lab-title"><h3>Reflect or rotate onto an axis</h3><span class="src">Examples 7.5.1–7.5.4</span></div>
+    <div class="bench">
+      <div class="col">
+        <div class="chips" id="hh-mode" role="group" aria-label="Transformation"></div>
+        <div class="scroll"><div class="mexpr" id="hh-expr"></div></div>
+        <div class="status inf" id="hh-status"></div>
+        <h4 class="subh">In ℝⁿ: zero the entries of x below position k</h4>
+        <div class="chips" id="hh-presets" role="group" aria-label="Vectors"></div>
+        <div class="trow"><span>x =</span><span id="hh-xin"></span><span>k =</span><span class="chips" id="hh-k"></span></div>
+        <div class="scroll"><div class="mexpr" id="hh-n"></div></div>
+      </div>
+      <svg class="fig" id="hh-svg" viewBox="0 0 420 420" role="img" aria-label="Householder reflection or Givens rotation of x"></svg>
+    </div>
+  </div>
+  <div class="exset" id="ex-s75"></div>
+</section>
+
+<!-- ============ 7.6 ============ -->
+<section class="sec" id="s76">
+  <div class="sec-head"><span class="sec-num">7.6</span><h2>The eigenvalue problem</h2><span class="sub">Power method and QR algorithm</span></div>
+  <div class="concept">
+    <p>Characteristic polynomials are useless numerically. The <strong>power method</strong> repeats <b>v</b> = <span class="x">A</span><b>u</b>, <b>u</b> = <b>v</b>/(scale): if |λ<sub>1</sub>| &gt; |λ<sub>2</sub>| ≥ ⋯, the direction converges to the dominant eigenvector and the scale to λ<sub>1</sub>, with error shrinking like |λ<sub>2</sub>/λ<sub>1</sub>|<sup><span class="x">k</span></sup>. The <strong>QR algorithm</strong> factors <span class="x">A<sub>k</sub></span> = <span class="x">Q<sub>k</sub>R<sub>k</sub></span> and sets <span class="x">A</span><sub><span class="x">k</span>+1</sub> = <span class="x">R<sub>k</sub>Q<sub>k</sub></span>; these are similar matrices that typically become triangular, revealing all eigenvalues on the diagonal.</p>
+  </div>
+  <div class="defs" id="defs-s76"></div>
+
+  <div class="lab" id="lab-pow">
+    <div class="lab-title"><h3>Power method and QR algorithm</h3><span class="src">Example 7.6.1, 7.6.2 · Exercises 7.6</span></div>
+    <div class="chips" id="pw-presets" role="group" aria-label="Matrices"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="rep-in"><div class="scroll"><div id="pw-A"></div></div><div class="scroll"><div id="pw-u"></div></div></div>
+        <div class="btnrow"><button class="btn" id="pw-step">Step</button><button class="btn primary" id="pw-run">Run 10 steps</button><button class="btn sm" id="pw-reset">Reset</button></div>
+        <div class="scroll"><table class="kv" id="pw-tab"></table></div>
+        <div class="status inf" id="pw-status"></div>
+      </div>
+      <svg class="fig" id="pw-svg" viewBox="0 0 420 420" role="img" aria-label="Power method iterates"></svg>
+    </div>
+    <h4 class="subh">QR algorithm: A₁ = A, A<sub>k</sub> = Q<sub>k</sub>R<sub>k</sub>, A<sub>k+1</sub> = R<sub>k</sub>Q<sub>k</sub></h4>
+    <div class="sl"><label for="pw-k">k</label><input type="range" id="pw-k" min="1" max="40" step="1" value="1"><output id="pw-ko"></output></div>
+    <div class="scroll"><div class="mexpr" id="pw-qr"></div></div>
+  </div>
+  <div class="exset" id="ex-s76"></div>
+</section>
+

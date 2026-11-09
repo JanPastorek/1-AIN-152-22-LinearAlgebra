@@ -1,0 +1,50 @@
+{
+ "title": "Eigenvalues Lab",
+ "description": "Interactive companion to Chapter 6 of Leon, Linear Algebra with Applications: eigenvalues and eigenvectors, linear differential equations, diagonalization, Markov chains and PageRank, Hermitian matrices, the SVD and image compression, quadratic forms, positive definite and nonnegative matrices.",
+ "h1": "Eigenvalues, <em>hands-on</em>",
+ "lede": "Find the directions a matrix only stretches, watch solutions of Y′ = AY flow along them, diagonalize and raise matrices to powers, run a Markov chain and Google's PageRank, see the SVD turn a circle into an ellipse and compress a picture, and read the shape of a quadratic form from its eigenvalues.",
+ "toc": [
+  [
+   "s61",
+   "6.1",
+   "Eigenvalues"
+  ],
+  [
+   "s62",
+   "6.2",
+   "Y′ = AY"
+  ],
+  [
+   "s63",
+   "6.3",
+   "Diagonalization"
+  ],
+  [
+   "s64",
+   "6.4",
+   "Hermitian"
+  ],
+  [
+   "s65",
+   "6.5",
+   "SVD"
+  ],
+  [
+   "s66",
+   "6.6",
+   "Quadratic forms"
+  ],
+  [
+   "s67",
+   "6.7",
+   "Positive definite"
+  ],
+  [
+   "s68",
+   "6.8",
+   "Nonnegative"
+  ]
+ ],
+ "footer": "",
+ "css": ".imgrow{display:flex; flex-wrap:wrap; gap:18px; align-items:flex-start; margin:10px 0}\n.imgrow figure{margin:0; display:grid; gap:6px; justify-items:center}\n.imgrow canvas{width:192px; height:192px; image-rendering:pixelated; border:1px solid var(--rule); border-radius:6px; background:#fff}\n.imgrow svg{width:260px; height:200px}\n.imgrow figcaption{font-family:var(--display); font-size:13px; color:var(--muted); text-align:center; max-width:240px}\ntable.lnk{border-collapse:collapse; font-family:var(--mono); font-size:13px}\ntable.lnk th{font-weight:400; color:var(--muted); padding:2px 6px}\ntable.lnk td{text-align:center; padding:2px}\n.lk{width:30px; height:28px; border:1px solid var(--rule); border-radius:6px; background:var(--panel); font-family:var(--mono); cursor:pointer; color:var(--ink)}\n.lk[aria-pressed=\"true\"]{background:var(--c1); border-color:var(--c1); color:var(--panel)}"
+}

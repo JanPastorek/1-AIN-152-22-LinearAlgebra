@@ -1,0 +1,45 @@
+{
+ "title": "Orthogonality Lab",
+ "description": "Interactive companion to Chapter 5 of Leon, Linear Algebra with Applications: scalar products and projections, the four fundamental subspaces, least squares, norms and inner products, orthonormal bases, Gram–Schmidt and QR, orthogonal polynomials.",
+ "h1": "Orthogonality, <em>hands-on</em>",
+ "lede": "Right angles make linear algebra easy. Project one vector on another, see the row space and null space meet at 90°, fit data by least squares and watch the residual stay orthogonal to the columns, compare norms, read coordinates in an orthonormal basis, and run Gram–Schmidt one column at a time.",
+ "toc": [
+  [
+   "s51",
+   "5.1",
+   "Scalar product"
+  ],
+  [
+   "s52",
+   "5.2",
+   "Orthogonal subspaces"
+  ],
+  [
+   "s53",
+   "5.3",
+   "Least squares"
+  ],
+  [
+   "s54",
+   "5.4",
+   "Inner products"
+  ],
+  [
+   "s55",
+   "5.5",
+   "Orthonormal sets"
+  ],
+  [
+   "s56",
+   "5.6",
+   "Gram–Schmidt"
+  ],
+  [
+   "s57",
+   "5.7",
+   "Orthogonal polynomials"
+  ]
+ ],
+ "footer": "",
+ "css": ".polylist{display:grid; gap:6px; font-family:var(--mono); font-size:15px}\n.polylist .fr{font-size:12px}"
+}

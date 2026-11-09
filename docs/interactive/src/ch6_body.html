@@ -1,0 +1,179 @@
+<!-- ============ 6.1 ============ -->
+<section class="sec" id="s61">
+  <div class="sec-head"><span class="sec-num">6.1</span><h2>Eigenvalues and eigenvectors</h2><span class="sub">Directions a matrix only stretches</span></div>
+  <div class="concept">
+    <p>A nonzero <b>x</b> with <span class="x">A</span><b>x</b> = λ<b>x</b> is an <strong>eigenvector</strong> and λ its <strong>eigenvalue</strong>. Rewriting as (<span class="x">A</span> − λ<span class="x">I</span>)<b>x</b> = <b>0</b> shows that λ is an eigenvalue exactly when <span class="x">A</span> − λ<span class="x">I</span> is singular, i.e. det(<span class="x">A</span> − λ<span class="x">I</span>) = 0. That <strong>characteristic polynomial</strong> has degree <span class="x">n</span>; its roots (possibly complex, possibly repeated) are the eigenvalues, with sum tr <span class="x">A</span> and product det <span class="x">A</span>. The eigenvectors for λ, together with <b>0</b>, form the <strong>eigenspace</strong> <span class="x">N</span>(<span class="x">A</span> − λ<span class="x">I</span>).</p>
+  </div>
+  <div class="defs" id="defs-s61"></div>
+
+  <div class="lab" id="lab-eig">
+    <div class="lab-title"><h3>Eigenvector hunter</h3><span class="src">Examples 6.1.2, 6.1.3 · Exercises 6.1.1, 6.1.13, 6.1.14</span></div>
+    <div class="chips" id="eg-presets" role="group" aria-label="Matrices"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="scroll"><div id="eg-in"></div></div>
+        <div class="btnrow"><button class="btn" id="eg-sweep">Sweep x around the circle</button></div>
+        <div class="scroll"><table class="kv" id="eg-tab"></table></div>
+        <div class="status inf" id="eg-status"></div>
+        <p class="note">Drag <b style="color:var(--c1)">x</b> around the unit circle. The ellipse is the image of the circle. When <b style="color:var(--c2)">Ax</b> lies on the line of <b>x</b>, you have found an eigenvector.</p>
+      </div>
+      <svg class="fig" id="eg-svg" viewBox="0 0 420 420" role="img" aria-label="x on the unit circle and Ax"></svg>
+    </div>
+  </div>
+  <div class="exset" id="ex-s61"></div>
+</section>
+
+<!-- ============ 6.2 ============ -->
+<section class="sec" id="s62">
+  <div class="sec-head"><span class="sec-num">6.2</span><h2>Systems of linear differential equations</h2><span class="sub">Y′ = AY</span></div>
+  <div class="concept">
+    <p>If <span class="x">A</span><b>x</b> = λ<b>x</b>, then <b>Y</b>(<span class="x">t</span>) = <span class="x">e</span><sup>λ<span class="x">t</span></sup><b>x</b> solves <b>Y</b>′ = <span class="x">A</span><b>Y</b>. With <span class="x">n</span> independent eigenvectors every solution is <b>Y</b> = <span class="x">c</span><sub>1</sub><span class="x">e</span><sup>λ<sub>1</sub><span class="x">t</span></sup><b>x</b><sub>1</sub> + ⋯ + <span class="x">c<sub>n</sub>e</span><sup>λ<sub><span class="x">n</span></sub><span class="x">t</span></sup><b>x</b><sub><span class="x">n</span></sub>, and the initial value fixes <b>c</b> = <span class="x">X</span><sup>−1</sup><b>Y</b><sub>0</sub>. The signs of the eigenvalues decide the long-run behaviour; complex eigenvalues λ = <span class="x">a</span> ± <span class="x">bi</span> make solutions rotate.</p>
+  </div>
+  <div class="defs" id="defs-s62"></div>
+
+  <div class="lab" id="lab-ode">
+    <div class="lab-title"><h3>Phase portrait of Y′ = AY</h3><span class="src">Examples 6.2.1–6.2.3 · Exercises 6.2.1, 6.2.2, 6.2.5</span></div>
+    <div class="chips" id="od-presets" role="group" aria-label="Systems"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="scroll"><div id="od-in"></div></div>
+        <div class="btnrow"><button class="btn primary" id="od-play">Play Y(t)</button><button class="btn sm" id="od-field" aria-pressed="true">Direction field</button></div>
+        <div class="scroll"><div class="mexpr" id="od-sol"></div></div>
+        <div class="status inf" id="od-status"></div>
+        <p class="note">Drag the starting point <b>Y</b>(0). The orange curve is its trajectory for −2 ≤ t ≤ 2; dashed lines are real eigenvector directions.</p>
+      </div>
+      <svg class="fig" id="od-svg" viewBox="0 0 420 420" role="img" aria-label="Phase portrait"></svg>
+    </div>
+  </div>
+  <div class="exset" id="ex-s62"></div>
+</section>
+
+<!-- ============ 6.3 ============ -->
+<section class="sec" id="s63">
+  <div class="sec-head"><span class="sec-num">6.3</span><h2>Diagonalization</h2><span class="sub">A = XDX⁻¹, powers, Markov chains, PageRank</span></div>
+  <div class="concept">
+    <p>Eigenvectors belonging to distinct eigenvalues are independent (Theorem 6.3.1). If <span class="x">A</span> has <span class="x">n</span> independent eigenvectors, put them in the columns of <span class="x">X</span>: then <span class="x">X</span><sup>−1</sup><span class="x">AX</span> = <span class="x">D</span> is diagonal and <span class="x">A<sup>k</sup></span> = <span class="x">XD<sup>k</sup>X</span><sup>−1</sup>. A matrix with fewer independent eigenvectors is <strong>defective</strong>.</p>
+    <p>A <strong>Markov chain</strong> with transition matrix <span class="x">A</span> (nonnegative columns summing to 1) evolves by <b>x</b><sub><span class="x">k</span>+1</sub> = <span class="x">A</span><b>x</b><sub><span class="x">k</span></sub>. Since λ = 1 is an eigenvalue and the others usually have |λ| &lt; 1, the chain settles at the eigenvector for 1, the <strong>steady-state vector</strong>. Google's PageRank is this vector for the web's link matrix.</p>
+  </div>
+  <div class="defs" id="defs-s63"></div>
+
+  <div class="lab" id="lab-diag">
+    <div class="lab-title"><h3>Diagonalize and take powers</h3><span class="src">Examples 6.3.1–6.3.4 · Exercises 6.3.1, 6.3.2</span></div>
+    <div class="chips" id="dg-presets" role="group" aria-label="Matrices"></div>
+    <div class="sz-row"><span>size <span class="chips" id="dg-n"></span></span></div>
+    <div class="scroll"><div id="dg-in"></div></div>
+    <div class="scroll"><div class="mexpr" id="dg-poly"></div></div>
+    <div class="status inf" id="dg-status"></div>
+    <div class="scroll"><div class="mexpr" id="dg-out"></div></div>
+    <div class="sl"><label for="dg-k">k</label><input type="range" id="dg-k" min="1" max="12" step="1" value="6"><output id="dg-ko"></output></div>
+    <div class="scroll"><div class="mexpr" id="dg-pow"></div></div>
+  </div>
+
+  <div class="lab" id="lab-markov">
+    <div class="lab-title"><h3>Markov chains and PageRank</h3><span class="src">Example 6.1.1 · Example 6.3.5 · Application 6.3.2</span></div>
+    <div class="chips" id="mk-presets" role="group" aria-label="Chains"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="btnrow"><button class="btn" id="mk-step">Step</button><button class="btn primary" id="mk-run">Run 20 steps</button><button class="btn sm" id="mk-reset">Reset</button></div>
+        <div class="scroll"><div id="mk-links"></div></div>
+        <div class="sl" id="mk-dwrap"><label for="mk-d">p</label><input type="range" id="mk-d" min="0.5" max="1" step="0.05" value="0.85"><output id="mk-do"></output></div>
+        <div class="scroll"><div class="mexpr" id="mk-mat"></div></div>
+        <div class="status inf" id="mk-status"></div>
+      </div>
+      <svg class="fig" id="mk-svg" viewBox="0 0 420 420" role="img" aria-label="State vector and steady state"></svg>
+    </div>
+  </div>
+  <div class="exset" id="ex-s63"></div>
+</section>
+
+<!-- ============ 6.4 ============ -->
+<section class="sec" id="s64">
+  <div class="sec-head"><span class="sec-num">6.4</span><h2>Hermitian matrices</h2><span class="sub">Real eigenvalues, orthonormal eigenvectors</span></div>
+  <div class="concept">
+    <p>For complex vectors the inner product is ⟨<b>z</b>, <b>w</b>⟩ = <b>w</b><sup>H</sup><b>z</b>, where <sup>H</sup> means conjugate transpose. A matrix with <span class="x">M</span><sup>H</sup> = <span class="x">M</span> is <strong>Hermitian</strong> (for real matrices: symmetric). Its eigenvalues are real and eigenvectors for distinct eigenvalues are orthogonal (Theorem 6.4.1). The <strong>Spectral Theorem</strong> goes further: a real symmetric <span class="x">A</span> can be written <span class="x">A</span> = <span class="x">QDQ</span><sup>T</sup> with <span class="x">Q</span> orthogonal. Every square matrix is at least unitarily similar to an upper triangular one (Schur).</p>
+  </div>
+  <div class="defs" id="defs-s64"></div>
+  <div class="exset" id="ex-s64"></div>
+</section>
+
+<!-- ============ 6.5 ============ -->
+<section class="sec" id="s65">
+  <div class="sec-head"><span class="sec-num">6.5</span><h2>The singular value decomposition</h2><span class="sub">A = UΣVᵀ, low-rank approximation</span></div>
+  <div class="concept">
+    <p>Every <span class="x">m</span> × <span class="x">n</span> matrix factors as <span class="x">A</span> = <span class="x">U</span>Σ<span class="x">V</span><sup>T</sup> with <span class="x">U</span>, <span class="x">V</span> orthogonal and Σ diagonal with <strong>singular values</strong> σ<sub>1</sub> ≥ σ<sub>2</sub> ≥ ⋯ ≥ 0. The σ<sub><span class="x">i</span></sub><sup>2</sup> are the eigenvalues of <span class="x">A</span><sup>T</sup><span class="x">A</span>, the columns of <span class="x">V</span> its eigenvectors, and <span class="x">A</span><b>v</b><sub><span class="x">i</span></sub> = σ<sub><span class="x">i</span></sub><b>u</b><sub><span class="x">i</span></sub>. The rank is the number of nonzero σ's. Keeping the <span class="x">k</span> largest terms of <span class="x">A</span> = Σσ<sub><span class="x">i</span></sub><b>u</b><sub><span class="x">i</span></sub><b>v</b><sub><span class="x">i</span></sub><sup>T</sup> gives the closest matrix of rank <span class="x">k</span> (Theorem 6.5.3), the basis of image compression.</p>
+  </div>
+  <div class="defs" id="defs-s65"></div>
+
+  <div class="lab" id="lab-svd">
+    <div class="lab-title"><h3>SVD: circle to ellipse</h3><span class="src">Theorem 6.5.1 · Example 6.5.1</span></div>
+    <div class="chips" id="sv-presets" role="group" aria-label="Matrices"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="scroll"><div class="mexpr" id="sv-expr"></div></div>
+        <div class="status inf" id="sv-status"></div>
+        <p class="note">Drag the columns <b style="color:var(--c1)">a₁</b>, <b style="color:var(--c2)">a₂</b> of <i>A</i>. Dashed: the right singular vectors v₁, v₂ on the unit circle. Solid: σ₁u₁ and σ₂u₂, the semi-axes of the image ellipse.</p>
+      </div>
+      <svg class="fig" id="sv-svg" viewBox="0 0 420 420" role="img" aria-label="Unit circle and its image ellipse"></svg>
+    </div>
+  </div>
+
+  <div class="lab" id="lab-img">
+    <div class="lab-title"><h3>Image compression with the SVD</h3><span class="src">Application 6.5.2 · Theorem 6.5.3</span></div>
+    <div class="chips" id="im-presets" role="group" aria-label="Images"></div>
+    <div class="sl"><label for="im-k">rank k</label><input type="range" id="im-k" min="1" max="64" step="1" value="5"><output id="im-ko"></output></div>
+    <div class="imgrow">
+      <figure><canvas id="im-orig" width="64" height="64"></canvas><figcaption>original, rank <span id="im-r"></span></figcaption></figure>
+      <figure><canvas id="im-appr" width="64" height="64"></canvas><figcaption>A<sub>k</sub> = σ₁u₁v₁ᵀ + ⋯ + σ<sub>k</sub>u<sub>k</sub>v<sub>k</sub>ᵀ</figcaption></figure>
+      <figure><svg id="im-sig" viewBox="0 0 260 200" role="img" aria-label="Singular values"></svg><figcaption>singular values (log scale)</figcaption></figure>
+    </div>
+    <div class="status inf" id="im-status"></div>
+  </div>
+  <div class="exset" id="ex-s65"></div>
+</section>
+
+<!-- ============ 6.6 ============ -->
+<section class="sec" id="s66">
+  <div class="sec-head"><span class="sec-num">6.6</span><h2>Quadratic forms</h2><span class="sub">Principal axes, definiteness</span></div>
+  <div class="concept">
+    <p>A <strong>quadratic form</strong> is <span class="x">f</span>(<b>x</b>) = <b>x</b><sup>T</sup><span class="x">A</span><b>x</b> with <span class="x">A</span> symmetric; the cross term 2<span class="x">bxy</span> puts <span class="x">b</span> in both off-diagonal places. Rotating to the orthonormal eigenvectors of <span class="x">A</span> removes the cross terms: <span class="x">f</span> = λ<sub>1</sub><span class="x">y</span><sub>1</sub><sup>2</sup> + ⋯ + λ<sub><span class="x">n</span></sub><span class="x">y<sub>n</sub></span><sup>2</sup> (Principal Axes Theorem). So the signs of the eigenvalues decide everything: all positive means <strong>positive definite</strong> (level curves are ellipses, a minimum), mixed signs mean <strong>indefinite</strong> (hyperbolas, a saddle).</p>
+  </div>
+  <div class="defs" id="defs-s66"></div>
+
+  <div class="lab" id="lab-quad">
+    <div class="lab-title"><h3>Level curves of x<sup>T</sup>Ax</h3><span class="src">Examples 6.6.2, 6.6.4 · Exercises 6.6.3, 6.6.6 · Theorems 6.6.2, 6.7.1</span></div>
+    <div class="chips" id="qf-presets" role="group" aria-label="Forms"></div>
+    <div class="bench">
+      <div class="col">
+        <div class="sl"><label for="qf-a">a</label><input type="range" id="qf-a" min="-5" max="5" step="0.5"><output id="qf-ao"></output></div>
+        <div class="sl"><label for="qf-b">b</label><input type="range" id="qf-b" min="-5" max="5" step="0.5"><output id="qf-bo"></output></div>
+        <div class="sl"><label for="qf-c">c</label><input type="range" id="qf-c" min="-5" max="5" step="0.5"><output id="qf-co"></output></div>
+        <div class="scroll"><div class="mexpr" id="qf-expr"></div></div>
+        <div class="scroll"><table class="kv" id="qf-tests"></table></div>
+        <div class="status inf" id="qf-status"></div>
+      </div>
+      <svg class="fig" id="qf-svg" viewBox="0 0 420 420" role="img" aria-label="Level curves of the quadratic form"></svg>
+    </div>
+  </div>
+  <div class="exset" id="ex-s66"></div>
+</section>
+
+<!-- ============ 6.7 ============ -->
+<section class="sec" id="s67">
+  <div class="sec-head"><span class="sec-num">6.7</span><h2>Positive definite matrices</h2><span class="sub">Five equivalent tests; Cholesky</span></div>
+  <div class="concept">
+    <p>For a symmetric <span class="x">A</span> the following are equivalent (Theorem 6.7.1): <span class="x">A</span> is positive definite; all leading principal submatrices have positive determinants; Gaussian elimination without row interchanges gives positive pivots; <span class="x">A</span> = <span class="x">LDL</span><sup>T</sup> with <span class="x">L</span> unit lower triangular and positive diagonal <span class="x">D</span>; and <span class="x">A</span> = <span class="x">LL</span><sup>T</sup> with <span class="x">L</span> lower triangular with positive diagonal (the <strong>Cholesky factorization</strong>). The quadratic-form lab above shows the tests side by side.</p>
+  </div>
+  <div class="defs" id="defs-s67"></div>
+  <div class="exset" id="ex-s67"></div>
+</section>
+
+<!-- ============ 6.8 ============ -->
+<section class="sec" id="s68">
+  <div class="sec-head"><span class="sec-num">6.8</span><h2>Nonnegative matrices</h2><span class="sub">Perron–Frobenius, economic models</span></div>
+  <div class="concept">
+    <p>A matrix with all entries positive has a positive real eigenvalue <span class="x">r</span> that is strictly larger in absolute value than every other eigenvalue, with an eigenvector of positive entries (<strong>Perron's Theorem</strong>). For irreducible nonnegative matrices the same holds with weak inequalities (Frobenius). This is why Markov chains with positive transition matrices converge, and why Leontief's open model <b>x</b> = <span class="x">A</span><b>x</b> + <b>d</b> has a nonnegative solution <b>x</b> = (<span class="x">I</span> − <span class="x">A</span>)<sup>−1</sup><b>d</b> when the column sums of <span class="x">A</span> are less than 1.</p>
+  </div>
+  <div class="defs" id="defs-s68"></div>
+  <div class="exset" id="ex-s68"></div>
+</section>
+
